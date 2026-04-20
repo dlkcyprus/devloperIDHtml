@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Realco — Owner Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #0D1B3E;
+  --navy2: #162654;
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --cream: #F8F4EE;
+  --white: #FFFFFF;
+  --gray: #6B7280;
+  --light: #F1EDE6;
+  --border: #E5E0D8;
+  --red: #E05252;
+  --green: #3BAA7F;
+  --orange: #E07B30;
+  --sidebar-w: 240px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'DM Sans',sans-serif; background:var(--cream); display:flex; min-height:100vh; }
+
+/* SIDEBAR */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--navy);
+  display: flex; flex-direction: column;
+  position: fixed; top:0; left:0; bottom:0;
+  z-index: 50;
+}
+.sidebar-logo {
+  padding: 24px 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+.logo-icon {
+  width:32px; height:32px; background:var(--gold);
+  border-radius:7px; display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:15px; color:var(--navy);
+}
+.logo-text { font-family:'Playfair Display',serif; font-size:20px; color:white; font-weight:700; }
+.owner-badge {
+  margin: 16px 16px 8px;
+  background: rgba(201,168,76,0.12);
+  border: 1px solid rgba(201,168,76,0.25);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px;
+}
+.owner-avatar {
+  width:34px; height:34px; border-radius:50%;
+  background: var(--gold); display:flex; align-items:center; justify-content:center;
+  font-size:14px; font-weight:700; color:var(--navy);
+}
+.owner-info .name { font-size:13px; font-weight:600; color:white; }
+.owner-info .role { font-size:11px; color:var(--gold); }
+
+.nav-section { padding: 20px 12px 8px; }
+.nav-label { font-size:10px; color:rgba(255,255,255,0.3); letter-spacing:0.1em; text-transform:uppercase; padding: 0 8px; margin-bottom:6px; }
+.nav-item {
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px; border-radius:8px;
+  color:rgba(255,255,255,0.55); font-size:13.5px;
+  cursor:pointer; transition:all 0.2s; margin-bottom:2px;
+  position: relative;
+}
+.nav-item:hover { background:rgba(255,255,255,0.06); color:white; }
+.nav-item.active { background:rgba(201,168,76,0.15); color:var(--gold); }
+.nav-item .badge {
+  margin-left:auto; background:var(--red);
+  color:white; font-size:10px; font-weight:700;
+  padding:2px 7px; border-radius:100px;
+}
+
+.sidebar-footer {
+  margin-top:auto; padding:16px;
+  border-top:1px solid rgba(255,255,255,0.07);
+}
+.logout-btn {
+  display:flex; align-items:center; gap:8px;
+  color:rgba(255,255,255,0.4); font-size:13px; cursor:pointer;
+  padding:8px 12px; border-radius:8px;
+  transition:all 0.2s;
+}
+.logout-btn:hover { color:var(--red); background:rgba(224,82,82,0.08); }
+
+/* MAIN */
+.main {
+  margin-left: var(--sidebar-w);
+  flex:1; display:flex; flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar {
+  background:white; height:60px;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 32px;
+  border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:40;
+}
+.topbar-left { font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); font-weight:600; }
+.topbar-right { display:flex; align-items:center; gap:16px; }
+.notif-btn {
+  width:36px; height:36px; border-radius:8px;
+  border:1px solid var(--border); background:var(--cream);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; font-size:16px; position:relative;
+}
+.notif-dot {
+  position:absolute; top:6px; right:6px;
+  width:8px; height:8px; border-radius:50%;
+  background:var(--red); border:2px solid white;
+}
+.topbar-btn {
+  padding:8px 18px;
+  background:var(--navy); color:white;
+  border:none; border-radius:8px;
+  font-size:13px; font-weight:600;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer; transition:all 0.2s;
+  display:flex; align-items:center; gap:6px;
+}
+.topbar-btn:hover { background:var(--navy2); }
+.topbar-btn.gold { background:var(--gold); color:var(--navy); }
+.topbar-btn.gold:hover { background:var(--gold-light); }
+
+/* CONTENT */
+.content { padding:28px 32px; flex:1; }
+
+/* STAT CARDS */
+.stats-row { display:flex; gap:16px; margin-bottom:28px; }
+.stat-card {
+  flex:1; background:white; border-radius:12px;
+  padding:20px 22px;
+  border:1px solid var(--border);
+  position:relative; overflow:hidden;
+}
+.stat-card::after {
+  content:''; position:absolute;
+  top:0; left:0; width:4px; height:100%;
+}
+.stat-card.s1::after { background:var(--navy); }
+.stat-card.s2::after { background:var(--gold); }
+.stat-card.s3::after { background:var(--orange); }
+.stat-card.s4::after { background:var(--green); }
+.stat-num { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--navy); }
+.stat-label { font-size:12px; color:var(--gray); margin-top:4px; }
+.stat-icon { position:absolute; right:18px; top:50%; transform:translateY(-50%); font-size:26px; opacity:0.15; }
+
+/* TABS */
+.tabs { display:flex; gap:0; margin-bottom:24px; background:white; border-radius:10px; padding:4px; border:1px solid var(--border); width:fit-content; }
+.tab {
+  padding:8px 20px; border-radius:7px;
+  font-size:13px; font-weight:500; cursor:pointer;
+  color:var(--gray); transition:all 0.2s;
+}
+.tab.active { background:var(--navy); color:white; font-weight:600; }
+
+/* SECTION TITLE */
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:16px;
+}
+.section-title { font-size:16px; font-weight:600; color:var(--navy); }
+.see-all { font-size:12px; color:var(--gold); cursor:pointer; font-weight:600; }
+
+/* PROPERTY CARDS */
+.prop-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:32px; }
+.prop-card {
+  background:white; border-radius:12px; overflow:hidden;
+  border:1px solid var(--border); transition:all 0.22s;
+  cursor:pointer;
+}
+.prop-card:hover { transform:translateY(-3px); box-shadow:0 8px 28px rgba(13,27,62,0.1); }
+.prop-img {
+  height:140px; background:linear-gradient(135deg,#1a2f5e,#0d1b3e);
+  display:flex; align-items:center; justify-content:center;
+  font-size:42px; position:relative;
+}
+.prop-badge {
+  position:absolute; top:10px; left:10px;
+  padding:3px 10px; border-radius:100px;
+  font-size:10px; font-weight:700; letter-spacing:0.05em;
+}
+.prop-badge.sale { background:var(--navy); color:white; }
+.prop-badge.rent { background:var(--gold); color:var(--navy); }
+.prop-status {
+  position:absolute; top:10px; right:10px;
+  padding:3px 10px; border-radius:100px;
+  font-size:10px; font-weight:600;
+}
+.prop-status.active { background:rgba(59,170,127,0.15); color:var(--green); border:1px solid rgba(59,170,127,0.3); }
+.prop-status.pending { background:rgba(201,168,76,0.15); color:#8B6A1A; border:1px solid rgba(201,168,76,0.3); }
+.prop-status.sold { background:rgba(224,82,82,0.1); color:var(--red); border:1px solid rgba(224,82,82,0.25); }
+.prop-body { padding:14px 16px; }
+.prop-name { font-weight:600; font-size:14px; color:var(--navy); margin-bottom:2px; }
+.prop-loc { font-size:12px; color:var(--gray); }
+.prop-price { font-family:'Playfair Display',serif; font-size:17px; color:var(--navy); font-weight:600; margin:8px 0 10px; }
+.prop-meta { display:flex; gap:10px; }
+.prop-tag { font-size:11px; color:var(--gray); background:var(--cream); padding:3px 8px; border-radius:4px; }
+.prop-actions { display:flex; gap:8px; padding:12px 16px; border-top:1px solid var(--border); }
+.prop-action-btn {
+  flex:1; padding:7px; border-radius:7px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  border:1px solid var(--border); background:var(--cream);
+  color:var(--navy); font-family:'DM Sans',sans-serif;
+  transition:all 0.15s;
+}
+.prop-action-btn:hover { background:var(--navy); color:white; border-color:var(--navy); }
+.prop-action-btn.primary { background:var(--navy); color:white; border-color:var(--navy); }
+
+/* REQUESTS TABLE */
+.requests-table {
+  background:white; border-radius:12px;
+  border:1px solid var(--border); overflow:hidden;
+}
+.req-table-head {
+  display:grid; grid-template-columns:2fr 1.5fr 1fr 1fr 1.5fr;
+  padding:12px 20px;
+  background:var(--cream);
+  border-bottom:1px solid var(--border);
+  font-size:11px; font-weight:600; color:var(--gray);
+  letter-spacing:0.06em; text-transform:uppercase;
+}
+.req-row {
+  display:grid; grid-template-columns:2fr 1.5fr 1fr 1fr 1.5fr;
+  padding:16px 20px;
+  border-bottom:1px solid var(--border);
+  align-items:center;
+  transition:background 0.15s;
+}
+.req-row:last-child { border-bottom:none; }
+.req-row:hover { background:rgba(248,244,238,0.7); }
+.req-agent { display:flex; align-items:center; gap:10px; }
+.req-avatar {
+  width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:700; font-size:13px; color:white;
+}
+.req-name { font-size:13.5px; font-weight:600; color:var(--navy); }
+.req-email { font-size:11px; color:var(--gray); }
+.req-prop { font-size:13px; color:var(--navy); font-weight:500; }
+.req-prop-sub { font-size:11px; color:var(--gray); }
+.req-date { font-size:13px; color:var(--gray); }
+.req-status {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:4px 12px; border-radius:100px;
+  font-size:11px; font-weight:600; width:fit-content;
+}
+.req-status.pending { background:rgba(201,168,76,0.12); color:#8B6A1A; }
+.req-status.approved { background:rgba(59,170,127,0.1); color:var(--green); }
+.req-status.rejected { background:rgba(224,82,82,0.1); color:var(--red); }
+.req-btns { display:flex; gap:6px; }
+.req-btn {
+  padding:6px 14px; border-radius:6px;
+  font-size:12px; font-weight:600;
+  cursor:pointer; border:none;
+  font-family:'DM Sans',sans-serif; transition:all 0.15s;
+}
+.req-btn.approve { background:rgba(59,170,127,0.1); color:var(--green); }
+.req-btn.approve:hover { background:var(--green); color:white; }
+.req-btn.reject { background:rgba(224,82,82,0.08); color:var(--red); }
+.req-btn.reject:hover { background:var(--red); color:white; }
+.req-btn.view { background:var(--cream); color:var(--navy); border:1px solid var(--border); }
+.req-btn.view:hover { background:var(--navy); color:white; }
+
+/* MODAL */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(13,27,62,0.55);
+  backdrop-filter:blur(4px);
+  z-index:200;
+  display:none; align-items:center; justify-content:center;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:white; border-radius:16px;
+  width:560px; max-height:85vh; overflow-y:auto;
+  box-shadow:0 24px 60px rgba(0,0,0,0.2);
+  animation: slideUp 0.3s ease;
+}
+@keyframes slideUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+.modal-header {
+  padding:24px 28px 18px;
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.modal-title { font-family:'Playfair Display',serif; font-size:20px; color:var(--navy); font-weight:600; }
+.modal-close { font-size:20px; cursor:pointer; color:var(--gray); transition:color 0.15s; }
+.modal-close:hover { color:var(--navy); }
+.modal-body { padding:24px 28px; }
+
+/* POST PROPERTY FORM */
+.form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+.form-group { margin-bottom:14px; }
+.form-label { display:block; font-size:11px; font-weight:600; color:var(--navy); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:6px; }
+.form-input, .form-select, .form-textarea {
+  width:100%; padding:11px 14px;
+  border:2px solid var(--border); border-radius:8px;
+  font-size:13.5px; font-family:'DM Sans',sans-serif;
+  color:var(--navy); background:var(--cream); outline:none;
+  transition:border-color 0.2s;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus { border-color:var(--gold); }
+.form-textarea { min-height:80px; resize:vertical; }
+.form-select { cursor:pointer; }
+
+.upload-zone {
+  border:2px dashed var(--border); border-radius:10px;
+  padding:24px; text-align:center; cursor:pointer;
+  transition:all 0.2s; background:var(--cream);
+}
+.upload-zone:hover { border-color:var(--gold); background:rgba(201,168,76,0.04); }
+.upload-icon { font-size:28px; margin-bottom:8px; }
+.upload-text { font-size:13px; color:var(--gray); }
+.upload-text strong { color:var(--navy); }
+
+.modal-footer {
+  padding:18px 28px;
+  border-top:1px solid var(--border);
+  display:flex; gap:10px; justify-content:flex-end;
+}
+.btn-cancel {
+  padding:10px 22px; border-radius:8px;
+  border:1px solid var(--border); background:white;
+  font-size:13px; font-weight:600; color:var(--gray);
+  font-family:'DM Sans',sans-serif; cursor:pointer;
+}
+.btn-submit {
+  padding:10px 24px; border-radius:8px;
+  background:var(--navy); color:white; border:none;
+  font-size:13px; font-weight:600;
+  font-family:'DM Sans',sans-serif; cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-submit:hover { background:var(--navy2); }
+.btn-submit.gold { background:var(--gold); color:var(--navy); }
+.btn-submit.gold:hover { background:var(--gold-light); }
+
+/* DOC REVIEW */
+.doc-item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 14px; border-radius:8px;
+  background:var(--cream); margin-bottom:8px; cursor:pointer;
+  transition:all 0.15s;
+}
+.doc-item:hover { background:rgba(201,168,76,0.08); }
+.doc-icon { font-size:22px; }
+.doc-name { font-size:13px; font-weight:600; color:var(--navy); }
+.doc-meta { font-size:11px; color:var(--gray); }
+.doc-download { margin-left:auto; font-size:12px; color:var(--gold); font-weight:600; }
+
+/* TOAST */
+.toast {
+  position:fixed; bottom:28px; right:28px;
+  background:var(--navy); color:white;
+  padding:13px 20px; border-radius:10px;
+  font-size:13.5px; border-left:4px solid var(--gold);
+  box-shadow:0 8px 30px rgba(0,0,0,0.2);
+  transform:translateY(80px); opacity:0;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+  z-index:999;
+}
+.toast.show { transform:translateY(0); opacity:1; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">R</div>
+    <span class="logo-text">realco</span>
+  </div>
+  <div class="owner-badge">
+    <div class="owner-avatar">RK</div>
+    <div class="owner-info">
+      <div class="name">Rajesh Kumar</div>
+      <div class="role">🏠 Property Owner</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+    <div class="nav-item active" onclick="showTab('dashboard')">📊 &nbsp;Dashboard</div>
+    <div class="nav-item" onclick="showTab('properties')">🏠 &nbsp;My Properties</div>
+    <div class="nav-item" onclick="showTab('requests')">📋 &nbsp;Agent Requests <span class="badge">3</span></div>
+    <div class="nav-item" onclick="showTab('documents')">📁 &nbsp;Documents</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Account</div>
+    <div class="nav-item">⚙️ &nbsp;Settings</div>
+    <div class="nav-item">🔔 &nbsp;Notifications</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="logout-btn">🚪 &nbsp;Logout</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left" id="topbar-title">Owner Dashboard</div>
+    <div class="topbar-right">
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <button class="topbar-btn gold" onclick="openModal('post')">+ Post Property</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card s1">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Total Properties</div>
+        <div class="stat-icon">🏠</div>
+      </div>
+      <div class="stat-card s2">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Pending Requests</div>
+        <div class="stat-icon">📋</div>
+      </div>
+      <div class="stat-card s3">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Active Listings</div>
+        <div class="stat-icon">✅</div>
+      </div>
+      <div class="stat-card s4">
+        <div class="stat-num">₹2.4Cr</div>
+        <div class="stat-label">Total Value Listed</div>
+        <div class="stat-icon">💰</div>
+      </div>
+    </div>
+
+    <!-- PROPERTIES -->
+    <div class="section-head">
+      <div class="section-title">My Properties</div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="prop-grid">
+      <div class="prop-card">
+        <div class="prop-img">🏙️
+          <div class="prop-badge sale">FOR SALE</div>
+          <div class="prop-status active">● Active</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Skyline Residency 4B</div>
+          <div class="prop-loc">📍 Bandra West, Mumbai</div>
+          <div class="prop-price">₹1.2 Cr</div>
+          <div class="prop-meta">
+            <div class="prop-tag">3 BHK</div>
+            <div class="prop-tag">1,450 sq.ft</div>
+            <div class="prop-tag">2 Bath</div>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn" onclick="openModal('requests')">Requests (2)</button>
+          <button class="prop-action-btn primary" onclick="openModal('edit')">Edit</button>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-img">🏡
+          <div class="prop-badge rent">FOR RENT</div>
+          <div class="prop-status pending">⏳ Pending</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Green Valley Villa</div>
+          <div class="prop-loc">📍 Whitefield, Bangalore</div>
+          <div class="prop-price">₹85,000/mo</div>
+          <div class="prop-meta">
+            <div class="prop-tag">4 BHK</div>
+            <div class="prop-tag">2,800 sq.ft</div>
+            <div class="prop-tag">3 Bath</div>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn" onclick="openModal('requests')">Requests (1)</button>
+          <button class="prop-action-btn primary">Edit</button>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-img">🏢
+          <div class="prop-badge sale">FOR SALE</div>
+          <div class="prop-status sold">✕ Sold</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Marina Heights 12A</div>
+          <div class="prop-loc">📍 Alwarpet, Chennai</div>
+          <div class="prop-price">₹78 L</div>
+          <div class="prop-meta">
+            <div class="prop-tag">2 BHK</div>
+            <div class="prop-tag">980 sq.ft</div>
+            <div class="prop-tag">2 Bath</div>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn">View History</button>
+          <button class="prop-action-btn primary">Relist</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- AGENT REQUESTS -->
+    <div class="section-head">
+      <div class="section-title">Agent Requests <span style="color:var(--red);font-size:13px;margin-left:6px;">● 3 Pending</span></div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="requests-table">
+      <div class="req-table-head">
+        <div>Agent</div>
+        <div>Property</div>
+        <div>Date</div>
+        <div>Status</div>
+        <div>Actions</div>
+      </div>
+
+      <!-- Row 1 -->
+      <div class="req-row" id="row1">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#3B6FD4;">PS</div>
+          <div>
+            <div class="req-name">Priya Sharma</div>
+            <div class="req-email">priya@realty.com</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Skyline Residency 4B</div>
+          <div class="req-prop-sub">For Sale · ₹1.2 Cr</div>
+        </div>
+        <div class="req-date">Apr 14, 2026</div>
+        <div><span class="req-status pending">⏳ Pending</span></div>
+        <div class="req-btns">
+          <button class="req-btn view" onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" onclick="updateStatus('row1','approve')">✓ Approve</button>
+          <button class="req-btn reject" onclick="updateStatus('row1','reject')">✕</button>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="req-row" id="row2">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#3BAA7F;">AK</div>
+          <div>
+            <div class="req-name">Amit Khanna</div>
+            <div class="req-email">amit.k@homes.in</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Green Valley Villa</div>
+          <div class="req-prop-sub">For Rent · ₹85K/mo</div>
+        </div>
+        <div class="req-date">Apr 13, 2026</div>
+        <div><span class="req-status approved">✅ Approved</span></div>
+        <div class="req-btns">
+          <button class="req-btn view" onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" style="opacity:0.4;pointer-events:none;">✓ Approve</button>
+          <button class="req-btn reject" style="opacity:0.4;pointer-events:none;">✕</button>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="req-row" id="row3">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#C9A84C;">NG</div>
+          <div>
+            <div class="req-name">Neha Gupta</div>
+            <div class="req-email">neha@proplink.in</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Marina Heights 12A</div>
+          <div class="req-prop-sub">For Sale · ₹78 L</div>
+        </div>
+        <div class="req-date">Apr 10, 2026</div>
+        <div><span class="req-status pending">⏳ Pending</span></div>
+        <div class="req-btns">
+          <button class="req-btn view" onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" onclick="updateStatus('row3','approve')">✓ Approve</button>
+          <button class="req-btn reject" onclick="updateStatus('row3','reject')">✕</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- POST PROPERTY MODAL -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Post New Property</div>
+      <div class="modal-close" onclick="closeModal('post')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Property Title</label>
+          <input class="form-input" placeholder="e.g. Skyline Residency 4B"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select">
+            <option>Apartment</option>
+            <option>Villa</option>
+            <option>Independent House</option>
+            <option>Studio</option>
+            <option>Commercial</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Listing Mode</label>
+          <select class="form-select">
+            <option>For Sale</option>
+            <option>For Rent</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price</label>
+          <input class="form-input" placeholder="e.g. ₹1.2 Cr or ₹45,000/mo"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location / Address</label>
+        <input class="form-input" placeholder="Area, City"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Bedrooms</label>
+          <select class="form-select"><option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4+ BHK</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Area (sq.ft)</label>
+          <input class="form-input" placeholder="e.g. 1450"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" placeholder="Describe your property…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Upload Property Documents / Images</label>
+        <div class="upload-zone" onclick="showToast('📎 File picker opened')">
+          <div class="upload-icon">📎</div>
+          <div class="upload-text"><strong>Click to upload</strong> or drag & drop<br/>PDF, JPG, PNG up to 20MB</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Agent Access</label>
+        <select class="form-select">
+          <option>Open to all verified agents</option>
+          <option>Invite specific agents only</option>
+          <option>No agent access</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('post')">Cancel</button>
+      <button class="btn-submit gold" onclick="closeModal('post');showToast('🏠 Property listed successfully!')">Post Property</button>
+    </div>
+  </div>
+</div>
+
+<!-- DOC REVIEW MODAL -->
+<div class="modal-overlay" id="modal-docreview">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Agent Documents — Priya Sharma</div>
+      <div class="modal-close" onclick="closeModal('docreview')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:12px 16px;margin-bottom:20px;">
+        <div style="font-size:12px;color:#8B6A1A;font-weight:600;">📋 Request Note from Agent</div>
+        <div style="font-size:13px;color:var(--navy);margin-top:6px;">"My client is very interested in this property and is ready with token amount. Please review the attached KYC and license documents."</div>
+      </div>
+      <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:12px;">Submitted Documents</div>
+      <div class="doc-item">
+        <div class="doc-icon">📄</div>
+        <div>
+          <div class="doc-name">Agent_License_PriyaSharma.pdf</div>
+          <div class="doc-meta">1.2 MB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon">🪪</div>
+        <div>
+          <div class="doc-name">KYC_Aadhar_PriyaSharma.pdf</div>
+          <div class="doc-meta">840 KB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon">📊</div>
+        <div>
+          <div class="doc-name">Client_Proof_of_Funds.pdf</div>
+          <div class="doc-meta">520 KB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div style="margin-top:16px;font-size:13px;font-weight:600;color:var(--navy);margin-bottom:10px;">Add Review Note (Optional)</div>
+      <textarea class="form-textarea" placeholder="Write a note to the agent before approving or rejecting…" style="min-height:60px;"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('docreview');updateStatus('row1','reject');showToast('❌ Request rejected')">Reject Request</button>
+      <button class="btn-submit gold" onclick="closeModal('docreview');updateStatus('row1','approve');showToast('✅ Request approved!')">Approve Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); }
+function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); }
+
+function updateStatus(rowId, action) {
+  const row = document.getElementById(rowId);
+  if(!row) return;
+  const statusEl = row.querySelector('.req-status');
+  const btns = row.querySelectorAll('.req-btn.approve, .req-btn.reject');
+  if(action === 'approve') {
+    statusEl.className = 'req-status approved';
+    statusEl.textContent = '✅ Approved';
+    showToast('✅ Request approved successfully!');
+  } else {
+    statusEl.className = 'req-status rejected';
+    statusEl.textContent = '✕ Rejected';
+    showToast('❌ Request rejected.');
+  }
+  btns.forEach(b => { b.style.opacity='0.35'; b.style.pointerEvents='none'; });
+}
+
+function showTab(tab) {
+  const titles = {dashboard:'Owner Dashboard', properties:'My Properties', requests:'Agent Requests', documents:'My Documents'};
+  document.getElementById('topbar-title').textContent = titles[tab] || 'Dashboard';
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  showToast('📂 Navigated to ' + titles[tab]);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if(e.target === el) el.classList.remove('open'); });
+});
+</script>
+</body>
+</html>

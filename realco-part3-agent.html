@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Realco — Agent Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --navy: #0D1B3E;
+  --navy2: #162654;
+  --gold: #C9A84C;
+  --gold-light: #E8C96A;
+  --cream: #F8F4EE;
+  --white: #FFFFFF;
+  --gray: #6B7280;
+  --light: #F1EDE6;
+  --border: #E5E0D8;
+  --red: #E05252;
+  --green: #3BAA7F;
+  --orange: #E07B30;
+  --blue: #3B6FD4;
+  --sidebar-w: 240px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sidebar-w);background:var(--navy);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:50;
+}
+.sidebar-logo{
+  padding:24px 20px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.logo-icon{width:32px;height:32px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:var(--navy);}
+.logo-text{font-family:'Playfair Display',serif;font-size:20px;color:white;font-weight:700;}
+
+.agent-badge{
+  margin:16px 16px 8px;
+  background:rgba(59,111,212,0.12);
+  border:1px solid rgba(59,111,212,0.25);
+  border-radius:8px;padding:12px 14px;
+  display:flex;align-items:center;gap:10px;
+}
+.agent-avatar{width:34px;height:34px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;}
+.agent-info .name{font-size:13px;font-weight:600;color:white;}
+.agent-info .role{font-size:11px;color:#7BA7F7;}
+.verified{display:inline-flex;align-items:center;gap:3px;font-size:10px;color:var(--green);margin-top:2px;}
+
+.nav-section{padding:20px 12px 8px;}
+.nav-label{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:rgba(255,255,255,0.55);font-size:13.5px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:white;}
+.nav-item.active{background:rgba(59,111,212,0.2);color:#7BA7F7;}
+.nav-item .badge{margin-left:auto;background:var(--orange);color:white;font-size:10px;font-weight:700;padding:2px 7px;border-radius:100px;}
+
+.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.07);}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer;padding:8px 12px;border-radius:8px;transition:all 0.2s;}
+.logout-btn:hover{color:var(--red);background:rgba(224,82,82,0.08);}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+
+/* ── TOPBAR ── */
+.topbar{
+  background:white;height:60px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 32px;border-bottom:1px solid var(--border);
+  position:sticky;top:0;z-index:40;
+}
+.topbar-left{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.search-bar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--cream);border:1px solid var(--border);
+  border-radius:8px;padding:8px 14px;width:260px;
+}
+.search-bar input{border:none;background:transparent;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);width:100%;}
+.search-bar input::placeholder{color:#B8B0A4;}
+.notif-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;position:relative;}
+.notif-dot{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--orange);border:2px solid white;}
+
+/* ── CONTENT ── */
+.content{padding:28px 32px;flex:1;}
+
+/* STAT CARDS */
+.stats-row{display:flex;gap:16px;margin-bottom:28px;}
+.stat-card{flex:1;background:white;border-radius:12px;padding:20px 22px;border:1px solid var(--border);position:relative;overflow:hidden;}
+.stat-card::after{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.stat-card.s1::after{background:var(--blue);}
+.stat-card.s2::after{background:var(--gold);}
+.stat-card.s3::after{background:var(--green);}
+.stat-card.s4::after{background:var(--orange);}
+.stat-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--navy);}
+.stat-label{font-size:12px;color:var(--gray);margin-top:4px;}
+.stat-icon{position:absolute;right:18px;top:50%;transform:translateY(-50%);font-size:26px;opacity:0.15;}
+
+/* FILTER BAR */
+.filter-bar{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:22px;flex-wrap:wrap;
+}
+.filter-pill{
+  padding:7px 16px;border-radius:100px;
+  font-size:12px;font-weight:600;cursor:pointer;
+  border:1.5px solid var(--border);background:white;
+  color:var(--gray);transition:all 0.18s;
+}
+.filter-pill:hover{border-color:var(--navy);color:var(--navy);}
+.filter-pill.active{background:var(--navy);color:white;border-color:var(--navy);}
+.filter-pill.sale-active{background:var(--navy);color:white;border-color:var(--navy);}
+.filter-pill.rent-active{background:var(--gold);color:var(--navy);border-color:var(--gold);}
+.filter-select{
+  padding:7px 14px;border-radius:8px;
+  border:1.5px solid var(--border);background:white;
+  font-size:12px;font-weight:500;color:var(--gray);
+  font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;
+  margin-left:auto;
+}
+
+/* LISTINGS GRID */
+.listings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:32px;}
+.listing-card{
+  background:white;border-radius:14px;overflow:hidden;
+  border:1px solid var(--border);transition:all 0.22s;cursor:pointer;
+  position:relative;
+}
+.listing-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(13,27,62,0.12);}
+.listing-card.highlighted{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.2);}
+
+.card-img{
+  height:160px;display:flex;align-items:center;justify-content:center;
+  font-size:50px;position:relative;
+}
+.card-img.bg1{background:linear-gradient(135deg,#1a3a6e,#0d1b3e);}
+.card-img.bg2{background:linear-gradient(135deg,#1a4a3a,#0d2e25);}
+.card-img.bg3{background:linear-gradient(135deg,#4a2a1a,#2e1a0d);}
+.card-img.bg4{background:linear-gradient(135deg,#2a1a4a,#1a0d2e);}
+.card-img.bg5{background:linear-gradient(135deg,#1a3a4a,#0d2030);}
+.card-img.bg6{background:linear-gradient(135deg,#3a3a1a,#2a2a0d);}
+
+.card-mode-badge{position:absolute;top:12px;left:12px;padding:4px 11px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:0.05em;}
+.card-mode-badge.sale{background:var(--navy);color:white;}
+.card-mode-badge.rent{background:var(--gold);color:var(--navy);}
+.card-fav{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;font-size:13px;cursor:pointer;transition:all 0.2s;}
+.card-fav:hover{background:white;}
+.card-new{position:absolute;bottom:10px;right:10px;background:var(--green);color:white;font-size:10px;font-weight:700;padding:3px 9px;border-radius:100px;}
+
+.card-body{padding:16px 18px;}
+.card-title{font-weight:700;font-size:14.5px;color:var(--navy);margin-bottom:3px;}
+.card-loc{font-size:12px;color:var(--gray);margin-bottom:10px;}
+.card-price{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+.card-specs{display:flex;gap:8px;margin-bottom:14px;}
+.spec-tag{font-size:11px;color:var(--gray);background:var(--cream);padding:4px 9px;border-radius:5px;display:flex;align-items:center;gap:4px;}
+.card-owner{display:flex;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--border);}
+.owner-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;}
+.owner-name{font-size:12px;color:var(--gray);}
+.owner-name strong{color:var(--navy);font-weight:600;}
+.request-btn{
+  margin-left:auto;padding:6px 14px;
+  background:var(--navy);color:white;
+  border:none;border-radius:7px;
+  font-size:12px;font-weight:600;
+  font-family:'DM Sans',sans-serif;cursor:pointer;
+  transition:all 0.18s;
+}
+.request-btn:hover{background:var(--blue);}
+.request-btn.sent{background:rgba(59,170,127,0.12);color:var(--green);border:1px solid rgba(59,170,127,0.3);pointer-events:none;}
+
+/* MY REQUESTS STATUS */
+.my-requests{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:28px;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.section-title{font-size:16px;font-weight:600;color:var(--navy);}
+.see-all{font-size:12px;color:var(--gold);cursor:pointer;font-weight:600;}
+.req-head{display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr;padding:12px 20px;background:var(--cream);border-bottom:1px solid var(--border);font-size:11px;font-weight:600;color:var(--gray);letter-spacing:0.06em;text-transform:uppercase;}
+.req-row{display:grid;grid-template-columns:2fr 1.5fr 1fr 1fr;padding:15px 20px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+.req-row:last-child{border-bottom:none;}
+.req-row:hover{background:rgba(248,244,238,0.7);}
+.req-prop-name{font-size:13.5px;font-weight:600;color:var(--navy);}
+.req-prop-sub{font-size:11px;color:var(--gray);}
+.req-owner{font-size:13px;color:var(--navy);}
+.req-date{font-size:13px;color:var(--gray);}
+.req-status-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:100px;font-size:11px;font-weight:600;}
+.rsp-pending{background:rgba(224,123,48,0.1);color:var(--orange);}
+.rsp-approved{background:rgba(59,170,127,0.1);color:var(--green);}
+.rsp-rejected{background:rgba(224,82,82,0.1);color:var(--red);}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,62,0.55);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:16px;width:580px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);animation:slideUp 0.3s ease;}
+@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{padding:24px 28px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);font-weight:600;}
+.modal-close{font-size:20px;cursor:pointer;color:var(--gray);transition:color 0.15s;}
+.modal-close:hover{color:var(--navy);}
+.modal-body{padding:24px 28px;}
+.modal-footer{padding:18px 28px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+/* PROPERTY DETAIL in modal */
+.prop-detail-hero{height:160px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:18px;background:linear-gradient(135deg,#1a3a6e,#0d1b3e);}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;}
+.detail-item{background:var(--cream);border-radius:8px;padding:12px 14px;}
+.detail-label{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
+.detail-val{font-size:14px;color:var(--navy);font-weight:600;margin-top:3px;}
+.owner-card{display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:10px;padding:14px 16px;margin-bottom:18px;}
+.owner-card-avatar{width:42px;height:42px;border-radius:50%;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700;color:var(--gold);}
+.owner-card-name{font-size:14px;font-weight:600;color:var(--navy);}
+.owner-card-sub{font-size:12px;color:var(--gray);}
+.verified-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--green);font-weight:600;margin-top:2px;}
+
+/* FORM */
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
+.form-input,.form-textarea,.form-select{width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:border-color 0.2s;}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--blue);}
+.form-textarea{min-height:80px;resize:vertical;}
+
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:22px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--cream);}
+.upload-zone:hover{border-color:var(--blue);background:rgba(59,111,212,0.03);}
+.upload-icon{font-size:26px;margin-bottom:8px;}
+.upload-text{font-size:13px;color:var(--gray);}
+.upload-text strong{color:var(--navy);}
+
+.doc-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.doc-chip{display:flex;align-items:center;gap:6px;background:rgba(59,111,212,0.08);border:1px solid rgba(59,111,212,0.2);border-radius:6px;padding:5px 10px;font-size:12px;color:var(--navy);}
+.doc-chip-remove{cursor:pointer;color:var(--red);font-size:14px;line-height:1;}
+
+.btn-cancel{padding:10px 22px;border-radius:8px;border:1px solid var(--border);background:white;font-size:13px;font-weight:600;color:var(--gray);font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-submit{padding:10px 24px;border-radius:8px;background:var(--navy);color:white;border:none;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;}
+.btn-submit:hover{background:var(--navy2);}
+.btn-submit.blue{background:var(--blue);}
+.btn-submit.blue:hover{background:#2a5ac0;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--navy);color:white;padding:13px 20px;border-radius:10px;font-size:13.5px;border-left:4px solid var(--blue);box-shadow:0 8px 30px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Progress steps */
+.progress-steps{display:flex;align-items:center;gap:0;margin-bottom:24px;}
+.step{display:flex;align-items:center;gap:8px;flex:1;}
+.step-circle{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
+.step-circle.done{background:var(--blue);color:white;}
+.step-circle.active{background:var(--navy);color:white;}
+.step-circle.todo{background:var(--border);color:var(--gray);}
+.step-label{font-size:12px;font-weight:500;}
+.step-label.active{color:var(--navy);font-weight:600;}
+.step-label.todo{color:var(--gray);}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 6px;}
+.step-line.done{background:var(--blue);}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">R</div>
+    <span class="logo-text">realco</span>
+  </div>
+  <div class="agent-badge">
+    <div class="agent-avatar">PS</div>
+    <div class="agent-info">
+      <div class="name">Priya Sharma</div>
+      <div class="role">🤝 Real Estate Agent</div>
+      <div class="verified">✅ Verified Agent</div>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Main</div>
+    <div class="nav-item active">📊 &nbsp;Dashboard</div>
+    <div class="nav-item">🔍 &nbsp;Browse Listings</div>
+    <div class="nav-item">📋 &nbsp;My Requests <span class="badge">2</span></div>
+    <div class="nav-item">👥 &nbsp;My Clients</div>
+    <div class="nav-item">📁 &nbsp;My Documents</div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Account</div>
+    <div class="nav-item">⚙️ &nbsp;Settings</div>
+    <div class="nav-item">🔔 &nbsp;Notifications</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="logout-btn">🚪 &nbsp;Logout</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left">Agent Dashboard</div>
+    <div class="topbar-right">
+      <div class="search-bar">
+        <span style="color:var(--gray);font-size:14px;">🔍</span>
+        <input placeholder="Search by location, price, type…"/>
+      </div>
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card s1">
+        <div class="stat-num">24</div>
+        <div class="stat-label">Listings Available</div>
+        <div class="stat-icon">🏠</div>
+      </div>
+      <div class="stat-card s2">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Requests Sent</div>
+        <div class="stat-icon">📋</div>
+      </div>
+      <div class="stat-card s3">
+        <div class="stat-num">3</div>
+        <div class="stat-label">Approved Deals</div>
+        <div class="stat-icon">✅</div>
+      </div>
+      <div class="stat-card s4">
+        <div class="stat-num">₹4.8Cr</div>
+        <div class="stat-label">Pipeline Value</div>
+        <div class="stat-icon">💼</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-pill active" onclick="setFilter(this,'all')">All Listings</div>
+      <div class="filter-pill" onclick="setFilter(this,'sale')">For Sale</div>
+      <div class="filter-pill" onclick="setFilter(this,'rent')">For Rent</div>
+      <div class="filter-pill" onclick="setFilter(this,'new')">🟢 New</div>
+      <div class="filter-pill" onclick="setFilter(this,'saved')">❤️ Saved</div>
+      <select class="filter-select">
+        <option>Sort: Latest First</option>
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+      </select>
+    </div>
+
+    <!-- SECTION HEAD -->
+    <div class="section-head">
+      <div class="section-title">Available Properties</div>
+      <div class="see-all">View All 24 →</div>
+    </div>
+
+    <!-- LISTINGS GRID -->
+    <div class="listings-grid">
+
+      <!-- Card 1 -->
+      <div class="listing-card highlighted" onclick="openModal('detail','1')">
+        <div class="card-img bg1">🏙️
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+          <div class="card-new">NEW</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Skyline Residency 4B</div>
+          <div class="card-loc">📍 Bandra West, Mumbai</div>
+          <div class="card-price">₹1.2 Cr</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 3 BHK</div>
+            <div class="spec-tag">📐 1,450 sq.ft</div>
+            <div class="spec-tag">🚿 2 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--navy);">RK</div>
+            <div class="owner-name"><strong>Rajesh Kumar</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request','1')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="listing-card" onclick="openModal('detail','2')">
+        <div class="card-img bg2">🏡
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">❤️</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Green Valley Villa</div>
+          <div class="card-loc">📍 Whitefield, Bangalore</div>
+          <div class="card-price">₹85,000/mo</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 4 BHK</div>
+            <div class="spec-tag">📐 2,800 sq.ft</div>
+            <div class="spec-tag">🚿 3 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--green);">SR</div>
+            <div class="owner-name"><strong>Sunita Rao</strong> · Owner</div>
+            <button class="request-btn sent">✅ Sent</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="listing-card" onclick="openModal('detail','3')">
+        <div class="card-img bg3">🏢
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Marina Heights 12A</div>
+          <div class="card-loc">📍 Alwarpet, Chennai</div>
+          <div class="card-price">₹78 L</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 2 BHK</div>
+            <div class="spec-tag">📐 980 sq.ft</div>
+            <div class="spec-tag">🚿 2 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--orange);">KI</div>
+            <div class="owner-name"><strong>Karthik Iyer</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request','3')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="listing-card" onclick="openModal('detail','4')">
+        <div class="card-img bg4">🏠
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+          <div class="card-new">NEW</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Rosewood Studio</div>
+          <div class="card-loc">📍 Koregaon Park, Pune</div>
+          <div class="card-price">₹22,000/mo</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 Studio</div>
+            <div class="spec-tag">📐 480 sq.ft</div>
+            <div class="spec-tag">🚿 1 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--gold);color:var(--navy);">MJ</div>
+            <div class="owner-name"><strong>Meera Joshi</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request','4')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="listing-card" onclick="openModal('detail','5')">
+        <div class="card-img bg5">🏗️
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Prestige Tower 8C</div>
+          <div class="card-loc">📍 Powai, Mumbai</div>
+          <div class="card-price">₹2.1 Cr</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 4 BHK</div>
+            <div class="spec-tag">📐 2,100 sq.ft</div>
+            <div class="spec-tag">🚿 3 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--blue);">AM</div>
+            <div class="owner-name"><strong>Anil Mehta</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request','5')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="listing-card" onclick="openModal('detail','6')">
+        <div class="card-img bg6">🏘️
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Palm Grove 2B</div>
+          <div class="card-loc">📍 Jubilee Hills, Hyderabad</div>
+          <div class="card-price">₹48,000/mo</div>
+          <div class="card-specs">
+            <div class="spec-tag">🛏 3 BHK</div>
+            <div class="spec-tag">📐 1,600 sq.ft</div>
+            <div class="spec-tag">🚿 2 Bath</div>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:#8B5E8B;">VR</div>
+            <div class="owner-name"><strong>Vijay Reddy</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request','6')">Request →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY REQUESTS STATUS -->
+    <div class="section-head">
+      <div class="section-title">My Request Status</div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="my-requests">
+      <div class="req-head">
+        <div>Property</div>
+        <div>Owner</div>
+        <div>Sent On</div>
+        <div>Status</div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Green Valley Villa</div>
+          <div class="req-prop-sub">For Rent · ₹85K/mo · Whitefield, Bangalore</div>
+        </div>
+        <div class="req-owner">Sunita Rao</div>
+        <div class="req-date">Apr 13, 2026</div>
+        <div><span class="req-status-pill rsp-approved">✅ Approved</span></div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Skyline Residency 4B</div>
+          <div class="req-prop-sub">For Sale · ₹1.2 Cr · Bandra West</div>
+        </div>
+        <div class="req-owner">Rajesh Kumar</div>
+        <div class="req-date">Apr 14, 2026</div>
+        <div><span class="req-status-pill rsp-pending">⏳ Pending Review</span></div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Prestige Tower 8C</div>
+          <div class="req-prop-sub">For Sale · ₹2.1 Cr · Powai, Mumbai</div>
+        </div>
+        <div class="req-owner">Anil Mehta</div>
+        <div class="req-date">Apr 10, 2026</div>
+        <div><span class="req-status-pill rsp-rejected">❌ Rejected</span></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── MODAL: Property Detail ── -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Skyline Residency 4B</div>
+      <div class="modal-close" onclick="closeModal('detail')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="prop-detail-hero">🏙️</div>
+      <div class="detail-grid">
+        <div class="detail-item"><div class="detail-label">Type</div><div class="detail-val">Apartment · For Sale</div></div>
+        <div class="detail-item"><div class="detail-label">Price</div><div class="detail-val">₹1.2 Crore</div></div>
+        <div class="detail-item"><div class="detail-label">Location</div><div class="detail-val">Bandra West, Mumbai</div></div>
+        <div class="detail-item"><div class="detail-label">Size</div><div class="detail-val">1,450 sq.ft · 3 BHK</div></div>
+        <div class="detail-item"><div class="detail-label">Floor</div><div class="detail-val">4th Floor / 12 Total</div></div>
+        <div class="detail-item"><div class="detail-label">Possession</div><div class="detail-val">Ready to Move</div></div>
+      </div>
+      <div class="owner-card">
+        <div class="owner-card-avatar">RK</div>
+        <div>
+          <div class="owner-card-name">Rajesh Kumar</div>
+          <div class="owner-card-sub">Property Owner · Mumbai</div>
+          <div class="verified-tag">✅ Verified Owner</div>
+        </div>
+        <button class="request-btn" style="margin-left:auto;padding:9px 18px;" onclick="closeModal('detail');openModal('request')">Send Request →</button>
+      </div>
+      <div style="font-size:13px;color:var(--gray);line-height:1.7;">
+        Beautifully maintained 3 BHK apartment in the heart of Bandra West. Features modular kitchen, two reserved parking spots, and access to a rooftop terrace. Ideal for families or as an investment property in one of Mumbai's most sought-after neighbourhoods.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('detail')">Close</button>
+      <button class="btn-submit blue" onclick="closeModal('detail');openModal('request')">Send Deal Request →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL: Send Request + Upload Docs ── -->
+<div class="modal-overlay" id="modal-request">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Send Deal Request</div>
+      <div class="modal-close" onclick="closeModal('request')">✕</div>
+    </div>
+    <div class="modal-body">
+
+      <!-- Progress Steps -->
+      <div class="progress-steps">
+        <div class="step">
+          <div class="step-circle done" id="sc1">1</div>
+          <span class="step-label active" id="sl1">Property</span>
+        </div>
+        <div class="step-line done" id="sline1"></div>
+        <div class="step">
+          <div class="step-circle active" id="sc2">2</div>
+          <span class="step-label active" id="sl2">Your Note</span>
+        </div>
+        <div class="step-line" id="sline2"></div>
+        <div class="step">
+          <div class="step-circle todo" id="sc3">3</div>
+          <span class="step-label todo" id="sl3">Documents</span>
+        </div>
+        <div class="step-line" id="sline3"></div>
+        <div class="step">
+          <div class="step-circle todo" id="sc4">4</div>
+          <span class="step-label todo" id="sl4">Submit</span>
+        </div>
+      </div>
+
+      <!-- Step panels -->
+      <div id="step-note">
+        <div style="background:var(--cream);border-radius:10px;padding:14px 16px;margin-bottom:18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;">🏙️</span>
+          <div>
+            <div style="font-weight:600;color:var(--navy);font-size:14px;">Skyline Residency 4B</div>
+            <div style="font-size:12px;color:var(--gray);">Bandra West, Mumbai · ₹1.2 Cr · For Sale</div>
+          </div>
+          <div style="margin-left:auto;background:rgba(59,111,212,0.1);color:var(--blue);padding:4px 12px;border-radius:100px;font-size:11px;font-weight:700;">FOR SALE</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Message to Owner</label>
+          <textarea class="form-textarea" id="agent-note" placeholder="e.g. My client is highly interested and has funds ready. Can we schedule a site visit this week?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Budget Range</label>
+          <input class="form-input" placeholder="e.g. ₹1.1 Cr – ₹1.3 Cr"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Site Visit</label>
+          <input class="form-input" type="date"/>
+        </div>
+      </div>
+
+      <div id="step-docs" style="display:none;">
+        <div style="font-size:13px;color:var(--gray);margin-bottom:16px;">Please upload the required documents. The owner will review these before approving your request.</div>
+        <div class="form-group">
+          <label class="form-label">Agent License / RERA Certificate *</label>
+          <div class="upload-zone" onclick="addDoc('Agent_License.pdf')">
+            <div class="upload-icon">🪪</div>
+            <div class="upload-text"><strong>Click to upload</strong> RERA / License<br/>PDF up to 5MB</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">KYC Document (Aadhar / PAN) *</label>
+          <div class="upload-zone" onclick="addDoc('KYC_Aadhar.pdf')">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text"><strong>Click to upload</strong> Aadhar or PAN<br/>PDF or JPG up to 5MB</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Proof of Funds (Optional)</label>
+          <div class="upload-zone" onclick="addDoc('Client_Funds_Proof.pdf')">
+            <div class="upload-icon">💰</div>
+            <div class="upload-text"><strong>Click to upload</strong> Bank statement or letter<br/>PDF up to 10MB</div>
+          </div>
+        </div>
+        <div class="doc-chips" id="doc-chips"></div>
+      </div>
+
+      <div id="step-confirm" style="display:none;text-align:center;padding:20px 0;">
+        <div style="font-size:56px;margin-bottom:16px;">📬</div>
+        <div style="font-family:'Playfair Display',serif;font-size:22px;color:var(--navy);font-weight:600;margin-bottom:10px;">Request Ready to Send</div>
+        <div style="font-size:13px;color:var(--gray);max-width:340px;margin:0 auto 24px;">Your note and documents will be sent to <strong>Rajesh Kumar</strong>. You'll get a notification once the owner reviews your request.</div>
+        <div style="background:var(--cream);border-radius:10px;padding:16px;text-align:left;">
+          <div style="font-size:12px;color:var(--gray);margin-bottom:8px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Summary</div>
+          <div style="font-size:13px;color:var(--navy);display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span>Property</span><strong>Skyline Residency 4B</strong>
+          </div>
+          <div style="font-size:13px;color:var(--navy);display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span>Owner</span><strong>Rajesh Kumar</strong>
+          </div>
+          <div style="font-size:13px;color:var(--navy);display:flex;justify-content:space-between;padding:6px 0;">
+            <span>Docs Attached</span><strong id="doc-count">0 files</strong>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer" id="modal-req-footer">
+      <button class="btn-cancel" onclick="closeModal('request');resetSteps()">Cancel</button>
+      <button class="btn-submit blue" id="req-next-btn" onclick="nextStep()">Next: Upload Documents →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+let currentStep = 1;
+let uploadedDocs = [];
+
+function setFilter(el, type) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active','sale-active','rent-active'));
+  el.classList.add('active');
+  showToast('🔍 Filtering: ' + el.textContent.trim());
+}
+
+function toggleFav(el) {
+  el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
+}
+
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById('modal-' + id).classList.remove('open');
+}
+
+function nextStep() {
+  if (currentStep === 1) {
+    // go to docs
+    document.getElementById('step-note').style.display = 'none';
+    document.getElementById('step-docs').style.display = 'block';
+    document.getElementById('step-confirm').style.display = 'none';
+    document.getElementById('sc3').className = 'step-circle active';
+    document.getElementById('sline2').className = 'step-line done';
+    document.getElementById('req-next-btn').textContent = 'Next: Review & Submit →';
+    currentStep = 2;
+  } else if (currentStep === 2) {
+    // go to confirm
+    document.getElementById('step-note').style.display = 'none';
+    document.getElementById('step-docs').style.display = 'none';
+    document.getElementById('step-confirm').style.display = 'block';
+    document.getElementById('sc4').className = 'step-circle active';
+    document.getElementById('sline3').className = 'step-line done';
+    document.getElementById('doc-count').textContent = uploadedDocs.length + ' file(s)';
+    document.getElementById('req-next-btn').textContent = '📬 Submit Request';
+    currentStep = 3;
+  } else if (currentStep === 3) {
+    closeModal('request');
+    resetSteps();
+    showToast('📬 Request sent to Rajesh Kumar! You\'ll be notified upon review.');
+  }
+}
+
+function resetSteps() {
+  currentStep = 1;
+  uploadedDocs = [];
+  document.getElementById('step-note').style.display = 'block';
+  document.getElementById('step-docs').style.display = 'none';
+  document.getElementById('step-confirm').style.display = 'none';
+  document.getElementById('sc3').className = 'step-circle todo';
+  document.getElementById('sc4').className = 'step-circle todo';
+  document.getElementById('sline2').className = 'step-line';
+  document.getElementById('sline3').className = 'step-line';
+  document.getElementById('req-next-btn').textContent = 'Next: Upload Documents →';
+  document.getElementById('doc-chips').innerHTML = '';
+}
+
+function addDoc(name) {
+  if (uploadedDocs.includes(name)) { showToast('⚠️ Already added'); return; }
+  uploadedDocs.push(name);
+  const chip = document.createElement('div');
+  chip.className = 'doc-chip';
+  chip.id = 'chip-' + name;
+  chip.innerHTML = `📄 ${name} <span class="doc-chip-remove" onclick="removeDoc('${name}')">✕</span>`;
+  document.getElementById('doc-chips').appendChild(chip);
+  showToast('📎 ' + name + ' attached');
+}
+
+function removeDoc(name) {
+  uploadedDocs = uploadedDocs.filter(d => d !== name);
+  const chip = document.getElementById('chip-' + name);
+  if (chip) chip.remove();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+</script>
+</body>
+</html>

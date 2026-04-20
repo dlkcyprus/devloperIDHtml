@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Realco — Agent Project Access</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0D1B3E;--navy2:#162654;
+  --gold:#C9A84C;--gold-light:#E8C96A;
+  --cream:#F8F4EE;--white:#fff;
+  --gray:#6B7280;--border:#E5E0D8;
+  --red:#E05252;--green:#3BAA7F;
+  --orange:#E07B30;--blue:#3B6FD4;
+  --sidebar-w:230px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
+.sidebar-logo{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.logo-icon{width:30px;height:30px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--navy);}
+.logo-text{font-family:'Playfair Display',serif;font-size:19px;color:white;font-weight:700;}
+.agent-badge{margin:12px 14px 4px;background:rgba(59,111,212,0.12);border:1px solid rgba(59,111,212,0.25);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:8px;}
+.agent-av{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:white;}
+.agent-info .name{font-size:12.5px;font-weight:600;color:white;}
+.agent-info .role{font-size:10px;color:#7BA7F7;}
+.agent-info .verified{font-size:10px;color:var(--green);}
+.nav-section{padding:14px 10px 4px;}
+.nav-label{font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:7px;color:rgba(255,255,255,0.5);font-size:13px;cursor:pointer;transition:all 0.18s;margin-bottom:2px;}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:white;}
+.nav-item.active{background:rgba(59,111,212,0.18);color:#7BA7F7;}
+.nav-badge{margin-left:auto;background:var(--orange);color:white;font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;}
+.nav-badge.green{background:var(--green);}
+.sidebar-footer{margin-top:auto;padding:14px;border-top:1px solid rgba(255,255,255,0.07);}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.38);font-size:13px;cursor:pointer;padding:7px 10px;border-radius:7px;}
+.logout-btn:hover{color:var(--red);}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{background:white;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;}
+.topbar-left{font-family:'Playfair Display',serif;font-size:19px;color:var(--navy);font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:10px;}
+.search-bar{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:7px 13px;width:240px;}
+.search-bar input{border:none;background:transparent;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);width:100%;}
+.search-bar input::placeholder{color:#B8B0A4;}
+.notif-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;position:relative;}
+.notif-dot{position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:var(--orange);border:2px solid white;}
+.sl-topbtn{display:flex;align-items:center;gap:6px;padding:7px 14px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);border-radius:8px;font-size:12px;font-weight:700;color:#8B6A1A;cursor:pointer;transition:all 0.18s;}
+.sl-topbtn:hover{background:rgba(201,168,76,0.2);}
+.sl-topbtn .sl-count{background:var(--gold);color:var(--navy);width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
+
+/* CONTENT */
+.content{padding:24px 28px;flex:1;}
+
+/* ── PAGE: PROJECTS ── */
+#page-projects{display:block;}
+#page-matrix{display:none;}
+#page-shortlist{display:none;}
+#page-requests{display:none;}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.filter-pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--gray);transition:all 0.18s;}
+.filter-pill:hover{border-color:var(--navy);color:var(--navy);}
+.filter-pill.active{background:var(--navy);color:white;border-color:var(--navy);}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-size:15px;font-weight:600;color:var(--navy);}
+.section-count{font-size:12px;color:var(--gray);}
+
+/* PROJECTS GRID */
+.projects-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.proj-card{background:white;border-radius:12px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:all 0.2s;position:relative;}
+.proj-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(13,27,62,0.1);}
+.proj-img{height:150px;object-fit:cover;background:linear-gradient(135deg,#1a3a6e,#0d1b3e);display:flex;align-items:center;justify-content:center;font-size:44px;position:relative;}
+.proj-dots{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;}
+.proj-dots:hover{background:rgba(255,255,255,0.9);}
+.proj-body{padding:14px 16px;}
+.proj-name{font-weight:700;font-size:14px;color:var(--navy);margin-bottom:2px;}
+.proj-loc{font-size:11px;color:var(--gray);margin-bottom:12px;}
+.proj-stats{display:flex;gap:8px;margin-bottom:12px;}
+.proj-stat{flex:1;background:var(--cream);border-radius:6px;padding:5px 7px;text-align:center;}
+.proj-stat-num{font-size:13px;font-weight:700;color:var(--navy);}
+.proj-stat-label{font-size:9px;color:var(--gray);text-transform:uppercase;letter-spacing:0.04em;}
+.proj-btn{width:100%;padding:8px;border-radius:7px;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.18s;}
+.proj-btn.view{background:var(--blue);color:white;}
+.proj-btn.view:hover{background:#2a5ac0;}
+.proj-btn.sent{background:rgba(107,114,128,0.12);color:var(--gray);pointer-events:none;cursor:default;}
+.proj-btn.request{background:rgba(201,168,76,0.15);color:#8B6A1A;border:1px solid rgba(201,168,76,0.3);}
+.proj-btn.request:hover{background:var(--gold);color:var(--navy);}
+.proj-access-tag{position:absolute;top:10px;left:10px;font-size:9px;font-weight:700;padding:3px 8px;border-radius:100px;letter-spacing:0.04em;}
+.proj-access-tag.granted{background:var(--green);color:white;}
+.proj-access-tag.pending{background:var(--orange);color:white;}
+
+/* ── MATRIX PAGE ── */
+.matrix-header{background:var(--navy);border-radius:14px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.matrix-header::before{content:'';position:absolute;top:-60px;right:-60px;width:250px;height:250px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);}
+.mh-emoji{font-size:44px;}
+.mh-info{flex:1;}
+.mh-title{font-family:'Playfair Display',serif;font-size:20px;color:white;font-weight:700;margin-bottom:3px;}
+.mh-sub{font-size:12px;color:rgba(255,255,255,0.5);}
+.mh-stats{display:flex;gap:16px;margin-top:12px;}
+.mh-stat{text-align:center;}
+.mh-stat-num{font-family:'Playfair Display',serif;font-size:18px;color:var(--gold);font-weight:700;}
+.mh-stat-label{font-size:10px;color:rgba(255,255,255,0.4);}
+
+/* TABS */
+.tabs-bar{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px;}
+.tab{padding:9px 18px;font-size:13px;font-weight:500;color:var(--gray);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.18s;}
+.tab.active{color:var(--navy);font-weight:700;border-bottom-color:var(--gold);}
+
+/* FLOOR TABS */
+.floor-bar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.floor-tab{padding:6px 14px;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--gray);transition:all 0.18s;}
+.floor-tab:hover{border-color:var(--navy);color:var(--navy);}
+.floor-tab.active{background:var(--navy);color:white;border-color:var(--navy);}
+.floor-tab .fc{font-size:9px;background:rgba(255,255,255,0.15);padding:1px 5px;border-radius:100px;margin-left:3px;}
+
+/* LEGEND */
+.legend-bar{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray);}
+.legend-dot{width:11px;height:11px;border-radius:3px;}
+.legend-dot.available{background:#E8F5EE;border:1.5px solid var(--green);}
+.legend-dot.hold{background:#FFF3E0;border:1.5px solid var(--orange);}
+.legend-dot.sold{background:#222;border:1.5px solid #444;}
+.legend-dot.booked{background:rgba(59,111,212,0.12);border:1.5px solid var(--blue);}
+.legend-dot.starred{background:rgba(201,168,76,0.2);border:1.5px solid var(--gold);}
+
+/* SHORTLIST FLOATING PILL */
+.sl-float{
+  position:fixed;bottom:28px;left:50%;transform:translateX(-50%);
+  background:var(--navy);color:white;
+  padding:12px 24px;border-radius:100px;
+  display:none;align-items:center;gap:12px;
+  box-shadow:0 8px 28px rgba(13,27,62,0.35);
+  z-index:90;font-size:13px;font-weight:600;
+  animation:floatUp 0.3s ease;
+}
+.sl-float.visible{display:flex;}
+@keyframes floatUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.sl-float .count{background:var(--gold);color:var(--navy);padding:2px 10px;border-radius:100px;font-weight:800;}
+.sl-float-btn{padding:6px 14px;border-radius:100px;border:none;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.18s;}
+.sl-float-btn.request{background:var(--gold);color:var(--navy);}
+.sl-float-btn.request:hover{background:var(--gold-light);}
+.sl-float-btn.clear{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);}
+.sl-float-btn.clear:hover{background:rgba(255,255,255,0.18);}
+
+/* UNIT GRID */
+.units-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(142px,1fr));gap:10px;margin-bottom:80px;}
+.unit-card{border-radius:10px;padding:12px 13px;cursor:pointer;transition:all 0.2s;position:relative;border:2px solid var(--border);background:white;}
+.unit-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,27,62,0.1);}
+.unit-card.hold{background:#FFF8F0;border-color:rgba(224,123,48,0.3);}
+.unit-card.sold{background:#1C1C1C;border-color:#333;pointer-events:none;opacity:0.6;}
+.unit-card.booked{background:rgba(59,111,212,0.05);border-color:rgba(59,111,212,0.2);}
+.unit-card.starred{border-color:var(--gold);box-shadow:0 0 0 2px rgba(201,168,76,0.3);background:rgba(201,168,76,0.04);}
+.unit-card.requested{border-color:var(--green);background:rgba(59,170,127,0.04);}
+
+.unit-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
+.unit-id{font-weight:700;font-size:13.5px;}
+.unit-card:not(.sold) .unit-id{color:var(--navy);}
+.unit-card.sold .unit-id{color:white;}
+
+.star-btn{font-size:16px;cursor:pointer;line-height:1;transition:transform 0.15s;border:none;background:none;padding:0;}
+.star-btn:hover{transform:scale(1.25);}
+
+.unit-status{font-size:10px;font-weight:600;letter-spacing:0.03em;margin-bottom:5px;}
+.unit-card:not(.sold):not(.hold):not(.booked) .unit-status{color:var(--green);}
+.unit-card.hold .unit-status{color:var(--orange);}
+.unit-card.sold .unit-status{color:rgba(255,255,255,0.45);}
+.unit-card.booked .unit-status{color:var(--blue);}
+
+.unit-price{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.unit-card.sold .unit-price{color:rgba(255,255,255,0.5);}
+.unit-beds{font-size:10px;color:var(--gray);}
+.unit-card.sold .unit-beds{color:rgba(255,255,255,0.3);}
+
+.unit-req-tag{margin-top:8px;font-size:10px;font-weight:600;padding:3px 7px;border-radius:4px;text-align:center;}
+.unit-req-tag.sent{background:rgba(59,170,127,0.1);color:var(--green);border:1px solid rgba(59,170,127,0.2);}
+.unit-req-tag.pending{background:rgba(224,123,48,0.1);color:var(--orange);}
+
+/* ── SHORTLIST PAGE ── */
+.sl-page-header{background:white;border-radius:12px;border:1px solid var(--border);padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;}
+.sl-items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;}
+.sl-item-card{background:white;border-radius:12px;border:1px solid var(--border);padding:16px 18px;position:relative;}
+.sl-item-card.starred{border-color:var(--gold);}
+.sl-item-remove{position:absolute;top:10px;right:12px;font-size:18px;cursor:pointer;color:var(--gray);transition:color 0.15s;}
+.sl-item-remove:hover{color:var(--red);}
+.sl-item-id{font-weight:700;font-size:15px;color:var(--navy);margin-bottom:2px;}
+.sl-item-proj{font-size:11px;color:var(--gray);margin-bottom:10px;}
+.sl-item-price{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.sl-item-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.sl-tag{font-size:10px;color:var(--gray);background:var(--cream);padding:3px 8px;border-radius:4px;}
+.sl-req-status{margin-top:10px;font-size:11px;font-weight:600;padding:5px 10px;border-radius:6px;text-align:center;}
+.sl-req-status.not-sent{background:var(--cream);color:var(--gray);}
+.sl-req-status.sent{background:rgba(59,170,127,0.1);color:var(--green);}
+
+.sl-bulk-bar{background:var(--navy);border-radius:12px;padding:18px 22px;display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.sl-bulk-text{color:white;font-size:14px;font-weight:600;}
+.sl-bulk-sub{color:rgba(255,255,255,0.5);font-size:12px;margin-top:2px;}
+.sl-bulk-btns{display:flex;gap:8px;}
+.sl-bulk-btn{padding:9px 20px;border-radius:8px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.18s;}
+.sl-bulk-btn.send{background:var(--gold);color:var(--navy);}
+.sl-bulk-btn.send:hover{background:var(--gold-light);}
+.sl-bulk-btn.clear{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);}
+
+/* ── REQUESTS PAGE ── */
+.req-table{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;}
+.req-table-head{display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;padding:11px 18px;background:var(--cream);border-bottom:1px solid var(--border);font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.07em;}
+.req-table-row{display:grid;grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;padding:14px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;}
+.req-table-row:last-child{border-bottom:none;}
+.req-table-row:hover{background:rgba(248,244,238,0.6);}
+.req-unit-id{font-weight:700;font-size:13.5px;color:var(--navy);}
+.req-unit-sub{font-size:11px;color:var(--gray);}
+.req-proj{font-size:13px;color:var(--navy);}
+.req-date{font-size:12px;color:var(--gray);}
+.req-status-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600;}
+.rsp-pending{background:rgba(224,123,48,0.1);color:var(--orange);}
+.rsp-approved{background:rgba(59,170,127,0.1);color:var(--green);}
+.rsp-rejected{background:rgba(224,82,82,0.1);color:var(--red);}
+.req-action-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.req-action-btn:hover{background:var(--navy);color:white;border-color:var(--navy);}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,27,62,0.5);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:white;border-radius:16px;width:560px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);animation:slideUp 0.28s ease;}
+.modal.sm{width:440px;}
+.modal.lg{width:700px;}
+@keyframes slideUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.modal-header{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1;}
+.modal-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--navy);font-weight:600;}
+.modal-close{font-size:19px;cursor:pointer;color:var(--gray);width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:6px;}
+.modal-close:hover{background:var(--cream);}
+.modal-body{padding:20px 24px;}
+.modal-footer{padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end;position:sticky;bottom:0;background:white;}
+
+/* UNIT DETAIL IN MODAL */
+.ud-hero{border-radius:10px;height:150px;background:linear-gradient(135deg,#1a3a6e,#0d1b3e);display:flex;align-items:center;justify-content:center;font-size:56px;margin-bottom:16px;}
+.ud-price{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:var(--navy);}
+.ud-sqm{font-size:12px;color:var(--gray);margin-bottom:14px;}
+.ud-specs{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.ud-spec-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px;grid-column:1/-1;}
+.ud-spec-row:last-child{border-bottom:none;}
+.ud-spec-key{color:var(--gray);}
+.ud-spec-val{color:var(--navy);font-weight:600;}
+
+/* FORM */
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:5px;}
+.form-input,.form-textarea,.form-select{width:100%;padding:10px 13px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:border-color 0.18s;}
+.form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--blue);}
+.form-textarea{min-height:75px;resize:vertical;}
+.upload-zone{border:2px dashed var(--border);border-radius:9px;padding:18px;text-align:center;cursor:pointer;transition:all 0.18s;background:var(--cream);margin-bottom:10px;}
+.upload-zone:hover{border-color:var(--blue);background:rgba(59,111,212,0.03);}
+.upload-icon{font-size:22px;margin-bottom:5px;}
+.upload-text{font-size:12px;color:var(--gray);}
+.upload-text strong{color:var(--navy);}
+.doc-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.doc-chip{display:flex;align-items:center;gap:5px;background:rgba(59,111,212,0.08);border:1px solid rgba(59,111,212,0.18);border-radius:5px;padding:4px 9px;font-size:11px;color:var(--navy);}
+.doc-chip span{cursor:pointer;color:var(--red);}
+
+/* PROGRESS STEPS */
+.steps{display:flex;align-items:center;margin-bottom:20px;}
+.step-item{display:flex;align-items:center;gap:6px;flex:1;}
+.step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+.step-circle.done{background:var(--blue);color:white;}
+.step-circle.active{background:var(--navy);color:white;}
+.step-circle.todo{background:var(--border);color:var(--gray);}
+.step-label{font-size:11px;font-weight:500;color:var(--gray);}
+.step-label.active{color:var(--navy);font-weight:600;}
+.step-line{flex:1;height:2px;background:var(--border);margin:0 4px;}
+.step-line.done{background:var(--blue);}
+
+/* BUTTONS */
+.btn-cancel{padding:9px 18px;border-radius:8px;border:1px solid var(--border);background:white;font-size:13px;font-weight:600;color:var(--gray);font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-primary{padding:9px 20px;border-radius:8px;background:var(--navy);color:white;border:none;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-blue{padding:9px 20px;border-radius:8px;background:var(--blue);color:white;border:none;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;}
+.btn-gold{padding:9px 20px;border-radius:8px;background:var(--gold);color:var(--navy);border:none;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;}
+
+/* TOAST */
+.toast{position:fixed;bottom:80px;right:24px;background:var(--navy);color:white;padding:11px 16px;border-radius:10px;font-size:13px;border-left:4px solid var(--blue);box-shadow:0 8px 24px rgba(0,0,0,0.18);transform:translateY(60px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
+.toast.show{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">R</div>
+    <span class="logo-text">realco</span>
+  </div>
+  <div class="agent-badge">
+    <div class="agent-av">PS</div>
+    <div class="agent-info">
+      <div class="name">Priya Sharma</div>
+      <div class="role">🤝 Real Estate Agent</div>
+      <div class="verified">✅ RERA Verified</div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Navigation</div>
+    <div class="nav-item" onclick="goToPage('projects',this)">📊 Dashboard</div>
+    <div class="nav-item active" onclick="goToPage('projects',this)">🏗️ Browse Projects</div>
+    <div class="nav-item" onclick="goToPage('shortlist',this)">⭐ My Shortlist <span class="nav-badge" id="sl-nav-badge" style="background:var(--gold);color:var(--navy);">0</span></div>
+    <div class="nav-item" onclick="goToPage('requests',this)">📋 My Requests <span class="nav-badge green" id="req-nav-badge">3</span></div>
+    <div class="nav-item">📁 Documents</div>
+    <div class="nav-item">👤 My Profile</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="logout-btn">🚪 Logout</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-left" id="topbar-title">Browse Projects</div>
+    <div class="topbar-right">
+      <div class="search-bar"><span style="color:var(--gray);">🔍</span><input placeholder="Search projects, units…" oninput="filterProjects(this.value)"/></div>
+      <div class="notif-btn">🔔<div class="notif-dot"></div></div>
+      <div class="sl-topbtn" onclick="goToPage('shortlist',null)">
+        ⭐ Shortlist <div class="sl-count" id="sl-top-count">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── PAGE: PROJECTS ── -->
+    <div id="page-projects">
+      <div class="filter-bar">
+        <div class="filter-pill active" onclick="setPill(this)">All Projects</div>
+        <div class="filter-pill" onclick="setPill(this)">With Access</div>
+        <div class="filter-pill" onclick="setPill(this)">Request Sent</div>
+        <div class="filter-pill" onclick="setPill(this)">For Sale</div>
+        <div class="filter-pill" onclick="setPill(this)">For Rent</div>
+      </div>
+      <div class="section-head">
+        <div class="section-title">Available Projects</div>
+        <div class="section-count" id="proj-count">20 projects found</div>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- ── PAGE: MATRIX ── -->
+    <div id="page-matrix">
+      <button onclick="goToPage('projects',null)" style="display:flex;align-items:center;gap:6px;background:none;border:none;font-size:13px;color:var(--gray);cursor:pointer;margin-bottom:16px;font-family:'DM Sans',sans-serif;">← Back to Projects</button>
+
+      <div class="matrix-header">
+        <div class="mh-emoji" id="mh-emoji">🏙️</div>
+        <div class="mh-info">
+          <div class="mh-title" id="mh-title">Skyline Residency — Tower A</div>
+          <div class="mh-sub" id="mh-sub">📍 Bandra West, Mumbai · For Sale</div>
+          <div class="mh-stats">
+            <div class="mh-stat"><div class="mh-stat-num" style="color:var(--green);">58</div><div class="mh-stat-label">Available</div></div>
+            <div class="mh-stat"><div class="mh-stat-num" style="color:var(--orange);">12</div><div class="mh-stat-label">On Hold</div></div>
+            <div class="mh-stat"><div class="mh-stat-num" style="color:rgba(255,255,255,0.4);">18</div><div class="mh-stat-label">Sold</div></div>
+            <div class="mh-stat"><div class="mh-stat-num" style="color:#7BA7F7;">8</div><div class="mh-stat-label">Booked</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;min-width:140px;">
+          <button class="btn-gold" onclick="bulkRequestAll()" style="font-size:12px;padding:8px 14px;">📬 Request All Available</button>
+          <button onclick="goToPage('shortlist',null)" style="padding:8px 14px;border-radius:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;">⭐ View Shortlist (<span id="matrix-sl-count">0</span>)</button>
+        </div>
+      </div>
+
+      <div class="tabs-bar">
+        <div class="tab active">Matrix</div>
+        <div class="tab" onclick="showToast('📄 Documents tab')">Documents</div>
+        <div class="tab" onclick="showToast('💰 Price List tab')">Price List</div>
+        <div class="tab" onclick="showToast('📸 Showcase tab')">Showcase</div>
+      </div>
+
+      <div class="floor-bar" id="floor-bar"></div>
+
+      <div class="legend-bar">
+        <div class="legend-item"><div class="legend-dot available"></div>Available</div>
+        <div class="legend-item"><div class="legend-dot hold"></div>On Hold</div>
+        <div class="legend-item"><div class="legend-dot sold"></div>Sold</div>
+        <div class="legend-item"><div class="legend-dot booked"></div>Booked</div>
+        <div class="legend-item"><div class="legend-dot starred"></div>⭐ Shortlisted</div>
+        <div style="margin-left:auto;font-size:12px;color:var(--gray);">Click ☆ to shortlist · Click card to view & request</div>
+      </div>
+
+      <div class="units-grid" id="units-grid"></div>
+    </div>
+
+    <!-- ── PAGE: SHORTLIST ── -->
+    <div id="page-shortlist">
+      <div class="sl-bulk-bar" id="sl-bulk-bar">
+        <div>
+          <div class="sl-bulk-text">⭐ Your Shortlisted Units — <span id="sl-bulk-count">0</span> units</div>
+          <div class="sl-bulk-sub">Send a single request to all owners at once, or request individually.</div>
+        </div>
+        <div class="sl-bulk-btns">
+          <button class="sl-bulk-btn clear" onclick="clearAll()">Clear All</button>
+          <button class="sl-bulk-btn send" onclick="bulkSendAll()">📬 Send All Requests</button>
+        </div>
+      </div>
+      <div class="sl-items-grid" id="sl-items-grid">
+        <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--gray);font-size:14px;">
+          No units shortlisted yet.<br><span style="font-size:12px;">Browse projects and click ☆ on any unit to shortlist it.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PAGE: REQUESTS ── -->
+    <div id="page-requests">
+      <div class="section-head" style="margin-bottom:16px;">
+        <div class="section-title">My Access Requests</div>
+        <div style="display:flex;gap:8px;">
+          <span style="font-size:12px;background:rgba(59,170,127,0.1);color:var(--green);padding:4px 10px;border-radius:100px;font-weight:600;">1 Approved</span>
+          <span style="font-size:12px;background:rgba(224,123,48,0.1);color:var(--orange);padding:4px 10px;border-radius:100px;font-weight:600;">2 Pending</span>
+        </div>
+      </div>
+      <div class="req-table">
+        <div class="req-table-head">
+          <div>Unit</div><div>Project</div><div>Sent On</div><div>Status</div><div>Action</div>
+        </div>
+        <div id="requests-body"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- FLOATING SHORTLIST BAR -->
+<div class="sl-float" id="sl-float">
+  ⭐ <span class="count" id="sl-float-count">0</span> units shortlisted
+  <button class="sl-float-btn request" onclick="goToPage('shortlist',null)">View & Request →</button>
+  <button class="sl-float-btn clear" onclick="clearAll()">Clear</button>
+</div>
+
+<!-- ── MODALS ── -->
+
+<!-- UNIT DETAIL + REQUEST MODAL -->
+<div class="modal-overlay" id="modal-unit">
+  <div class="modal lg">
+    <div class="modal-header">
+      <div class="modal-title" id="m-unit-title">Unit Detail</div>
+      <div class="modal-close" onclick="closeModal('unit')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+        <div>
+          <div class="ud-hero">🏢</div>
+          <div class="ud-price" id="m-unit-price">₹1.2 Cr</div>
+          <div class="ud-sqm">₹8,500 / sq.ft</div>
+          <div class="ud-specs">
+            <div class="ud-spec-row"><span class="ud-spec-key">Config</span><span class="ud-spec-val" id="m-unit-config">3 BR · 2 Bath · 1 Car</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">Aspect</span><span class="ud-spec-val">North</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">Internal</span><span class="ud-spec-val">1,200 m²</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">External</span><span class="ud-spec-val">400 m²</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">Total Area</span><span class="ud-spec-val">1,600 m²</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">Floor</span><span class="ud-spec-val" id="m-unit-floor">2nd Floor</span></div>
+            <div class="ud-spec-row"><span class="ud-spec-key">Status</span><span class="ud-spec-val" id="m-unit-status" style="color:var(--green);">✅ Available</span></div>
+          </div>
+        </div>
+        <div>
+          <!-- Request form embedded -->
+          <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:14px;">📬 Send Access Request</div>
+          <div class="steps">
+            <div class="step-item"><div class="step-circle done">✓</div><span class="step-label" style="color:var(--blue);">Unit</span></div>
+            <div class="step-line done"></div>
+            <div class="step-item"><div class="step-circle active">2</div><span class="step-label active">Note</span></div>
+            <div class="step-line"></div>
+            <div class="step-item"><div class="step-circle todo">3</div><span class="step-label">Docs</span></div>
+          </div>
+          <div id="modal-step-note">
+            <div class="form-group">
+              <label class="form-label">Message to Owner</label>
+              <textarea class="form-textarea" placeholder="e.g. My client is highly interested. Budget ready. Can we schedule a visit?" id="modal-msg"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Client Budget</label>
+              <input class="form-input" placeholder="e.g. ₹1.1 Cr – ₹1.3 Cr"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Visit Date</label>
+              <input class="form-input" type="date"/>
+            </div>
+          </div>
+          <div id="modal-step-docs" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">Agent License / RERA *</label>
+              <div class="upload-zone" onclick="addDoc('RERA_License.pdf')">
+                <div class="upload-icon">🪪</div>
+                <div class="upload-text"><strong>Click to upload</strong> RERA certificate</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">KYC Document *</label>
+              <div class="upload-zone" onclick="addDoc('KYC_Aadhar.pdf')">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text"><strong>Click to upload</strong> Aadhar / PAN</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Client Proof of Funds</label>
+              <div class="upload-zone" onclick="addDoc('Client_Funds.pdf')">
+                <div class="upload-icon">💰</div>
+                <div class="upload-text"><strong>Click to upload</strong> Bank statement</div>
+              </div>
+            </div>
+            <div class="doc-chips" id="modal-doc-chips"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" id="modal-back-btn" onclick="closeModal('unit')" style="display:none;">← Back</button>
+      <button class="btn-cancel" onclick="closeModal('unit')">Cancel</button>
+      <div style="display:flex;gap:6px;">
+        <button class="btn-blue" id="modal-star-btn" onclick="toggleStarFromModal()">☆ Shortlist</button>
+        <button class="btn-gold" id="modal-next-btn" onclick="modalNext()">Next: Upload Docs →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──
+let shortlist = []; // {id, proj, price, beds, floor}
+let requested = []; // unit ids that have been requested
+let modalStep = 1;
+let modalDocs = [];
+let currentUnit = null;
+let currentFloor = 'north';
+
+// ── PROJECT DATA ──
+const projects = [
+  {id:1,name:'Skyline Residency',sub:'Tower A',loc:'Bandra West, Mumbai',emoji:'🏙️',type:'sale',access:'granted',units:96,available:58,price:'₹85 L'},
+  {id:2,name:'Green Valley Villa',sub:'Phase 2',loc:'Whitefield, Bangalore',emoji:'🏡',type:'rent',access:'pending',units:24,available:12,price:'₹85K/mo'},
+  {id:3,name:'Marina Heights',sub:'Block C',loc:'Alwarpet, Chennai',emoji:'🏢',type:'sale',access:'none',units:48,available:30,price:'₹78 L'},
+  {id:4,name:'Rosewood Studios',sub:'Tower B',loc:'Koregaon Park, Pune',emoji:'🏠',type:'rent',access:'none',units:36,available:22,price:'₹22K/mo'},
+  {id:5,name:'Prestige Tower',sub:'North Wing',loc:'Powai, Mumbai',emoji:'🏗️',type:'sale',access:'pending',units:60,available:40,price:'₹2.1 Cr'},
+  {id:6,name:'Palm Grove',sub:'Phase 1',loc:'Jubilee Hills, Hyderabad',emoji:'🏘️',type:'rent',access:'none',units:18,available:10,price:'₹48K/mo'},
+  {id:7,name:'Sunrise Apartments',sub:'Block A',loc:'Salt Lake, Kolkata',emoji:'🌅',type:'sale',access:'none',units:44,available:28,price:'₹65 L'},
+  {id:8,name:'Royal Enclave',sub:'Tower 3',loc:'Sector 62, Noida',emoji:'👑',type:'sale',access:'none',units:72,available:35,price:'₹1.5 Cr'},
+];
+
+// ── UNIT DATA ──
+const floorData = {
+  north:[
+    {id:'A-101',status:'available',price:'₹85 L',beds:'2 BR',floor:'GF'},
+    {id:'A-102',status:'hold',price:'₹92 L',beds:'2 BR',floor:'GF'},
+    {id:'A-103',status:'available',price:'₹78 L',beds:'1 BR',floor:'GF'},
+    {id:'A-104',status:'available',price:'₹78 L',beds:'1 BR',floor:'GF'},
+    {id:'A-105',status:'available',price:'₹1.1 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-106',status:'booked',price:'₹1.2 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-201',status:'sold',price:'₹1.4 Cr',beds:'3 BR',floor:'2F'},
+    {id:'A-202',status:'available',price:'₹95 L',beds:'2 BR',floor:'2F'},
+    {id:'A-203',status:'available',price:'₹2.0 Cr',beds:'4 BR',floor:'2F'},
+    {id:'A-301',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'3F'},
+    {id:'A-401',status:'available',price:'₹2.1 Cr',beds:'4 BR',floor:'4F'},
+    {id:'A-501',status:'hold',price:'₹2.5 Cr',beds:'Penthouse',floor:'5F'},
+  ],
+  south:[
+    {id:'B-101',status:'available',price:'₹80 L',beds:'2 BR',floor:'GF'},
+    {id:'B-102',status:'available',price:'₹80 L',beds:'2 BR',floor:'GF'},
+    {id:'B-201',status:'sold',price:'₹1.1 Cr',beds:'3 BR',floor:'2F'},
+    {id:'B-202',status:'booked',price:'₹1.0 Cr',beds:'2 BR',floor:'2F'},
+    {id:'B-301',status:'available',price:'₹1.5 Cr',beds:'3 BR',floor:'3F'},
+    {id:'B-401',status:'available',price:'₹1.9 Cr',beds:'4 BR',floor:'4F'},
+  ],
+  northeast:[
+    {id:'C-101',status:'available',price:'₹95 L',beds:'2 BR',floor:'GF'},
+    {id:'C-102',status:'hold',price:'₹1.0 Cr',beds:'2 BR',floor:'GF'},
+    {id:'C-201',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'2F'},
+    {id:'C-301',status:'sold',price:'₹1.6 Cr',beds:'3 BR',floor:'3F'},
+  ],
+  southwest:[
+    {id:'D-101',status:'available',price:'₹88 L',beds:'2 BR',floor:'GF'},
+    {id:'D-201',status:'available',price:'₹1.2 Cr',beds:'3 BR',floor:'2F'},
+    {id:'D-301',status:'booked',price:'₹1.7 Cr',beds:'4 BR',floor:'3F'},
+  ]
+};
+
+const requestsData = [
+  {unit:'A-106',proj:'Skyline Residency',date:'Apr 13, 2026',status:'approved'},
+  {unit:'A-203',proj:'Skyline Residency',date:'Apr 14, 2026',status:'pending'},
+  {unit:'B-101',proj:'Green Valley Villa',date:'Apr 10, 2026',status:'pending'},
+];
+
+// ── RENDER PROJECTS ──
+function renderProjects(filter='') {
+  const grid = document.getElementById('projects-grid');
+  const filtered = projects.filter(p => !filter || p.name.toLowerCase().includes(filter.toLowerCase()) || p.loc.toLowerCase().includes(filter.toLowerCase()));
+  document.getElementById('proj-count').textContent = filtered.length + ' projects found';
+  grid.innerHTML = filtered.map(p => {
+    const btnMap = {
+      granted: `<button class="proj-btn view" onclick="event.stopPropagation();openMatrix(${p.id})">📋 View Matrix</button>`,
+      pending: `<button class="proj-btn sent">⏳ Request Sent</button>`,
+      none: `<button class="proj-btn request" onclick="event.stopPropagation();requestProject(${p.id})">📬 Request Access</button>`
+    };
+    const tagMap = {
+      granted: `<div class="proj-access-tag granted">✅ Access Granted</div>`,
+      pending: `<div class="proj-access-tag pending">⏳ Pending</div>`,
+      none: ''
+    };
+    return `
+    <div class="proj-card" onclick="openMatrix(${p.id})">
+      <div class="proj-img">
+        ${p.emoji}
+        ${tagMap[p.access]}
+        <div class="proj-dots" onclick="event.stopPropagation();showCtx(${p.id})">⋯</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-name">${p.name} <span style="font-weight:400;color:var(--gray);font-size:12px;">${p.sub}</span></div>
+        <div class="proj-loc">📍 ${p.loc}</div>
+        <div class="proj-stats">
+          <div class="proj-stat"><div class="proj-stat-num">${p.units}</div><div class="proj-stat-label">Units</div></div>
+          <div class="proj-stat"><div class="proj-stat-num" style="color:var(--green);">${p.available}</div><div class="proj-stat-label">Available</div></div>
+          <div class="proj-stat"><div class="proj-stat-num">${p.price}</div><div class="proj-stat-label">From</div></div>
+        </div>
+        ${btnMap[p.access]}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterProjects(val) { renderProjects(val); }
+
+function requestProject(id) {
+  const p = projects.find(x => x.id === id);
+  if (p) { p.access = 'pending'; renderProjects(); showToast('📬 Access request sent for ' + p.name); }
+}
+
+function showCtx(id) { showToast('⋯ Options: Edit · Manage · Agent Requests…'); }
+
+// ── RENDER MATRIX ──
+function openMatrix(projId) {
+  const p = projects.find(x => x.id === projId);
+  if (!p) return;
+  document.getElementById('mh-title').textContent = p.name + ' — ' + p.sub;
+  document.getElementById('mh-sub').textContent = '📍 ' + p.loc + ' · For ' + (p.type === 'sale' ? 'Sale' : 'Rent');
+  document.getElementById('mh-emoji').textContent = p.emoji;
+  goToPage('matrix', null);
+  renderFloorTabs();
+  renderUnits();
+}
+
+function renderFloorTabs() {
+  const bar = document.getElementById('floor-bar');
+  const floors = Object.entries(floorData);
+  bar.innerHTML = floors.map(([key, units], i) => {
+    const label = key.charAt(0).toUpperCase() + key.slice(1);
+    const avail = units.filter(u => u.status === 'available').length;
+    return `<div class="floor-tab ${i===0?'active':''}" onclick="setFloor(this,'${key}')">${label} <span class="fc">${avail} avail</span></div>`;
+  }).join('');
+  currentFloor = 'north';
+}
+
+function setFloor(el, key) {
+  document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFloor = key;
+  renderUnits();
+}
+
+function renderUnits() {
+  const grid = document.getElementById('units-grid');
+  const units = floorData[currentFloor] || [];
+  const statusLabels = {available:'● Available',hold:'⏳ On Hold',sold:'✖ Sold',booked:'📋 Booked'};
+  grid.innerHTML = units.map(u => {
+    const isStarred = shortlist.find(s => s.id === u.id);
+    const isRequested = requested.includes(u.id);
+    let bottom = '';
+    if (u.status !== 'sold') {
+      if (isRequested) {
+        bottom = `<div class="unit-req-tag sent">✅ Request Sent</div>`;
+      } else {
+        bottom = `<div class="unit-req-tag pending" style="background:var(--cream);color:var(--gray);border:1px solid var(--border);">Tap to Request</div>`;
+      }
+    }
+    return `
+    <div class="unit-card ${u.status}${isStarred?' starred':''}${isRequested?' requested':''}" onclick="openUnitModal('${u.id}')">
+      <div class="unit-top">
+        <div class="unit-id">${u.id}</div>
+        ${u.status !== 'sold' ? `<button class="star-btn" onclick="event.stopPropagation();toggleStar('${u.id}','${currentFloor}')">${isStarred?'⭐':'☆'}</button>` : ''}
+      </div>
+      <div class="unit-status">${statusLabels[u.status]}</div>
+      <div class="unit-price">${u.price}</div>
+      <div class="unit-beds">${u.beds}</div>
+      ${bottom}
+    </div>`;
+  }).join('');
+  document.getElementById('matrix-sl-count').textContent = shortlist.length;
+}
+
+// ── SHORTLIST ──
+function toggleStar(id, floor) {
+  const existing = shortlist.findIndex(s => s.id === id);
+  if (existing > -1) {
+    shortlist.splice(existing, 1);
+    showToast('☆ Removed from shortlist');
+  } else {
+    const u = (floorData[floor] || []).find(x => x.id === id);
+    if (u) { shortlist.push({id, proj:'Skyline Residency', price:u.price, beds:u.beds, floor:u.floor}); }
+    showToast('⭐ Added to shortlist!');
+  }
+  updateShortlistUI();
+  renderUnits();
+}
+
+function updateShortlistUI() {
+  const count = shortlist.length;
+  document.getElementById('sl-top-count').textContent = count;
+  document.getElementById('sl-nav-badge').textContent = count;
+  document.getElementById('sl-float-count').textContent = count;
+  document.getElementById('sl-bulk-count').textContent = count;
+  document.getElementById('matrix-sl-count').textContent = count;
+  const floatEl = document.getElementById('sl-float');
+  floatEl.classList.toggle('visible', count > 0);
+}
+
+function clearAll() {
+  shortlist = [];
+  updateShortlistUI();
+  renderUnits();
+  renderShortlistPage();
+  showToast('🗑️ Shortlist cleared');
+}
+
+function renderShortlistPage() {
+  const grid = document.getElementById('sl-items-grid');
+  const bulk = document.getElementById('sl-bulk-bar');
+  if (shortlist.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:50px;color:var(--gray);font-size:14px;">No units shortlisted yet.<br><span style="font-size:12px;">Browse projects and click ☆ on any unit.</span></div>`;
+    bulk.style.display = 'none';
+    return;
+  }
+  bulk.style.display = 'flex';
+  grid.innerHTML = shortlist.map(s => {
+    const isReq = requested.includes(s.id);
+    return `
+    <div class="sl-item-card starred">
+      <div class="sl-item-remove" onclick="toggleStar('${s.id}','north')">✕</div>
+      <div style="font-size:24px;margin-bottom:8px;">🏢</div>
+      <div class="sl-item-id">⭐ ${s.id}</div>
+      <div class="sl-item-proj">${s.proj} · ${s.floor}</div>
+      <div class="sl-item-price">${s.price}</div>
+      <div class="sl-item-tags">
+        <span class="sl-tag">${s.beds}</span>
+        <span class="sl-tag">North Facing</span>
+      </div>
+      <div class="sl-req-status ${isReq?'sent':'not-sent'}">${isReq?'✅ Request Sent':'📬 Not Requested Yet'}</div>
+      ${!isReq?`<button onclick="quickRequest('${s.id}')" style="width:100%;margin-top:8px;padding:7px;border-radius:7px;background:var(--blue);color:white;border:none;font-size:12px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;">Request Access</button>`:''}
+    </div>`;
+  }).join('');
+}
+
+function bulkSendAll() {
+  const unsent = shortlist.filter(s => !requested.includes(s.id));
+  unsent.forEach(s => requested.push(s.id));
+  updateShortlistUI();
+  renderShortlistPage();
+  renderUnits();
+  showToast(`📬 Requests sent for ${unsent.length} units!`);
+  document.getElementById('req-nav-badge').textContent = requested.length;
+  renderRequests();
+}
+
+function bulkRequestAll() {
+  const units = (floorData[currentFloor] || []).filter(u => u.status === 'available' && !requested.includes(u.id));
+  units.forEach(u => requested.push(u.id));
+  renderUnits();
+  showToast(`📬 Requested all ${units.length} available units in this floor!`);
+}
+
+function quickRequest(id) {
+  if (!requested.includes(id)) requested.push(id);
+  updateShortlistUI();
+  renderShortlistPage();
+  renderUnits();
+  showToast('📬 Request sent for ' + id);
+  document.getElementById('req-nav-badge').textContent = requested.length;
+  renderRequests();
+}
+
+// ── UNIT MODAL ──
+function openUnitModal(id) {
+  const u = (floorData[currentFloor] || []).find(x => x.id === id);
+  if (!u || u.status === 'sold') return;
+  currentUnit = u;
+  modalStep = 1;
+  modalDocs = [];
+  document.getElementById('m-unit-title').textContent = id;
+  document.getElementById('m-unit-price').textContent = u.price;
+  document.getElementById('m-unit-config').textContent = u.beds + ' · 2 Bath · 1 Car';
+  document.getElementById('m-unit-floor').textContent = u.floor;
+  const statusMap = {available:'✅ Available',hold:'⏳ On Hold',booked:'📋 Booked'};
+  const colorMap = {available:'var(--green)',hold:'var(--orange)',booked:'var(--blue)'};
+  document.getElementById('m-unit-status').textContent = statusMap[u.status] || '';
+  document.getElementById('m-unit-status').style.color = colorMap[u.status] || 'var(--navy)';
+
+  // Star btn
+  const starBtn = document.getElementById('modal-star-btn');
+  const isStarred = shortlist.find(s => s.id === id);
+  starBtn.textContent = isStarred ? '⭐ Shortlisted' : '☆ Shortlist';
+
+  // If already requested
+  const isReq = requested.includes(id);
+  document.getElementById('modal-next-btn').textContent = isReq ? '✅ Already Requested' : 'Next: Upload Docs →';
+  document.getElementById('modal-next-btn').disabled = isReq;
+
+  // Reset steps
+  document.getElementById('modal-step-note').style.display = 'block';
+  document.getElementById('modal-step-docs').style.display = 'none';
+  document.getElementById('modal-back-btn').style.display = 'none';
+  document.getElementById('modal-doc-chips').innerHTML = '';
+
+  openModal('unit');
+}
+
+function modalNext() {
+  if (modalStep === 1) {
+    // go to docs
+    document.getElementById('modal-step-note').style.display = 'none';
+    document.getElementById('modal-step-docs').style.display = 'block';
+    document.getElementById('modal-back-btn').style.display = 'inline-flex';
+    document.getElementById('modal-back-btn').onclick = () => { modalStep=1; document.getElementById('modal-step-note').style.display='block'; document.getElementById('modal-step-docs').style.display='none'; document.getElementById('modal-back-btn').style.display='none'; document.getElementById('modal-next-btn').textContent='Next: Upload Docs →'; };
+    document.getElementById('modal-next-btn').textContent = '📬 Submit Request';
+    modalStep = 2;
+  } else {
+    // Submit
+    if (currentUnit && !requested.includes(currentUnit.id)) {
+      requested.push(currentUnit.id);
+      document.getElementById('req-nav-badge').textContent = requested.length;
+      renderRequests();
+    }
+    closeModal('unit');
+    showToast('📬 Request submitted! Owner will be notified.');
+    renderUnits();
+    renderShortlistPage();
+  }
+}
+
+function addDoc(name) {
+  if (modalDocs.includes(name)) { showToast('⚠️ Already added'); return; }
+  modalDocs.push(name);
+  const chips = document.getElementById('modal-doc-chips');
+  const chip = document.createElement('div');
+  chip.className = 'doc-chip';
+  chip.id = 'mchip-' + name;
+  chip.innerHTML = `📄 ${name} <span onclick="removeModalDoc('${name}')">✕</span>`;
+  chips.appendChild(chip);
+  showToast('📎 ' + name + ' attached');
+}
+
+function removeModalDoc(name) {
+  modalDocs = modalDocs.filter(d => d !== name);
+  const el = document.getElementById('mchip-' + name);
+  if (el) el.remove();
+}
+
+function toggleStarFromModal() {
+  if (!currentUnit) return;
+  toggleStar(currentUnit.id, currentFloor);
+  const starBtn = document.getElementById('modal-star-btn');
+  const isStarred = shortlist.find(s => s.id === currentUnit.id);
+  starBtn.textContent = isStarred ? '⭐ Shortlisted' : '☆ Shortlist';
+}
+
+// ── REQUESTS TABLE ──
+function renderRequests() {
+  const body = document.getElementById('requests-body');
+  const all = [
+    ...requestsData,
+    ...requested.filter(id => !requestsData.find(r => r.unit === id)).map(id => ({unit:id,proj:'Skyline Residency',date:'Apr 18, 2026',status:'pending'}))
+  ];
+  const statusMap = {approved:'<span class="req-status-pill rsp-approved">✅ Approved</span>',pending:'<span class="req-status-pill rsp-pending">⏳ Pending</span>',rejected:'<span class="req-status-pill rsp-rejected">❌ Rejected</span>'};
+  body.innerHTML = all.map(r => `
+    <div class="req-table-row">
+      <div><div class="req-unit-id">${r.unit}</div><div class="req-unit-sub">Unit · North Wing</div></div>
+      <div class="req-proj">${r.proj}</div>
+      <div class="req-date">${r.date}</div>
+      <div>${statusMap[r.status] || statusMap.pending}</div>
+      <div><button class="req-action-btn" onclick="showToast('📄 Viewing request for ${r.unit}')">View</button></div>
+    </div>`).join('');
+}
+
+// ── NAV ──
+function goToPage(page, navEl) {
+  ['projects','matrix','shortlist','requests'].forEach(p => {
+    document.getElementById('page-' + p).style.display = 'none';
+  });
+  document.getElementById('page-' + page).style.display = 'block';
+  const titles = {projects:'Browse Projects', matrix:'Property Matrix', shortlist:'My Shortlist', requests:'My Requests'};
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+  if (navEl) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  if (page === 'shortlist') renderShortlistPage();
+  if (page === 'requests') renderRequests();
+}
+
+function setPill(el) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  showToast('🔍 Filtered: ' + el.textContent);
+}
+
+function openModal(id) { document.getElementById('modal-' + id).classList.add('open'); }
+function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
+// INIT
+renderProjects();
+renderRequests();
+</script>
+</body>
+</html>

@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Realco — Owner Properties</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0D1B3E;--navy2:#162654;
+  --gold:#C9A84C;--gold-light:#E8C96A;
+  --cream:#F8F4EE;--white:#fff;
+  --gray:#6B7280;--border:#E5E0D8;
+  --red:#E05252;--green:#3BAA7F;
+  --orange:#E07B30;--blue:#3B6FD4;
+  --sidebar-w:230px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh;overflow-x:hidden;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
+.sidebar-logo{padding:20px 18px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07);}
+.logo-icon{width:30px;height:30px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;color:var(--navy);}
+.logo-text{font-family:'Playfair Display',serif;font-size:19px;color:white;font-weight:700;}
+.owner-badge{margin:12px 14px 4px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.25);border-radius:9px;padding:11px 13px;display:flex;align-items:center;gap:9px;}
+.owner-av{width:32px;height:32px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--navy);flex-shrink:0;}
+.owner-name{font-size:12.5px;font-weight:600;color:white;}
+.owner-role{font-size:10px;color:var(--gold);}
+.nav-section{padding:14px 10px 4px;}
+.nav-label{font-size:10px;color:rgba(255,255,255,0.28);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin-bottom:5px;}
+.nav-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:7px;color:rgba(255,255,255,0.5);font-size:13px;cursor:pointer;transition:all 0.18s;margin-bottom:2px;}
+.nav-item:hover{background:rgba(255,255,255,0.06);color:white;}
+.nav-item.active{background:rgba(201,168,76,0.15);color:var(--gold);}
+.nav-badge{margin-left:auto;font-size:10px;font-weight:700;padding:2px 6px;border-radius:100px;background:var(--red);color:white;}
+.sidebar-footer{margin-top:auto;padding:14px;border-top:1px solid rgba(255,255,255,0.07);}
+.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.35);font-size:13px;cursor:pointer;padding:7px 10px;border-radius:7px;}
+.logout-btn:hover{color:var(--red);}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-width:0;transition:margin-right 0.35s cubic-bezier(0.4,0,0.2,1);}
+.main.drawer-open{margin-right:460px;}
+
+/* TOPBAR */
+.topbar{background:white;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;}
+.topbar-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--navy);font-weight:600;}
+.topbar-right{display:flex;align-items:center;gap:8px;}
+.tb-btn{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.18s;}
+.tb-btn.outline{background:white;color:var(--navy);border:1.5px solid var(--border);}
+.tb-btn.outline:hover{border-color:var(--navy);}
+.tb-btn.gold{background:var(--gold);color:var(--navy);}
+.tb-btn.gold:hover{background:var(--gold-light);transform:translateY(-1px);}
+.search-bar{display:flex;align-items:center;gap:7px;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:7px 12px;width:220px;}
+.search-bar input{border:none;background:transparent;outline:none;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);width:100%;}
+
+/* CONTENT */
+.content{padding:24px 26px;flex:1;}
+
+/* STATS ROW */
+.stats-row{display:flex;gap:14px;margin-bottom:24px;}
+.stat-card{flex:1;background:white;border-radius:12px;padding:18px 20px;border:1px solid var(--border);position:relative;overflow:hidden;cursor:pointer;transition:all 0.18s;}
+.stat-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(13,27,62,0.08);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;}
+.stat-card.s1::before{background:var(--navy);}
+.stat-card.s2::before{background:var(--gold);}
+.stat-card.s3::before{background:var(--green);}
+.stat-card.s4::before{background:var(--orange);}
+.stat-card.s5::before{background:var(--blue);}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);}
+.stat-label{font-size:12px;color:var(--gray);margin-top:3px;}
+.stat-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:24px;opacity:0.12;}
+
+/* FILTER BAR */
+.filter-bar{display:flex;align-items:center;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+.filter-pill{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--gray);transition:all 0.18s;}
+.filter-pill:hover{border-color:var(--navy);color:var(--navy);}
+.filter-pill.active{background:var(--navy);color:white;border-color:var(--navy);}
+.sort-sel{margin-left:auto;padding:6px 13px;border-radius:8px;border:1.5px solid var(--border);background:white;font-size:12px;font-weight:500;color:var(--gray);font-family:'DM Sans',sans-serif;outline:none;cursor:pointer;}
+
+/* SECTION HEAD */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.section-title{font-size:15px;font-weight:600;color:var(--navy);}
+.section-count{font-size:12px;color:var(--gray);}
+
+/* PROPERTY GRID */
+.prop-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+
+/* PROPERTY CARD */
+.prop-card{background:white;border-radius:13px;overflow:hidden;border:2px solid var(--border);cursor:pointer;transition:all 0.2s;position:relative;}
+.prop-card:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(13,27,62,0.1);}
+.prop-card.active-selected{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,168,76,0.2);}
+.pc-img{height:155px;background:linear-gradient(135deg,#1a3a6e,#0d1b3e);display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;}
+.pc-mode-tag{position:absolute;top:10px;left:10px;font-size:9.5px;font-weight:800;padding:3px 10px;border-radius:100px;letter-spacing:0.05em;}
+.pc-mode-tag.sale{background:var(--navy);color:white;}
+.pc-mode-tag.rent{background:var(--gold);color:var(--navy);}
+.pc-status-tag{position:absolute;top:10px;right:10px;font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:100px;}
+.pc-status-tag.active{background:rgba(59,170,127,0.15);color:var(--green);border:1px solid rgba(59,170,127,0.3);}
+.pc-status-tag.draft{background:rgba(107,114,128,0.1);color:var(--gray);border:1px solid var(--border);}
+.pc-status-tag.sold{background:rgba(28,28,28,0.1);color:#333;border:1px solid #ccc;}
+.pc-dots{position:absolute;bottom:10px;right:10px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all 0.15s;}
+.pc-dots:hover{background:white;}
+.pc-body{padding:14px 16px;}
+.pc-name{font-weight:700;font-size:14.5px;color:var(--navy);margin-bottom:2px;}
+.pc-loc{font-size:12px;color:var(--gray);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
+.pc-price{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.pc-specs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.pc-spec{font-size:10.5px;color:var(--gray);background:var(--cream);padding:3px 8px;border-radius:4px;}
+.pc-footer{display:flex;gap:6px;padding:10px 16px;border-top:1px solid var(--border);}
+.pc-foot-btn{flex:1;padding:7px;border-radius:7px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--cream);color:var(--navy);font-family:'DM Sans',sans-serif;transition:all 0.15s;text-align:center;}
+.pc-foot-btn:hover{background:var(--navy);color:white;border-color:var(--navy);}
+.pc-foot-btn.primary{background:var(--navy);color:white;border-color:var(--navy);}
+.pc-foot-btn.primary:hover{background:var(--navy2);}
+
+/* ADD PROPERTY CARD */
+.add-prop-card{background:white;border-radius:13px;border:2px dashed rgba(201,168,76,0.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 20px;cursor:pointer;transition:all 0.2s;min-height:260px;}
+.add-prop-card:hover{border-color:var(--gold);background:rgba(201,168,76,0.04);transform:translateY(-3px);}
+.apc-icon{width:52px;height:52px;border-radius:12px;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;font-size:22px;}
+.apc-title{font-size:14px;font-weight:700;color:var(--navy);}
+.apc-sub{font-size:12px;color:var(--gray);text-align:center;max-width:160px;}
+
+/* REQUESTS TABLE */
+.req-table-card{background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden;margin-bottom:24px;}
+.req-table-head{display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr;padding:10px 18px;background:var(--cream);border-bottom:1px solid var(--border);font-size:10.5px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:0.07em;}
+.req-row{display:grid;grid-template-columns:1fr 1.5fr 1fr 1fr 1fr;padding:13px 18px;border-bottom:1px solid var(--border);align-items:center;transition:background 0.15s;cursor:pointer;}
+.req-row:last-child{border-bottom:none;}
+.req-row:hover{background:rgba(248,244,238,0.6);}
+.rr-agent{display:flex;align-items:center;gap:8px;}
+.rr-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0;}
+.rr-name{font-size:13px;font-weight:600;color:var(--navy);}
+.rr-sub{font-size:10.5px;color:var(--gray);}
+.rr-prop{font-size:13px;color:var(--navy);}
+.rr-prop-sub{font-size:10.5px;color:var(--gray);}
+.rr-date{font-size:12px;color:var(--gray);}
+.rr-status{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:10.5px;font-weight:700;}
+.rr-status.pending{background:rgba(224,123,48,0.1);color:var(--orange);}
+.rr-status.approved{background:rgba(59,170,127,0.1);color:var(--green);}
+.rr-btn{display:flex;gap:5px;}
+.rr-b{padding:5px 11px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+.rr-b.ap{background:rgba(59,170,127,0.1);color:var(--green);}
+.rr-b.ap:hover{background:var(--green);color:white;}
+.rr-b.rj{background:rgba(224,82,82,0.08);color:var(--red);}
+.rr-b.rj:hover{background:var(--red);color:white;}
+.rr-b.vw{background:var(--cream);color:var(--navy);border:1px solid var(--border);}
+.rr-b.vw:hover{background:var(--navy);color:white;}
+
+/* ── DRAWER ── */
+.drawer-overlay{position:fixed;inset:0;background:rgba(13,27,62,0.3);z-index:90;opacity:0;pointer-events:none;transition:opacity 0.35s;}
+.drawer-overlay.open{opacity:1;pointer-events:all;}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:460px;background:white;z-index:100;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;box-shadow:-8px 0 40px rgba(13,27,62,0.15);}
+.drawer.open{transform:translateX(0);}
+
+/* DRAWER HEADER */
+.drawer-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:white;position:sticky;top:0;z-index:1;}
+.dh-left{flex:1;}
+.dh-title{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--navy);}
+.dh-sub{font-size:11.5px;color:var(--gray);margin-top:2px;}
+.drawer-close{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border);background:var(--cream);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--gray);transition:all 0.15s;}
+.drawer-close:hover{background:var(--navy);color:white;border-color:var(--navy);}
+
+/* DRAWER BODY */
+.drawer-body{flex:1;overflow-y:auto;padding:20px;}
+.drawer-body::-webkit-scrollbar{width:4px;}
+.drawer-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+
+/* PROPERTY DETAIL VIEW */
+.pd-img{height:160px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:60px;margin-bottom:16px;position:relative;}
+.pd-img-overlay{position:absolute;bottom:10px;left:10px;display:flex;gap:6px;}
+.pd-badge{font-size:10px;font-weight:800;padding:4px 11px;border-radius:100px;}
+.pd-badge.sale{background:var(--navy);color:white;}
+.pd-badge.rent{background:var(--gold);color:var(--navy);}
+.pd-badge.active{background:var(--green);color:white;}
+.pd-badge.draft{background:var(--gray);color:white;}
+.pd-price-row{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;}
+.pd-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);}
+.pd-price-sub{font-size:11.5px;color:var(--gray);}
+.pd-view-badge{font-size:11px;font-weight:600;color:var(--blue);}
+.pd-spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.pd-spec{background:var(--cream);border-radius:8px;padding:10px 12px;}
+.pd-spec-label{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:3px;}
+.pd-spec-val{font-size:13px;font-weight:600;color:var(--navy);}
+.pd-desc{font-size:12.5px;color:var(--gray);line-height:1.65;background:var(--cream);padding:12px 14px;border-radius:9px;margin-bottom:14px;}
+.pd-docs{margin-bottom:14px;}
+.pd-doc-item{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--cream);border-radius:8px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.15s;}
+.pd-doc-item:hover{border-color:var(--gold);background:rgba(201,168,76,0.04);}
+.pd-doc-icon{font-size:20px;}
+.pd-doc-name{font-size:12.5px;font-weight:600;color:var(--navy);}
+.pd-doc-meta{font-size:10.5px;color:var(--gray);}
+.pd-doc-dl{margin-left:auto;font-size:11px;color:var(--gold);font-weight:600;}
+
+/* DRAWER SECTION */
+.drawer-section{font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;margin-top:20px;display:flex;align-items:center;gap:8px;}
+.drawer-section::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* FORM */
+.form-group{margin-bottom:13px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+.form-label{display:block;font-size:10.5px;font-weight:700;color:var(--navy);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:5px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:9px 12px;border:2px solid var(--border);border-radius:8px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;transition:border-color 0.18s;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);}
+.form-textarea{min-height:72px;resize:vertical;}
+
+/* MODE TOGGLE */
+.mode-toggle{display:flex;gap:8px;margin-bottom:14px;}
+.mode-opt{flex:1;padding:9px;border-radius:8px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--border);transition:all 0.18s;color:var(--gray);}
+.mode-opt.sale.sel{border-color:var(--navy);background:rgba(13,27,62,0.07);color:var(--navy);}
+.mode-opt.rent.sel{border-color:var(--gold);background:rgba(201,168,76,0.1);color:#8B6A1A;}
+
+/* UPLOAD */
+.upload-zone{border:2px dashed var(--border);border-radius:9px;padding:16px;text-align:center;cursor:pointer;transition:all 0.18s;background:var(--cream);}
+.upload-zone:hover{border-color:var(--gold);background:rgba(201,168,76,0.03);}
+.uz-icon{font-size:22px;margin-bottom:5px;}
+.uz-text{font-size:12px;color:var(--gray);}
+.uz-text strong{color:var(--navy);}
+.doc-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;}
+.doc-chip{display:flex;align-items:center;gap:5px;background:rgba(59,111,212,0.08);border:1px solid rgba(59,111,212,0.18);border-radius:5px;padding:3px 8px;font-size:11px;color:var(--navy);}
+.doc-chip-x{cursor:pointer;color:var(--red);font-size:12px;}
+
+/* ACCESS CONTROL */
+.access-opts{display:flex;gap:6px;margin-bottom:14px;}
+.access-opt{flex:1;padding:8px 4px;border-radius:7px;text-align:center;font-size:11px;font-weight:600;cursor:pointer;border:2px solid var(--border);color:var(--gray);transition:all 0.18s;}
+.access-opt.sel{border-color:var(--blue);background:rgba(59,111,212,0.08);color:var(--blue);}
+
+/* DRAWER FOOTER */
+.drawer-footer{padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0;background:white;display:flex;gap:8px;}
+.df-btn{flex:1;padding:10px;border-radius:9px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.2s;}
+.df-btn.cancel{background:var(--cream);color:var(--navy);border:1.5px solid var(--border);}
+.df-btn.cancel:hover{background:var(--border);}
+.df-btn.navy{background:var(--navy);color:white;}
+.df-btn.navy:hover{background:var(--navy2);transform:translateY(-1px);box-shadow:0 4px 14px rgba(13,27,62,0.2);}
+.df-btn.gold{background:var(--gold);color:var(--navy);}
+.df-btn.gold:hover{background:var(--gold-light);transform:translateY(-1px);box-shadow:0 4px 14px rgba(201,168,76,0.3);}
+.df-btn.red{background:rgba(224,82,82,0.09);color:var(--red);border:1px solid rgba(224,82,82,0.2);}
+.df-btn.red:hover{background:var(--red);color:white;}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:white;padding:11px 16px;border-radius:10px;font-size:13px;border-left:4px solid var(--gold);box-shadow:0 8px 24px rgba(0,0,0,0.16);transform:translateY(60px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);z-index:999;max-width:320px;}
+.toast.show{transform:translateY(0);opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">R</div>
+    <span class="logo-text">realco</span>
+  </div>
+  <div class="owner-badge">
+    <div class="owner-av">RK</div>
+    <div>
+      <div class="owner-name">Rajesh Kumar</div>
+      <div class="owner-role">🏠 Property Owner</div>
+    </div>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Menu</div>
+    <div class="nav-item">📊 Dashboard</div>
+    <div class="nav-item active">🏗️ My Properties</div>
+    <div class="nav-item">🏢 Unit Matrix</div>
+    <div class="nav-item">📋 Agent Requests <span class="nav-badge">4</span></div>
+    <div class="nav-item">📁 Documents</div>
+    <div class="nav-item">📝 Notes</div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="logout-btn">🚪 Logout</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+  <div class="topbar">
+    <div class="topbar-title">My Properties</div>
+    <div class="topbar-right">
+      <div class="search-bar"><span style="color:var(--gray);font-size:13px;">🔍</span><input placeholder="Search properties…" oninput="filterProps(this.value)"/></div>
+      <button class="tb-btn outline" onclick="showToast('📊 Export report…')">📊 Export</button>
+      <button class="tb-btn gold" onclick="openAddProp()">+ Post Property</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card s1"><div class="stat-num" id="st-total">6</div><div class="stat-label">Total Properties</div><div class="stat-icon">🏠</div></div>
+      <div class="stat-card s2"><div class="stat-num" id="st-active">4</div><div class="stat-label">Active Listings</div><div class="stat-icon">✅</div></div>
+      <div class="stat-card s3"><div class="stat-num" id="st-req">4</div><div class="stat-label">Agent Requests</div><div class="stat-icon">📋</div></div>
+      <div class="stat-card s4"><div class="stat-num" id="st-draft">1</div><div class="stat-label">Draft</div><div class="stat-icon">📝</div></div>
+      <div class="stat-card s5"><div class="stat-num" id="st-val">₹7.2Cr</div><div class="stat-label">Total Listed Value</div><div class="stat-icon">💰</div></div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-pill active" onclick="setPill(this,'all')">All</div>
+      <div class="filter-pill" onclick="setPill(this,'sale')">For Sale</div>
+      <div class="filter-pill" onclick="setPill(this,'rent')">For Rent</div>
+      <div class="filter-pill" onclick="setPill(this,'active')">Active</div>
+      <div class="filter-pill" onclick="setPill(this,'draft')">Draft</div>
+      <select class="sort-sel">
+        <option>Sort: Newest First</option>
+        <option>Sort: Price High–Low</option>
+        <option>Sort: Price Low–High</option>
+        <option>Sort: Most Requests</option>
+      </select>
+    </div>
+
+    <!-- SECTION HEAD -->
+    <div class="section-head">
+      <div class="section-title">My Listings</div>
+      <div class="section-count" id="prop-count">6 properties</div>
+    </div>
+
+    <!-- PROPERTY GRID -->
+    <div class="prop-grid" id="prop-grid"></div>
+
+    <!-- AGENT REQUESTS -->
+    <div class="section-head" style="margin-top:8px;">
+      <div class="section-title">Recent Agent Requests</div>
+      <div class="section-count" style="color:var(--gold);cursor:pointer;font-weight:600;">View All →</div>
+    </div>
+    <div class="req-table-card">
+      <div class="req-table-head">
+        <div>Agent</div><div>Property</div><div>Date</div><div>Status</div><div>Actions</div>
+      </div>
+      <div class="req-row">
+        <div class="rr-agent"><div class="rr-av" style="background:#3B6FD4;">PS</div><div><div class="rr-name">Priya Sharma</div><div class="rr-sub">priya@realty.com</div></div></div>
+        <div><div class="rr-prop">Skyline Residency</div><div class="rr-prop-sub">Unit A-203 · For Sale</div></div>
+        <div class="rr-date">Apr 14, 2026</div>
+        <div><span class="rr-status pending">⏳ Pending</span></div>
+        <div class="rr-btn"><button class="rr-b vw" onclick="showToast('📄 Viewing docs…')">📄 Docs</button><button class="rr-b ap" onclick="showToast('✅ Approved!')">Approve</button><button class="rr-b rj" onclick="showToast('❌ Rejected')">Reject</button></div>
+      </div>
+      <div class="req-row">
+        <div class="rr-agent"><div class="rr-av" style="background:#3BAA7F;">AK</div><div><div class="rr-name">Amit Khanna</div><div class="rr-sub">amit@homes.in</div></div></div>
+        <div><div class="rr-prop">Green Valley Villa</div><div class="rr-prop-sub">Full Property · For Rent</div></div>
+        <div class="rr-date">Apr 13, 2026</div>
+        <div><span class="rr-status approved">✅ Approved</span></div>
+        <div class="rr-btn"><button class="rr-b vw" onclick="showToast('📄 Viewing docs…')">📄 Docs</button></div>
+      </div>
+      <div class="req-row">
+        <div class="rr-agent"><div class="rr-av" style="background:#C9A84C;">NG</div><div><div class="rr-name">Neha Gupta</div><div class="rr-sub">neha@proplink.in</div></div></div>
+        <div><div class="rr-prop">Marina Heights</div><div class="rr-prop-sub">Unit B-301 · For Sale</div></div>
+        <div class="rr-date">Apr 10, 2026</div>
+        <div><span class="rr-status pending">⏳ Pending</span></div>
+        <div class="rr-btn"><button class="rr-b vw" onclick="showToast('📄 Viewing docs…')">📄 Docs</button><button class="rr-b ap" onclick="showToast('✅ Approved!')">Approve</button><button class="rr-b rj" onclick="showToast('❌ Rejected')">Reject</button></div>
+      </div>
+      <div class="req-row">
+        <div class="rr-agent"><div class="rr-av" style="background:#8B5E8B;">VS</div><div><div class="rr-name">Vikram Singh</div><div class="rr-sub">vikram@propvault.in</div></div></div>
+        <div><div class="rr-prop">Rosewood Studio</div><div class="rr-prop-sub">Full Property · For Rent</div></div>
+        <div class="rr-date">Apr 8, 2026</div>
+        <div><span class="rr-status pending">⏳ Pending</span></div>
+        <div class="rr-btn"><button class="rr-b vw" onclick="showToast('📄 Viewing docs…')">📄 Docs</button><button class="rr-b ap" onclick="showToast('✅ Approved!')">Approve</button><button class="rr-b rj" onclick="showToast('❌ Rejected')">Reject</button></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DRAWER OVERLAY -->
+<div class="drawer-overlay" id="drawer-overlay" onclick="closeDrawer()"></div>
+
+<!-- DRAWER -->
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <div class="dh-left">
+      <div class="dh-title" id="dh-title">Property Detail</div>
+      <div class="dh-sub" id="dh-sub">Owner View</div>
+    </div>
+    <div class="drawer-close" onclick="closeDrawer()">✕</div>
+  </div>
+  <div class="drawer-body" id="drawer-body"></div>
+  <div class="drawer-footer" id="drawer-footer"></div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──
+let properties = [
+  {id:1,name:'Skyline Residency',sub:'Tower A · 96 Units',loc:'Bandra West, Mumbai',emoji:'🏙️',mode:'sale',status:'active',price:'₹85 L – ₹2.5 Cr',type:'Apartment Complex',beds:'1–4 BHK',area:'800–3200 m²',built:'2022',floors:'12',units:96,agent:'All verified agents',desc:'Premium residential tower in the heart of Bandra West. Features stunning city and sea views, modular kitchens, rooftop pool, gym, and 2 reserved parking per unit. Ready to move.',docs:['FloorPlan_TowerA.pdf','NOC_Certificate.pdf','RERA_Skyline.pdf'],requests:2},
+  {id:2,name:'Green Valley Villa',sub:'Phase 2',loc:'Whitefield, Bangalore',emoji:'🏡',mode:'rent',status:'active',price:'₹85,000/mo',type:'Villa',beds:'4 BHK',area:'2800 m²',built:'2020',floors:'G+2',units:1,agent:'All verified agents',desc:'Spacious 4BHK villa with private garden, modular kitchen, and 3 reserved parking. Located in a gated community with 24/7 security.',docs:['VillaPlan.pdf','RentalAgreement_Draft.pdf'],requests:1},
+  {id:3,name:'Marina Heights',sub:'Block C',loc:'Alwarpet, Chennai',emoji:'🏢',mode:'sale',status:'active',price:'₹78 L',type:'Apartment',beds:'2 BHK',area:'980 m²',built:'2019',floors:'8',units:1,agent:'Invite only',desc:'Well-maintained 2BHK in a premium locality. Close to metro, schools and hospitals.',docs:['SaleDeed.pdf'],requests:1},
+  {id:4,name:'Rosewood Studio',sub:'Tower B',loc:'Koregaon Park, Pune',emoji:'🏠',mode:'rent',status:'active',price:'₹22,000/mo',type:'Studio',beds:'Studio',area:'480 m²',built:'2021',floors:'5',units:1,agent:'All verified agents',desc:'Modern studio apartment, fully furnished. Ideal for working professionals.',docs:['StudioLease.pdf'],requests:1},
+  {id:5,name:'Prestige Tower',sub:'North Wing',loc:'Powai, Mumbai',emoji:'🏗️',mode:'sale',status:'draft',price:'₹2.1 Cr',type:'Apartment',beds:'4 BHK',area:'2100 m²',built:'2023',floors:'15',units:1,agent:'No access',desc:'Under preparation. Details to be finalized.',docs:[],requests:0},
+  {id:6,name:'Palm Grove',sub:'Phase 1',loc:'Jubilee Hills, Hyderabad',emoji:'🏘️',mode:'rent',status:'active',price:'₹48,000/mo',type:'Apartment',beds:'3 BHK',area:'1600 m²',built:'2020',floors:'6',units:1,agent:'All verified agents',desc:'Well-located 3BHK with sea view balcony and covered parking.',docs:['Lease_PalmGrove.pdf'],requests:0},
+];
+
+let currentPropId = null;
+let drawerMode = 'view';
+let selectedMode = 'sale';
+let selectedAccess = 'all';
+let propDocs = [];
+let filterKey = 'all';
+
+// ── RENDER GRID ──
+function renderGrid(search='') {
+  const grid = document.getElementById('prop-grid');
+  let filtered = properties.filter(p => {
+    const matchFilter = filterKey==='all'||(filterKey==='sale'&&p.mode==='sale')||(filterKey==='rent'&&p.mode==='rent')||(filterKey==='active'&&p.status==='active')||(filterKey==='draft'&&p.status==='draft');
+    const matchSearch = !search||(p.name+p.loc).toLowerCase().includes(search.toLowerCase());
+    return matchFilter && matchSearch;
+  });
+  document.getElementById('prop-count').textContent = filtered.length+' properties';
+
+  grid.innerHTML = filtered.map(p=>`
+    <div class="prop-card${currentPropId===p.id?' active-selected':''}" onclick="openView(${p.id})">
+      <div class="pc-img" style="background:linear-gradient(135deg,#${hashColor(p.name)});">
+        ${p.emoji}
+        <div class="pc-img-overlay">
+          <div class="pc-mode-tag ${p.mode}">${p.mode==='sale'?'FOR SALE':'FOR RENT'}</div>
+          <div class="pc-status-tag ${p.status}">${p.status==='active'?'● Active':p.status==='draft'?'📝 Draft':'✖ Sold'}</div>
+        </div>
+        <div class="pc-dots" onclick="event.stopPropagation();showCtxMenu(${p.id})">⋯</div>
+      </div>
+      <div class="pc-body">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-loc">📍 ${p.loc}</div>
+        <div class="pc-price">${p.price}</div>
+        <div class="pc-specs">
+          <span class="pc-spec">${p.type}</span>
+          <span class="pc-spec">${p.beds}</span>
+          <span class="pc-spec">${p.area}</span>
+          ${p.units>1?`<span class="pc-spec">${p.units} units</span>`:''}
+        </div>
+        ${p.requests>0?`<div style="font-size:11px;color:var(--red);font-weight:700;margin-bottom:6px;">🔔 ${p.requests} pending request${p.requests>1?'s':''}</div>`:''}
+      </div>
+      <div class="pc-footer">
+        <div class="pc-foot-btn" onclick="event.stopPropagation();openEdit(${p.id})">✏️ Edit</div>
+        ${p.units>1?`<div class="pc-foot-btn" onclick="event.stopPropagation();showToast('🏢 Opening unit matrix…')">🏢 Matrix</div>`:''}
+        <div class="pc-foot-btn primary" onclick="event.stopPropagation();openView(${p.id})">View →</div>
+      </div>
+    </div>`).join('')+
+  `<div class="add-prop-card" onclick="openAddProp()">
+    <div class="apc-icon">🏠</div>
+    <div class="apc-title">Post New Property</div>
+    <div class="apc-sub">Add a property for sale or rent and reach verified agents</div>
+  </div>`;
+}
+
+function hashColor(name) {
+  const colors=['1a3a6e,0d1b3e','1a4a3a,0d2e25','4a2a1a,2e1a0d','2a1a4a,1a0d2e','1a3a4a,0d2030','3a3a1a,2a2a0d'];
+  return colors[name.length%colors.length];
+}
+
+// ── VIEW DRAWER ──
+function openView(id) {
+  const p = properties.find(x=>x.id===id);
+  if(!p) return;
+  currentPropId=id; drawerMode='view';
+
+  document.querySelectorAll('.prop-card').forEach(c=>c.classList.remove('active-selected'));
+  renderGrid();
+
+  document.getElementById('dh-title').textContent=p.name;
+  document.getElementById('dh-sub').textContent=p.sub+' · '+p.loc;
+
+  const docsHTML = p.docs.length ? p.docs.map(d=>`
+    <div class="pd-doc-item" onclick="showToast('📥 Downloading '+d)">
+      <div class="pd-doc-icon">${d.includes('pdf')||d.includes('Pdf')?'📄':'🖼️'}</div>
+      <div><div class="pd-doc-name">${d}</div><div class="pd-doc-meta">PDF · Uploaded by you</div></div>
+      <div class="pd-doc-dl">↓ View</div>
+    </div>`).join('') :
+    `<div style="font-size:12.5px;color:var(--gray);">No documents uploaded yet.</div>`;
+
+  document.getElementById('drawer-body').innerHTML=`
+    <div class="pd-img" style="background:linear-gradient(135deg,#${hashColor(p.name)});">
+      ${p.emoji}
+      <div class="pd-img-overlay">
+        <div class="pd-badge ${p.mode}">${p.mode==='sale'?'FOR SALE':'FOR RENT'}</div>
+        <div class="pd-badge ${p.status}">${p.status==='active'?'Active':'Draft'}</div>
+      </div>
+    </div>
+    <div class="pd-price-row">
+      <div>
+        <div class="pd-price">${p.price}</div>
+        <div class="pd-price-sub">${p.type} · ${p.beds}</div>
+      </div>
+      ${p.requests>0?`<div style="font-size:11px;font-weight:700;color:var(--red);">🔔 ${p.requests} request${p.requests>1?'s':''}</div>`:''}
+    </div>
+    <div class="pd-spec-grid">
+      <div class="pd-spec"><div class="pd-spec-label">Location</div><div class="pd-spec-val">${p.loc}</div></div>
+      <div class="pd-spec"><div class="pd-spec-label">Type</div><div class="pd-spec-val">${p.type}</div></div>
+      <div class="pd-spec"><div class="pd-spec-label">Bedrooms</div><div class="pd-spec-val">${p.beds}</div></div>
+      <div class="pd-spec"><div class="pd-spec-label">Area</div><div class="pd-spec-val">${p.area}</div></div>
+      <div class="pd-spec"><div class="pd-spec-label">Year Built</div><div class="pd-spec-val">${p.built}</div></div>
+      <div class="pd-spec"><div class="pd-spec-label">Floors</div><div class="pd-spec-val">${p.floors}</div></div>
+      ${p.units>1?`<div class="pd-spec"><div class="pd-spec-label">Total Units</div><div class="pd-spec-val">${p.units}</div></div>`:''}
+      <div class="pd-spec"><div class="pd-spec-label">Agent Access</div><div class="pd-spec-val">${p.agent}</div></div>
+    </div>
+    <div class="pd-desc">${p.desc}</div>
+    <div class="drawer-section" style="margin-top:0;">Documents</div>
+    <div class="pd-docs">${docsHTML}</div>`;
+
+  document.getElementById('drawer-footer').innerHTML=`
+    <button class="df-btn cancel" onclick="closeDrawer()">Close</button>
+    <button class="df-btn red" onclick="deleteProp(${p.id})">🗑️</button>
+    <button class="df-btn gold" onclick="openEdit(${p.id})">✏️ Edit Property</button>`;
+
+  openDrawer();
+}
+
+// ── EDIT DRAWER ──
+function openEdit(id) {
+  const p=properties.find(x=>x.id===id);
+  if(!p) return;
+  currentPropId=id; drawerMode='edit';
+  selectedMode=p.mode;
+  selectedAccess=p.agent==='All verified agents'?'all':p.agent==='Invite only'?'invite':'none';
+  propDocs=[...p.docs];
+
+  document.getElementById('dh-title').textContent='Edit Property';
+  document.getElementById('dh-sub').textContent=p.name+' · '+p.sub;
+  document.getElementById('drawer-body').innerHTML=buildPropForm(p);
+  document.getElementById('drawer-footer').innerHTML=`
+    <button class="df-btn cancel" onclick="openView(${id})">← Back</button>
+    <button class="df-btn red" onclick="deleteProp(${id})">🗑️</button>
+    <button class="df-btn gold" onclick="saveProp(${id})">💾 Save Changes</button>`;
+  openDrawer();
+}
+
+// ── ADD DRAWER ──
+function openAddProp() {
+  currentPropId=null; drawerMode='add';
+  selectedMode='sale'; selectedAccess='all'; propDocs=[];
+
+  document.getElementById('dh-title').textContent='Post New Property';
+  document.getElementById('dh-sub').textContent='Fill in the details below to list your property';
+  document.getElementById('drawer-body').innerHTML=buildPropForm(null);
+  document.getElementById('drawer-footer').innerHTML=`
+    <button class="df-btn cancel" onclick="closeDrawer()">Cancel</button>
+    <button class="df-btn navy" onclick="savePropAsDraft()">Save as Draft</button>
+    <button class="df-btn gold" onclick="saveNewProp()">🏠 Post Property</button>`;
+  openDrawer();
+}
+
+// ── FORM BUILDER ──
+function buildPropForm(p) {
+  const modeHTML=`
+    <div class="mode-toggle">
+      <div class="mode-opt sale${(p?p.mode:selectedMode)==='sale'?' sel':''}" onclick="selMode(this,'sale')">🏠 For Sale</div>
+      <div class="mode-opt rent${(p?p.mode:selectedMode)==='rent'?' sel':''}" onclick="selMode(this,'rent')">🔑 For Rent</div>
+    </div>`;
+
+  const accessHTML=`
+    <div class="access-opts">
+      <div class="access-opt${selectedAccess==='all'?' sel':''}" onclick="selAccess(this,'all')">All Agents</div>
+      <div class="access-opt${selectedAccess==='invite'?' sel':''}" onclick="selAccess(this,'invite')">Invite Only</div>
+      <div class="access-opt${selectedAccess==='none'?' sel':''}" onclick="selAccess(this,'none')">No Access</div>
+    </div>`;
+
+  const docsHTML=`
+    <div class="upload-zone" onclick="addPropDoc('Document_'+(propDocs.length+1)+'.pdf')">
+      <div class="uz-icon">📎</div>
+      <div class="uz-text"><strong>Click to upload</strong> Floor plans, RERA certificate, NOC, sale deed<br/>PDF, JPG up to 20MB</div>
+    </div>
+    <div class="doc-chips" id="prop-doc-chips">
+      ${(p?p.docs:[]).map(d=>`<div class="doc-chip" id="pdc-${d}">📄 ${d} <span class="doc-chip-x" onclick="removePropDoc('${d}')">✕</span></div>`).join('')}
+    </div>`;
+
+  return `
+    <div class="drawer-section" style="margin-top:0;">Listing Mode</div>
+    ${modeHTML}
+
+    <div class="drawer-section">Property Details</div>
+    <div class="form-group">
+      <label class="form-label">Property Name / Project Title</label>
+      <input class="form-input" id="fp-name" placeholder="e.g. Skyline Residency Tower A" value="${p?p.name:''}"/>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Sub-title / Block</label>
+        <input class="form-input" id="fp-sub" placeholder="e.g. Tower B, Phase 2" value="${p?p.sub:''}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Property Type</label>
+        <select class="form-select" id="fp-type">
+          ${['Apartment','Villa','Independent House','Studio','Apartment Complex','Commercial','Plot'].map(t=>`<option ${p&&p.type===t?'selected':''}>${t}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Location / Address</label>
+      <input class="form-input" id="fp-loc" placeholder="Area, City" value="${p?p.loc:''}"/>
+    </div>
+
+    <div class="drawer-section">Pricing & Size</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Price (₹)</label>
+        <input class="form-input" id="fp-price" placeholder="e.g. ₹85 L or ₹22,000/mo" value="${p?p.price:''}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Total Area / Size</label>
+        <input class="form-input" id="fp-area" placeholder="e.g. 1200 m²" value="${p?p.area:''}"/>
+      </div>
+    </div>
+    <div class="form-row-3">
+      <div class="form-group">
+        <label class="form-label">Bedrooms</label>
+        <select class="form-select" id="fp-beds">
+          ${['Studio','1 BHK','2 BHK','3 BHK','4 BHK','4+ BHK','1–4 BHK'].map(b=>`<option ${p&&p.beds===b?'selected':''}>${b}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Floors</label>
+        <input class="form-input" id="fp-floors" placeholder="e.g. 12" value="${p?p.floors:''}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Year Built</label>
+        <input class="form-input" id="fp-built" placeholder="e.g. 2022" value="${p?p.built:''}"/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Total Units (if complex)</label>
+        <input class="form-input" id="fp-units" type="number" placeholder="e.g. 96 or leave 1" value="${p?p.units:'1'}"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Possession Status</label>
+        <select class="form-select" id="fp-possession">
+          <option>Ready to Move</option><option>Under Construction</option><option>Completed</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="drawer-section">Description</div>
+    <div class="form-group">
+      <textarea class="form-textarea" id="fp-desc" placeholder="Describe the property — highlights, amenities, nearby landmarks…" style="min-height:80px;">${p?p.desc:''}</textarea>
+    </div>
+
+    <div class="drawer-section">Agent Access</div>
+    ${accessHTML}
+
+    <div class="drawer-section">Documents & Images</div>
+    ${docsHTML}`;
+}
+
+function selMode(el,mode) {
+  document.querySelectorAll('.mode-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); selectedMode=mode;
+}
+function selAccess(el,val) {
+  document.querySelectorAll('.access-opt').forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel'); selectedAccess=val;
+}
+function addPropDoc(name) {
+  if(propDocs.includes(name)){showToast('⚠️ Already added');return;}
+  propDocs.push(name);
+  const chips=document.getElementById('prop-doc-chips');
+  if(chips){
+    const chip=document.createElement('div');
+    chip.className='doc-chip'; chip.id='pdc-'+name;
+    chip.innerHTML=`📄 ${name} <span class="doc-chip-x" onclick="removePropDoc('${name}')">✕</span>`;
+    chips.appendChild(chip);
+  }
+  showToast('📎 '+name+' attached');
+}
+function removePropDoc(name) {
+  propDocs=propDocs.filter(d=>d!==name);
+  const el=document.getElementById('pdc-'+name);
+  if(el) el.remove();
+}
+
+function saveProp(id) {
+  const p=properties.find(x=>x.id===id);
+  if(!p) return;
+  p.name=document.getElementById('fp-name').value||p.name;
+  p.sub=document.getElementById('fp-sub').value||p.sub;
+  p.type=document.getElementById('fp-type').value||p.type;
+  p.loc=document.getElementById('fp-loc').value||p.loc;
+  p.price=document.getElementById('fp-price').value||p.price;
+  p.area=document.getElementById('fp-area').value||p.area;
+  p.beds=document.getElementById('fp-beds').value||p.beds;
+  p.floors=document.getElementById('fp-floors').value||p.floors;
+  p.units=parseInt(document.getElementById('fp-units').value)||p.units;
+  p.desc=document.getElementById('fp-desc').value||p.desc;
+  p.mode=selectedMode;
+  p.agent=selectedAccess==='all'?'All verified agents':selectedAccess==='invite'?'Invite only':'No access';
+  p.docs=[...propDocs];
+  renderGrid();
+  openView(id);
+  showToast('💾 Property updated!');
+}
+
+function saveNewProp(draft=false) {
+  const name=document.getElementById('fp-name').value.trim();
+  if(!name){showToast('⚠️ Please enter a property name');return;}
+  const newP={
+    id:Date.now(),
+    name,sub:document.getElementById('fp-sub').value||'',
+    loc:document.getElementById('fp-loc').value||'',
+    emoji:['🏠','🏡','🏢','🏗️','🏘️'][properties.length%5],
+    mode:selectedMode,
+    status:draft?'draft':'active',
+    price:document.getElementById('fp-price').value||'₹0',
+    type:document.getElementById('fp-type').value,
+    beds:document.getElementById('fp-beds').value,
+    area:document.getElementById('fp-area').value||'—',
+    built:document.getElementById('fp-built').value||'2024',
+    floors:document.getElementById('fp-floors').value||'1',
+    units:parseInt(document.getElementById('fp-units').value)||1,
+    agent:selectedAccess==='all'?'All verified agents':selectedAccess==='invite'?'Invite only':'No access',
+    desc:document.getElementById('fp-desc').value||'',
+    docs:[...propDocs],
+    requests:0,
+  };
+  properties.unshift(newP);
+  renderGrid();
+  closeDrawer();
+  showToast(draft?'📝 Saved as draft!':'🏠 Property posted successfully!');
+  document.getElementById('st-total').textContent=properties.length;
+  document.getElementById('st-active').textContent=properties.filter(p=>p.status==='active').length;
+}
+
+function savePropAsDraft() { saveNewProp(true); }
+
+function deleteProp(id) {
+  if(!confirm('Delete this property? This cannot be undone.')) return;
+  properties=properties.filter(p=>p.id!==id);
+  closeDrawer(); renderGrid();
+  showToast('🗑️ Property deleted');
+  document.getElementById('st-total').textContent=properties.length;
+}
+
+function showCtxMenu(id) {
+  showToast('⋯ Edit · Copy · Manage Units · Delete');
+}
+
+// ── UTILS ──
+function setPill(el,key) {
+  filterKey=key;
+  document.querySelectorAll('.filter-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderGrid();
+}
+function filterProps(val) { renderGrid(val); }
+
+function openDrawer() {
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer-overlay').classList.add('open');
+  document.getElementById('main').classList.add('drawer-open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('main').classList.remove('drawer-open');
+  currentPropId=null;
+  renderGrid();
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeDrawer(); });
+
+// INIT
+renderGrid();
+</script>
+</body>
+</html>
