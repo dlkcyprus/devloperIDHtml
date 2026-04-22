@@ -182,7 +182,190 @@ body {
 }
 .toast.show { transform: translateY(0); opacity: 1; }
 
-/* PARTS 2–3 STYLES BELOW */
+/* ═══════════════════════════════
+   STATS
+═══════════════════════════════ */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 20px 22px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--t), transform var(--t);
+}
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.stat-num   { font-size: 28px; font-weight: 800; color: var(--text); letter-spacing: -0.03em; line-height: 1; }
+.stat-label { font-size: 12px; font-weight: 500; color: var(--subtext); margin-top: 5px; }
+.stat-delta {
+  font-size: 11px; font-weight: 600; margin-top: 6px;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 7px; border-radius: 100px;
+}
+.stat-delta.up   { background: var(--success-light); color: var(--success); }
+.stat-delta.info { background: var(--primary-light);  color: var(--primary); }
+.stat-delta.warn { background: var(--warning-light);  color: #92400E; }
+.stat-icon-wrap {
+  width: 42px; height: 42px; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.ic-blue   { background: var(--primary-light); }
+.ic-cyan   { background: var(--accent-light); }
+.ic-green  { background: var(--success-light); }
+.ic-yellow { background: var(--warning-light); }
+
+/* ═══════════════════════════════
+   SECTION HEADER
+═══════════════════════════════ */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title { font-size: 15px; font-weight: 700; color: var(--text); letter-spacing: -0.01em; }
+.see-all {
+  font-size: 12px; font-weight: 600; color: var(--primary);
+  cursor: pointer; transition: color var(--t);
+}
+.see-all:hover { color: var(--primary-hover); text-decoration: underline; }
+
+/* ═══════════════════════════════
+   FILTER BAR
+═══════════════════════════════ */
+.filter-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 20px; flex-wrap: wrap;
+}
+.filter-pill {
+  padding: 7px 16px; border-radius: 100px;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--border); background: var(--surface);
+  color: var(--subtext); transition: all var(--t);
+}
+.filter-pill:hover  { border-color: var(--primary); color: var(--primary); }
+.filter-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.filter-select {
+  padding: 7px 12px; border-radius: var(--radius);
+  border: 1.5px solid var(--border); background: var(--surface);
+  font-size: 12px; font-weight: 500; color: var(--subtext);
+  font-family: 'Inter', sans-serif; outline: none; cursor: pointer;
+  margin-left: auto;
+  transition: border-color var(--t);
+}
+.filter-select:focus { border-color: var(--primary); }
+
+/* ═══════════════════════════════
+   LISTINGS GRID
+═══════════════════════════════ */
+.listings-grid {
+  display: grid; grid-template-columns: repeat(3,1fr);
+  gap: 18px; margin-bottom: 28px;
+}
+.listing-card {
+  background: var(--surface); border-radius: var(--radius-lg);
+  overflow: hidden; border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--t), box-shadow var(--t), border-color var(--t);
+  cursor: pointer; position: relative;
+}
+.listing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.listing-card.highlighted {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1), var(--shadow-sm);
+}
+
+.card-img {
+  height: 160px; display: flex; align-items: center;
+  justify-content: center; font-size: 50px; position: relative;
+}
+.bg1 { background: linear-gradient(135deg, #EEF2FF, #C7D2FE); }
+.bg2 { background: linear-gradient(135deg, #ECFEFF, #A5F3FC); }
+.bg3 { background: linear-gradient(135deg, #D1FAE5, #6EE7B7); }
+.bg4 { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
+.bg5 { background: linear-gradient(135deg, #FEE2E2, #FCA5A5); }
+.bg6 { background: linear-gradient(135deg, #F3E8FF, #DDD6FE); }
+
+.card-mode-badge {
+  position: absolute; top: 12px; left: 12px;
+  padding: 4px 11px; border-radius: 100px;
+  font-size: 10px; font-weight: 700; letter-spacing: .05em;
+}
+.card-mode-badge.sale { background: var(--primary); color: #fff; }
+.card-mode-badge.rent { background: var(--accent);  color: #fff; }
+
+.card-fav {
+  position: absolute; top: 10px; right: 10px;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: rgba(255,255,255,.8); backdrop-filter: blur(4px);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; cursor: pointer;
+  transition: background var(--t), transform var(--t);
+}
+.card-fav:hover { background: #fff; transform: scale(1.12); }
+
+.card-new {
+  position: absolute; bottom: 10px; right: 10px;
+  background: var(--success); color: #fff;
+  font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 100px;
+}
+
+.card-body { padding: 14px 16px; }
+.card-title { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+.card-loc   { font-size: 12px; color: var(--subtext); margin-bottom: 10px; }
+.card-price {
+  font-size: 19px; font-weight: 800; color: var(--text);
+  letter-spacing: -0.02em; margin-bottom: 10px;
+}
+.card-specs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.spec-tag {
+  font-size: 11px; font-weight: 500; color: var(--subtext);
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 6px;
+}
+.card-owner {
+  display: flex; align-items: center; gap: 8px;
+  padding-top: 10px; border-top: 1px solid var(--border);
+}
+.owner-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0;
+}
+.owner-name       { font-size: 12px; color: var(--subtext); }
+.owner-name strong { color: var(--text); font-weight: 600; }
+
+.request-btn {
+  margin-left: auto; padding: 6px 14px;
+  background: var(--primary); color: #fff;
+  border: none; border-radius: 8px;
+  font-size: 12px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+  white-space: nowrap;
+}
+.request-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(79,70,229,.28);
+}
+.request-btn.sent {
+  background: var(--success-light); color: var(--success);
+  border: 1px solid #6EE7B7; pointer-events: none;
+}
+
+@media (max-width: 1100px) {
+  .stats-row    { grid-template-columns: repeat(2,1fr); }
+  .listings-grid { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 640px) {
+  .stats-row    { grid-template-columns: 1fr 1fr; }
+  .listings-grid { grid-template-columns: 1fr; }
+  .filter-bar   { gap: 6px; }
+  .filter-select { margin-left: 0; width: 100%; }
+}
 
 @media (max-width: 768px) {
   .sidebar { transform: translateX(-100%); }
@@ -240,7 +423,200 @@ body {
   </div>
 
   <div class="content">
-    <!-- PARTS 2–3 CONTENT HERE -->
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div>
+          <div class="stat-num">24</div>
+          <div class="stat-label">Listings Available</div>
+          <span class="stat-delta info">↑ 4 new today</span>
+        </div>
+        <div class="stat-icon-wrap ic-blue">🏠</div>
+      </div>
+      <div class="stat-card">
+        <div>
+          <div class="stat-num">6</div>
+          <div class="stat-label">Requests Sent</div>
+          <span class="stat-delta warn">2 pending review</span>
+        </div>
+        <div class="stat-icon-wrap ic-yellow">📋</div>
+      </div>
+      <div class="stat-card">
+        <div>
+          <div class="stat-num">3</div>
+          <div class="stat-label">Approved Deals</div>
+          <span class="stat-delta up">↑ 1 this week</span>
+        </div>
+        <div class="stat-icon-wrap ic-green">✅</div>
+      </div>
+      <div class="stat-card">
+        <div>
+          <div class="stat-num">₹4.8Cr</div>
+          <div class="stat-label">Pipeline Value</div>
+          <span class="stat-delta up">↑ 18% vs last month</span>
+        </div>
+        <div class="stat-icon-wrap ic-cyan">💼</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <div class="filter-pill active" onclick="setFilter(this,'all')">All Listings</div>
+      <div class="filter-pill" onclick="setFilter(this,'sale')">For Sale</div>
+      <div class="filter-pill" onclick="setFilter(this,'rent')">For Rent</div>
+      <div class="filter-pill" onclick="setFilter(this,'new')">🟢 New</div>
+      <div class="filter-pill" onclick="setFilter(this,'saved')">❤️ Saved</div>
+      <select class="filter-select">
+        <option>Sort: Latest First</option>
+        <option>Price: Low to High</option>
+        <option>Price: High to Low</option>
+      </select>
+    </div>
+
+    <!-- LISTINGS -->
+    <div class="section-head">
+      <div class="section-title">Available Properties</div>
+      <div class="see-all">View All 24 →</div>
+    </div>
+    <div class="listings-grid">
+
+      <div class="listing-card highlighted" onclick="openModal('detail')">
+        <div class="card-img bg1">🏙️
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+          <div class="card-new">NEW</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Skyline Residency 4B</div>
+          <div class="card-loc">📍 Bandra West, Mumbai</div>
+          <div class="card-price">₹1.2 Cr</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 3 BHK</span>
+            <span class="spec-tag">📐 1,450 sq.ft</span>
+            <span class="spec-tag">🚿 2 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--primary);">RK</div>
+            <div class="owner-name"><strong>Rajesh Kumar</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing-card" onclick="openModal('detail')">
+        <div class="card-img bg2">🏡
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">❤️</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Green Valley Villa</div>
+          <div class="card-loc">📍 Whitefield, Bangalore</div>
+          <div class="card-price">₹85,000/mo</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 4 BHK</span>
+            <span class="spec-tag">📐 2,800 sq.ft</span>
+            <span class="spec-tag">🚿 3 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--success);">SR</div>
+            <div class="owner-name"><strong>Sunita Rao</strong> · Owner</div>
+            <button class="request-btn sent">✅ Sent</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing-card" onclick="openModal('detail')">
+        <div class="card-img bg3">🏢
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Marina Heights 12A</div>
+          <div class="card-loc">📍 Alwarpet, Chennai</div>
+          <div class="card-price">₹78 L</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 2 BHK</span>
+            <span class="spec-tag">📐 980 sq.ft</span>
+            <span class="spec-tag">🚿 2 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--warning);">KI</div>
+            <div class="owner-name"><strong>Karthik Iyer</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing-card" onclick="openModal('detail')">
+        <div class="card-img bg4">🏠
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+          <div class="card-new">NEW</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Rosewood Studio</div>
+          <div class="card-loc">📍 Koregaon Park, Pune</div>
+          <div class="card-price">₹22,000/mo</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 Studio</span>
+            <span class="spec-tag">📐 480 sq.ft</span>
+            <span class="spec-tag">🚿 1 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:var(--accent);">MJ</div>
+            <div class="owner-name"><strong>Meera Joshi</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing-card" onclick="openModal('detail')">
+        <div class="card-img bg5">🏗️
+          <div class="card-mode-badge sale">FOR SALE</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Prestige Tower 8C</div>
+          <div class="card-loc">📍 Powai, Mumbai</div>
+          <div class="card-price">₹2.1 Cr</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 4 BHK</span>
+            <span class="spec-tag">📐 2,100 sq.ft</span>
+            <span class="spec-tag">🚿 3 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:#8B5CF6;">AM</div>
+            <div class="owner-name"><strong>Anil Mehta</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="listing-card" onclick="openModal('detail')">
+        <div class="card-img bg6">🏘️
+          <div class="card-mode-badge rent">FOR RENT</div>
+          <div class="card-fav" onclick="event.stopPropagation();toggleFav(this)">🤍</div>
+        </div>
+        <div class="card-body">
+          <div class="card-title">Palm Grove 2B</div>
+          <div class="card-loc">📍 Jubilee Hills, Hyderabad</div>
+          <div class="card-price">₹48,000/mo</div>
+          <div class="card-specs">
+            <span class="spec-tag">🛏 3 BHK</span>
+            <span class="spec-tag">📐 1,600 sq.ft</span>
+            <span class="spec-tag">🚿 2 Bath</span>
+          </div>
+          <div class="card-owner">
+            <div class="owner-dot" style="background:#EC4899;">VR</div>
+            <div class="owner-name"><strong>Vijay Reddy</strong> · Owner</div>
+            <button class="request-btn" onclick="event.stopPropagation();openModal('request')">Request →</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PART 3: REQUESTS TABLE + MODALS HERE -->
   </div>
 </div>
 
@@ -249,6 +625,14 @@ body {
 <script>
 function openModal(id) { document.getElementById('modal-' + id).classList.add('open'); }
 function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+function setFilter(el, type) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  showToast('🔍 Filtering: ' + el.textContent.trim());
+}
+function toggleFav(el) {
+  el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
+}
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
