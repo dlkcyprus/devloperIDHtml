@@ -174,7 +174,223 @@ body {
 }
 .toast.show { transform:translateY(0); opacity:1; }
 
-/* PARTS 2–3 BELOW */
+/* ═══════════════════════════════
+   PART 2 — CONTENT AREA
+═══════════════════════════════ */
+
+/* Project Hero */
+.project-hero {
+  background: linear-gradient(135deg,#312E81 0%,#4F46E5 55%,#0E7490 100%);
+  border-radius: var(--radius-lg); padding: 24px 26px;
+  margin-bottom: 22px; color: #fff;
+  display: flex; align-items: center; gap: 20px;
+  position: relative; overflow: hidden;
+}
+.project-hero::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:260px; height:260px; border-radius:50%;
+  background:rgba(255,255,255,.06);
+}
+.project-hero::after {
+  content:''; position:absolute; bottom:-40px; left:100px;
+  width:160px; height:160px; border-radius:50%;
+  background:rgba(255,255,255,.04);
+}
+.project-emoji { font-size:48px; flex-shrink:0; position:relative; z-index:1; }
+.project-info  { flex:1; position:relative; z-index:1; }
+.project-name  { font-size:22px; font-weight:800; letter-spacing:-.02em; margin-bottom:4px; }
+.project-meta  { font-size:13px; opacity:.65; margin-bottom:16px; }
+.project-stats { display:flex; gap:24px; }
+.pstat-num   { font-size:22px; font-weight:800; }
+.pstat-label { font-size:11px; opacity:.55; margin-top:2px; font-weight:500; }
+.project-actions { display:flex; gap:8px; flex-shrink:0; position:relative; z-index:1; }
+.hero-btn {
+  padding:8px 16px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700;
+  transition:all var(--t); display:flex; align-items:center; gap:6px;
+}
+.hero-btn.glass { background:rgba(255,255,255,.12); color:#fff; border:1px solid rgba(255,255,255,.2); }
+.hero-btn.glass:hover { background:rgba(255,255,255,.22); }
+.hero-btn.solid { background:#fff; color:var(--primary); }
+.hero-btn.solid:hover { background:#EEF2FF; transform:translateY(-1px); }
+
+/* Tabs */
+.tabs-bar {
+  display:flex; border-bottom:2px solid var(--border);
+  margin-bottom:20px; gap:0;
+}
+.tab {
+  padding:10px 20px; font-size:13.5px; font-weight:500;
+  color:var(--subtext); cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-2px;
+  transition:color var(--t), border-color var(--t);
+}
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--primary); font-weight:700; border-bottom-color:var(--primary); }
+
+/* Info bar */
+.info-bar {
+  display:flex; align-items:center; gap:8px;
+  background:var(--warning-light); border:1px solid #FDE68A;
+  border-radius:var(--radius); padding:10px 14px;
+  font-size:12.5px; color:#92400E; margin-bottom:16px;
+}
+
+/* Floor management bar */
+.floor-mgmt-bar {
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius); padding:8px 12px;
+  margin-bottom:18px;
+}
+.floor-mgmt-tab {
+  padding:6px 14px; border-radius:9px;
+  font-size:12.5px; font-weight:600; cursor:pointer;
+  transition:all var(--t); color:var(--subtext);
+  border:1px solid transparent;
+}
+.floor-mgmt-tab:hover { color:var(--text); background:var(--bg); }
+.floor-mgmt-tab.active { background:var(--primary-light); color:var(--primary); border-color:#C7D2FE; }
+.floor-mgmt-actions { margin-left:auto; display:flex; gap:6px; }
+.fma-btn {
+  padding:5px 12px; border-radius:8px;
+  font-size:11.5px; font-weight:700; cursor:pointer;
+  border:none; font-family:'Inter',sans-serif; transition:all var(--t);
+}
+.fma-btn.edit { background:var(--info-light); color:var(--info); }
+.fma-btn.edit:hover { background:var(--info); color:#fff; }
+.fma-btn.del  { background:var(--danger-light); color:var(--danger); }
+.fma-btn.del:hover  { background:var(--danger); color:#fff; }
+.fma-btn.add  { background:var(--primary-light); color:var(--primary); }
+.fma-btn.add:hover  { background:var(--primary); color:#fff; }
+
+/* Legend bar */
+.legend-bar {
+  display:flex; align-items:center; gap:14px;
+  margin-bottom:18px; flex-wrap:wrap;
+}
+.legend-item { display:flex; align-items:center; gap:6px; font-size:12px; color:var(--subtext); }
+.legend-dot  { width:12px; height:12px; border-radius:3px; }
+.legend-dot.available { background:var(--success-light); border:1.5px solid var(--success); }
+.legend-dot.hold      { background:var(--warning-light); border:1.5px solid var(--warning); }
+.legend-dot.sold      { background:#1E293B; border:1.5px solid #334155; }
+.legend-dot.booked    { background:var(--primary-light); border:1.5px solid var(--primary); }
+.legend-sep   { color:var(--border); margin:0 2px; }
+.shortlist-badge {
+  margin-left:auto; display:flex; align-items:center; gap:6px;
+  background:var(--warning-light); border:1px solid #FDE68A;
+  padding:5px 13px; border-radius:99px;
+  font-size:12px; color:#92400E; font-weight:700; cursor:pointer;
+  transition:background var(--t);
+}
+.shortlist-badge:hover { background:#FEF3C7; }
+
+/* Shortlist panel */
+.shortlist-panel {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-lg); padding:18px 20px;
+  margin-bottom:18px; display:none;
+  box-shadow:var(--shadow-sm);
+}
+.shortlist-panel.open { display:block; }
+.shortlist-items { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+.sl-chip {
+  display:flex; align-items:center; gap:6px;
+  background:var(--warning-light); border:1px solid #FDE68A;
+  border-radius:8px; padding:5px 11px;
+  font-size:12px; font-weight:600; color:#92400E;
+}
+.sl-chip-remove { cursor:pointer; color:var(--danger); transition:opacity var(--t); }
+.sl-chip-remove:hover { opacity:.7; }
+
+/* Unit grid */
+.units-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(148px,1fr));
+  gap:10px; margin-bottom:28px;
+}
+
+/* Unit cards */
+.unit-card {
+  border-radius:var(--radius); padding:12px 13px;
+  cursor:pointer; transition:all .2s;
+  position:relative; border:2px solid transparent;
+  background:var(--surface);
+}
+.unit-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+.unit-card.available { background:var(--surface); border-color:var(--border); }
+.unit-card.available:hover { border-color:var(--success); }
+.unit-card.hold   { background:#FFFBEB; border-color:#FDE68A; }
+.unit-card.sold   { background:#1E293B; border-color:#334155; }
+.unit-card.booked { background:var(--primary-light); border-color:#C7D2FE; }
+.unit-card.starred { box-shadow:0 0 0 2px var(--warning), var(--shadow-sm); }
+
+.unit-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:5px; }
+.unit-num { font-weight:700; font-size:14px; }
+.unit-card.available .unit-num { color:var(--text); }
+.unit-card.hold   .unit-num { color:#92400E; }
+.unit-card.sold   .unit-num { color:#fff; }
+.unit-card.booked .unit-num { color:var(--primary); }
+
+.unit-star { font-size:14px; cursor:pointer; opacity:.4; transition:all var(--t); line-height:1; }
+.unit-star:hover { opacity:1; transform:scale(1.2); }
+.unit-star.active { opacity:1; }
+
+.unit-floor-tag { font-size:10px; font-weight:600; }
+.unit-card.available .unit-floor-tag { color:var(--muted); }
+.unit-card.sold      .unit-floor-tag { color:rgba(255,255,255,.3); }
+.unit-card.booked    .unit-floor-tag { color:rgba(79,70,229,.5); }
+.unit-card.hold      .unit-floor-tag { color:#D97706; }
+
+.unit-status { font-size:10px; font-weight:700; letter-spacing:.04em; margin-bottom:5px; }
+.unit-card.available .unit-status { color:var(--success); }
+.unit-card.hold   .unit-status { color:var(--warning); }
+.unit-card.sold   .unit-status { color:rgba(255,255,255,.5); }
+.unit-card.booked .unit-status { color:var(--primary); }
+
+.unit-price { font-size:13px; font-weight:700; margin-bottom:6px; }
+.unit-card.available .unit-price { color:var(--text); }
+.unit-card.hold      .unit-price { color:var(--text); }
+.unit-card.sold      .unit-price { color:rgba(255,255,255,.65); }
+.unit-card.booked    .unit-price { color:var(--primary); }
+
+.unit-meta { font-size:11px; }
+.unit-card.available .unit-meta { color:var(--muted); }
+.unit-card.hold      .unit-meta { color:#D97706; }
+.unit-card.sold      .unit-meta { color:rgba(255,255,255,.35); }
+.unit-card.booked    .unit-meta { color:rgba(79,70,229,.7); }
+
+/* Owner action mini-buttons */
+.unit-owner-actions { display:flex; gap:4px; margin-top:8px; }
+.uoa-btn {
+  flex:1; padding:4px 0; border-radius:6px;
+  font-size:10px; font-weight:700; cursor:pointer;
+  border:none; font-family:'Inter',sans-serif;
+  transition:all .15s; text-align:center;
+}
+.uoa-btn.edit { background:var(--info-light); color:var(--info); }
+.uoa-btn.edit:hover { background:var(--info); color:#fff; }
+.uoa-btn.copy { background:var(--success-light); color:var(--success); }
+.uoa-btn.copy:hover { background:var(--success); color:#fff; }
+.uoa-btn.del  { background:var(--danger-light); color:var(--danger); }
+.uoa-btn.del:hover  { background:var(--danger); color:#fff; }
+
+/* Agent tags on cards */
+.req-sent-tag {
+  margin-top:8px; background:var(--success-light);
+  border:1px solid #6EE7B7; color:#065F46;
+  font-size:10px; font-weight:700;
+  padding:3px 8px; border-radius:6px; text-align:center;
+}
+.req-btn-tag {
+  margin-top:8px; background:var(--primary-light);
+  border:1px solid #C7D2FE; color:var(--primary);
+  font-size:10px; font-weight:700;
+  padding:3px 8px; border-radius:6px; text-align:center;
+  cursor:pointer; transition:all .15s;
+}
+.req-btn-tag:hover { background:var(--primary); color:#fff; }
 
 @media (max-width:768px) {
   .sidebar { transform:translateX(-100%); }
@@ -232,7 +448,96 @@ body {
   </div>
 
   <div class="content">
-    <!-- PART 2 HERE -->
+
+    <!-- Project Hero -->
+    <div class="project-hero">
+      <div class="project-emoji">🏙️</div>
+      <div class="project-info">
+        <div class="project-name">Skyline Residency — Tower A</div>
+        <div class="project-meta">📍 Bandra West, Mumbai &nbsp;·&nbsp; 12 Floors &nbsp;·&nbsp; 96 Units &nbsp;·&nbsp; For Sale</div>
+        <div class="project-stats">
+          <div class="pstat">
+            <div class="pstat-num" id="stat-available">58</div>
+            <div class="pstat-label">Available</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-num" style="color:#FCD34D;">12</div>
+            <div class="pstat-label">On Hold</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-num" style="color:rgba(255,255,255,.45);">18</div>
+            <div class="pstat-label">Sold</div>
+          </div>
+          <div class="pstat">
+            <div class="pstat-num" style="color:#A5F3FC;">8</div>
+            <div class="pstat-label">Booked</div>
+          </div>
+        </div>
+      </div>
+      <div class="project-actions">
+        <button class="hero-btn glass" onclick="openModal('price-list')">📊 Price List</button>
+        <button class="hero-btn solid" onclick="openModal('showcase')">✨ Showcase</button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs-bar">
+      <div class="tab active" onclick="setTab(this)">Matrix</div>
+      <div class="tab" onclick="setTab(this)">Notes</div>
+      <div class="tab" onclick="setTab(this)">Documents</div>
+      <div class="tab" onclick="setTab(this)">Price List</div>
+      <div class="tab" onclick="setTab(this)">Showcase</div>
+    </div>
+
+    <!-- Info bar (owner only) -->
+    <div class="info-bar" id="owner-info-bar">
+      ⚠️ <strong>Owner Mode:</strong> Click any unit to edit it. Use the floor bar to manage wings.
+    </div>
+
+    <!-- Floor management bar -->
+    <div class="floor-mgmt-bar" id="floor-mgmt-bar">
+      <div class="floor-mgmt-tab active" onclick="setFloor(this,'north')">North</div>
+      <div class="floor-mgmt-tab" onclick="setFloor(this,'south')">South</div>
+      <div class="floor-mgmt-tab" onclick="setFloor(this,'northeast')">North East</div>
+      <div class="floor-mgmt-tab" onclick="setFloor(this,'southwest')">South West</div>
+      <div class="floor-mgmt-actions">
+        <button class="fma-btn edit" onclick="openModal('edit-floor')">✏️ Edit</button>
+        <button class="fma-btn del"  onclick="confirmDeleteFloor()">🗑️ Delete</button>
+        <button class="fma-btn add"  onclick="openModal('add-floor')">+ Floor</button>
+      </div>
+    </div>
+
+    <!-- Legend + shortlist badge -->
+    <div class="legend-bar">
+      <div class="legend-item"><div class="legend-dot available"></div> Available</div>
+      <div class="legend-item"><div class="legend-dot hold"></div> On Hold</div>
+      <div class="legend-item"><div class="legend-dot sold"></div> Sold</div>
+      <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
+      <span class="legend-sep">|</span>
+      <div class="shortlist-badge" id="shortlist-badge" onclick="toggleShortlist()">
+        ⭐ <span id="shortlist-count">0</span> Shortlisted
+      </div>
+    </div>
+
+    <!-- Shortlist panel -->
+    <div class="shortlist-panel" id="shortlist-panel">
+      <div style="font-size:13px;font-weight:700;color:var(--text);">⭐ Shortlisted Units</div>
+      <div style="font-size:12px;color:var(--muted);margin-top:2px;">Click ☆ on a unit to shortlist. Send a bulk request.</div>
+      <div class="shortlist-items" id="shortlist-items">
+        <div style="font-size:12px;color:var(--muted);padding:8px 0;">No units shortlisted yet. Click ☆ on any unit.</div>
+      </div>
+      <div style="margin-top:12px;display:flex;gap:8px;" id="shortlist-actions">
+        <button style="padding:7px 16px;border-radius:var(--radius);border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:700;background:var(--primary);color:#fff;" onclick="bulkRequest()">📬 Request All</button>
+        <button style="padding:7px 14px;border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;font-family:'Inter',sans-serif;font-size:12.5px;font-weight:600;background:transparent;color:var(--subtext);" onclick="clearShortlist()">Clear All</button>
+      </div>
+    </div>
+
+    <!-- Units grid -->
+    <div class="units-grid" id="units-grid">
+      <!-- Rendered by JS -->
+    </div>
+
+    <!-- PART 3 MODALS HERE -->
   </div>
 </div>
 
