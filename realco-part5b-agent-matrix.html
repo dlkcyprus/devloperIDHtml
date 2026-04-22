@@ -192,7 +192,299 @@ body {
 }
 .toast.show { transform:translateY(0); opacity:1; }
 
-/* PARTS 2–3 BELOW */
+/* ═══════════════════════════════
+   PART 2 — PAGES
+═══════════════════════════════ */
+
+/* Filter / section head */
+.filter-bar { display:flex; align-items:center; gap:8px; margin-bottom:20px; flex-wrap:wrap; }
+.filter-pill {
+  padding:6px 15px; border-radius:99px; font-size:12.5px; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--border);
+  background:var(--surface); color:var(--subtext); transition:all var(--t);
+}
+.filter-pill:hover  { border-color:var(--accent); color:#0E7490; }
+.filter-pill.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.section-head  { display:flex; align-items:center; justify-content:space-between; margin-bottom:14px; }
+.section-title { font-size:15px; font-weight:700; color:var(--text); }
+.section-count { font-size:12.5px; color:var(--muted); }
+
+/* Projects grid */
+.projects-grid {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:16px; margin-bottom:28px;
+}
+@media (max-width:1200px) { .projects-grid { grid-template-columns:repeat(3,1fr); } }
+@media (max-width:900px)  { .projects-grid { grid-template-columns:repeat(2,1fr); } }
+
+.proj-card {
+  background:var(--surface); border-radius:var(--radius-lg);
+  border:1px solid var(--border); overflow:hidden;
+  cursor:pointer; transition:all .2s; position:relative;
+  box-shadow:var(--shadow-sm);
+}
+.proj-card:hover { transform:translateY(-3px); box-shadow:var(--shadow-md); }
+.proj-img {
+  height:148px; background:linear-gradient(135deg,#312E81,#4F46E5,#0E7490);
+  display:flex; align-items:center; justify-content:center;
+  font-size:44px; position:relative;
+}
+.proj-dots {
+  position:absolute; top:8px; right:8px;
+  width:26px; height:26px; border-radius:50%;
+  background:rgba(255,255,255,.18); backdrop-filter:blur(4px);
+  display:flex; align-items:center; justify-content:center;
+  font-size:14px; cursor:pointer; color:#fff;
+  transition:background var(--t);
+}
+.proj-dots:hover { background:rgba(255,255,255,.35); }
+.proj-access-tag {
+  position:absolute; top:10px; left:10px;
+  font-size:9.5px; font-weight:700; padding:3px 9px;
+  border-radius:99px; letter-spacing:.04em;
+}
+.proj-access-tag.granted { background:var(--success); color:#fff; }
+.proj-access-tag.pending { background:var(--warning); color:#fff; }
+.proj-body { padding:14px 16px; }
+.proj-name { font-weight:700; font-size:14px; color:var(--text); margin-bottom:2px; }
+.proj-loc  { font-size:11.5px; color:var(--muted); margin-bottom:12px; }
+.proj-stats { display:flex; gap:8px; margin-bottom:12px; }
+.proj-stat {
+  flex:1; background:var(--bg); border-radius:8px; padding:6px 7px; text-align:center;
+}
+.proj-stat-num   { font-size:13px; font-weight:800; color:var(--text); }
+.proj-stat-label { font-size:9px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-top:1px; }
+.proj-btn {
+  width:100%; padding:8px; border-radius:var(--radius);
+  font-size:12.5px; font-weight:700; font-family:'Inter',sans-serif;
+  cursor:pointer; border:none; transition:all var(--t);
+}
+.proj-btn.view    { background:var(--accent); color:#fff; }
+.proj-btn.view:hover { background:var(--accent-hover); transform:translateY(-1px); }
+.proj-btn.sent    { background:var(--bg); color:var(--muted); border:1px solid var(--border); pointer-events:none; }
+.proj-btn.request { background:var(--warning-light); color:#92400E; border:1px solid #FDE68A; }
+.proj-btn.request:hover { background:var(--warning); color:#fff; border-color:var(--warning); }
+
+/* Matrix header */
+.matrix-header {
+  background:linear-gradient(135deg,#164E63 0%,#0E7490 55%,#312E81 100%);
+  border-radius:var(--radius-lg); padding:22px 24px;
+  margin-bottom:22px; display:flex; align-items:center; gap:18px;
+  position:relative; overflow:hidden; color:#fff;
+}
+.matrix-header::before {
+  content:''; position:absolute; top:-60px; right:-60px;
+  width:240px; height:240px; border-radius:50%;
+  background:rgba(255,255,255,.06);
+}
+.mh-emoji { font-size:44px; flex-shrink:0; position:relative; z-index:1; }
+.mh-info  { flex:1; position:relative; z-index:1; }
+.mh-title { font-size:20px; font-weight:800; letter-spacing:-.02em; margin-bottom:3px; }
+.mh-sub   { font-size:12.5px; opacity:.6; margin-bottom:14px; }
+.mh-stats { display:flex; gap:20px; }
+.mh-stat-num   { font-size:19px; font-weight:800; }
+.mh-stat-label { font-size:10px; opacity:.5; margin-top:2px; }
+.mh-actions { display:flex; flex-direction:column; gap:8px; min-width:160px; position:relative; z-index:1; }
+.mh-btn {
+  padding:8px 14px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:12.5px; font-weight:700;
+  transition:all var(--t); display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.mh-btn.solid { background:#fff; color:#0E7490; }
+.mh-btn.solid:hover { background:#ECFEFF; transform:translateY(-1px); }
+.mh-btn.glass { background:rgba(255,255,255,.1); color:rgba(255,255,255,.8); border:1px solid rgba(255,255,255,.15); }
+.mh-btn.glass:hover { background:rgba(255,255,255,.18); color:#fff; }
+
+/* Tabs */
+.tabs-bar { display:flex; border-bottom:2px solid var(--border); margin-bottom:20px; }
+.tab {
+  padding:9px 18px; font-size:13.5px; font-weight:500;
+  color:var(--subtext); cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-2px;
+  transition:color var(--t), border-color var(--t);
+}
+.tab:hover { color:var(--text); }
+.tab.active { color:var(--accent); font-weight:700; border-bottom-color:var(--accent); }
+
+/* Floor tabs */
+.floor-bar { display:flex; align-items:center; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+.floor-tab {
+  padding:6px 14px; border-radius:99px; font-size:12.5px; font-weight:600;
+  cursor:pointer; border:1.5px solid var(--border);
+  background:var(--surface); color:var(--subtext); transition:all var(--t);
+  display:flex; align-items:center; gap:5px;
+}
+.floor-tab:hover { border-color:var(--accent); color:#0E7490; }
+.floor-tab.active { background:var(--accent); color:#fff; border-color:var(--accent); }
+.floor-tab .fc {
+  font-size:10px; background:rgba(255,255,255,.2); padding:1px 6px;
+  border-radius:99px; font-weight:700;
+}
+.floor-tab:not(.active) .fc { background:var(--bg); color:var(--muted); }
+
+/* Legend */
+.legend-bar { display:flex; align-items:center; gap:12px; margin-bottom:16px; flex-wrap:wrap; }
+.legend-item { display:flex; align-items:center; gap:5px; font-size:12px; color:var(--subtext); }
+.legend-dot  { width:11px; height:11px; border-radius:3px; }
+.legend-dot.available { background:var(--success-light); border:1.5px solid var(--success); }
+.legend-dot.hold      { background:var(--warning-light); border:1.5px solid var(--warning); }
+.legend-dot.sold      { background:#1E293B; border:1.5px solid #334155; }
+.legend-dot.booked    { background:var(--primary-light); border:1.5px solid var(--primary); }
+.legend-dot.starred   { background:var(--warning-light); border:1.5px solid var(--warning); }
+.legend-hint { margin-left:auto; font-size:11.5px; color:var(--muted); }
+
+/* Unit grid */
+.units-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(142px,1fr));
+  gap:10px; margin-bottom:80px;
+}
+.unit-card {
+  border-radius:var(--radius); padding:12px 13px; cursor:pointer;
+  transition:all .2s; position:relative;
+  border:2px solid var(--border); background:var(--surface);
+}
+.unit-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.unit-card.hold      { background:#FFFBEB; border-color:#FDE68A; }
+.unit-card.sold      { background:#1E293B; border-color:#334155; pointer-events:none; opacity:.7; }
+.unit-card.booked    { background:var(--primary-light); border-color:#C7D2FE; }
+.unit-card.starred   { border-color:var(--warning); box-shadow:0 0 0 2px rgba(245,158,11,.25); }
+.unit-card.requested { border-color:var(--success); background:var(--success-light); }
+
+.unit-top  { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:5px; }
+.unit-id   { font-weight:700; font-size:13.5px; color:var(--text); }
+.unit-card.sold .unit-id { color:#fff; }
+.star-btn  { font-size:16px; cursor:pointer; line-height:1; border:none; background:none; padding:0; transition:transform .15s; }
+.star-btn:hover { transform:scale(1.25); }
+
+.unit-status { font-size:10px; font-weight:700; letter-spacing:.03em; margin-bottom:5px; }
+.unit-card:not(.sold):not(.hold):not(.booked) .unit-status { color:var(--success); }
+.unit-card.hold   .unit-status { color:var(--warning); }
+.unit-card.sold   .unit-status { color:rgba(255,255,255,.45); }
+.unit-card.booked .unit-status { color:var(--primary); }
+
+.unit-price { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.unit-card.sold   .unit-price { color:rgba(255,255,255,.55); }
+.unit-card.booked .unit-price { color:var(--primary); }
+.unit-beds { font-size:10px; color:var(--muted); }
+.unit-card.sold .unit-beds { color:rgba(255,255,255,.3); }
+
+.unit-req-tag {
+  margin-top:8px; font-size:10px; font-weight:700;
+  padding:3px 7px; border-radius:6px; text-align:center;
+}
+.unit-req-tag.sent { background:var(--success-light); color:#065F46; border:1px solid #6EE7B7; }
+.unit-req-tag.tap  { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
+
+/* Floating shortlist bar */
+.sl-float {
+  position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+  background:var(--text); color:#fff;
+  padding:12px 24px; border-radius:99px;
+  display:none; align-items:center; gap:12px;
+  box-shadow:var(--shadow-lg); z-index:90;
+  font-size:13px; font-weight:600;
+  animation:floatUp .3s ease;
+}
+.sl-float.visible { display:flex; }
+@keyframes floatUp {
+  from { opacity:0; transform:translateX(-50%) translateY(20px); }
+  to   { opacity:1; transform:translateX(-50%) translateY(0); }
+}
+.sl-float .count {
+  background:var(--warning); color:#fff;
+  padding:2px 10px; border-radius:99px; font-weight:800;
+}
+.sl-float-btn {
+  padding:6px 14px; border-radius:99px; border:none;
+  font-size:12px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer;
+  transition:all var(--t);
+}
+.sl-float-btn.go    { background:var(--accent); color:#fff; }
+.sl-float-btn.go:hover { filter:brightness(1.1); }
+.sl-float-btn.clear { background:rgba(255,255,255,.12); color:rgba(255,255,255,.7); }
+.sl-float-btn.clear:hover { background:rgba(255,255,255,.2); color:#fff; }
+
+/* Shortlist page */
+.sl-bulk-bar {
+  background:linear-gradient(135deg,#164E63,#0E7490);
+  border-radius:var(--radius-lg); padding:18px 22px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:20px; color:#fff;
+}
+.sl-bulk-text { font-size:14px; font-weight:700; }
+.sl-bulk-sub  { font-size:12px; opacity:.6; margin-top:3px; }
+.sl-bulk-btns { display:flex; gap:8px; }
+.sl-bulk-btn {
+  padding:9px 20px; border-radius:var(--radius); border:none;
+  font-size:13px; font-weight:700; font-family:'Inter',sans-serif; cursor:pointer;
+  transition:all var(--t);
+}
+.sl-bulk-btn.send  { background:#fff; color:#0E7490; }
+.sl-bulk-btn.send:hover { background:#ECFEFF; }
+.sl-bulk-btn.clear { background:rgba(255,255,255,.12); color:rgba(255,255,255,.7); }
+.sl-bulk-btn.clear:hover { background:rgba(255,255,255,.2); color:#fff; }
+
+.sl-items-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:20px; }
+@media (max-width:900px) { .sl-items-grid { grid-template-columns:repeat(2,1fr); } }
+.sl-item-card {
+  background:var(--surface); border-radius:var(--radius-lg);
+  border:1px solid var(--border); padding:16px 18px;
+  position:relative; box-shadow:var(--shadow-sm);
+}
+.sl-item-card.starred { border-color:var(--warning); }
+.sl-item-remove {
+  position:absolute; top:12px; right:14px;
+  font-size:16px; cursor:pointer; color:var(--muted);
+  transition:color var(--t);
+}
+.sl-item-remove:hover { color:var(--danger); }
+.sl-item-id    { font-weight:800; font-size:15px; color:var(--text); margin-bottom:2px; }
+.sl-item-proj  { font-size:11.5px; color:var(--muted); margin-bottom:10px; }
+.sl-item-price { font-size:20px; font-weight:800; color:var(--text); letter-spacing:-.02em; margin-bottom:8px; }
+.sl-item-tags  { display:flex; gap:6px; flex-wrap:wrap; }
+.sl-tag { font-size:10.5px; color:var(--subtext); background:var(--bg); padding:3px 9px; border-radius:6px; font-weight:500; }
+.sl-req-status {
+  margin-top:10px; font-size:11.5px; font-weight:700;
+  padding:5px 10px; border-radius:8px; text-align:center;
+}
+.sl-req-status.not-sent { background:var(--bg); color:var(--muted); border:1px solid var(--border); }
+.sl-req-status.sent     { background:var(--success-light); color:#065F46; border:1px solid #6EE7B7; }
+
+/* Requests table */
+.req-table {
+  background:var(--surface); border-radius:var(--radius-lg);
+  border:1px solid var(--border); overflow:hidden;
+  margin-bottom:20px; box-shadow:var(--shadow-sm);
+}
+.req-table-head {
+  display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
+  padding:11px 18px; background:var(--bg);
+  border-bottom:1px solid var(--border);
+  font-size:10.5px; font-weight:700; color:var(--muted);
+  text-transform:uppercase; letter-spacing:.07em;
+}
+.req-table-row {
+  display:grid; grid-template-columns:1.5fr 1.5fr 1fr 1fr 1fr;
+  padding:14px 18px; border-bottom:1px solid var(--border);
+  align-items:center; transition:background var(--t);
+}
+.req-table-row:last-child { border-bottom:none; }
+.req-table-row:hover { background:var(--bg); }
+.req-unit-id  { font-weight:700; font-size:13.5px; color:var(--text); }
+.req-unit-sub { font-size:11px; color:var(--muted); margin-top:1px; }
+.req-proj     { font-size:13px; color:var(--subtext); }
+.req-date     { font-size:12px; color:var(--muted); }
+.req-status-pill { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:99px; font-size:11px; font-weight:700; }
+.rsp-pending  { background:var(--warning-light); color:#92400E; }
+.rsp-approved { background:var(--success-light); color:#065F46; }
+.rsp-rejected { background:var(--danger-light);  color:#991B1B; }
+.req-action-btn {
+  padding:5px 13px; border-radius:8px; font-size:11.5px; font-weight:600;
+  cursor:pointer; border:1px solid var(--border);
+  background:transparent; color:var(--subtext);
+  font-family:'Inter',sans-serif; transition:all var(--t);
+}
+.req-action-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
 
 @media (max-width:768px) {
   .sidebar { transform:translateX(-100%); }
@@ -251,8 +543,123 @@ body {
   </div>
 
   <div class="content">
-    <!-- PART 2 HERE -->
+    <!-- ══ PAGE: PROJECTS ══ -->
+    <div id="page-projects">
+      <div class="filter-bar">
+        <div class="filter-pill active" onclick="setPill(this)">All Projects</div>
+        <div class="filter-pill" onclick="setPill(this)">With Access</div>
+        <div class="filter-pill" onclick="setPill(this)">Request Sent</div>
+        <div class="filter-pill" onclick="setPill(this)">For Sale</div>
+        <div class="filter-pill" onclick="setPill(this)">For Rent</div>
+      </div>
+      <div class="section-head">
+        <div class="section-title">Available Projects</div>
+        <div class="section-count" id="proj-count">8 projects found</div>
+      </div>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
+
+    <!-- ══ PAGE: MATRIX ══ -->
+    <div id="page-matrix">
+      <button onclick="goToPage('projects',null)" style="display:flex;align-items:center;gap:6px;background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;margin-bottom:16px;font-family:'Inter',sans-serif;font-weight:600;transition:color var(--t);" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--muted)'">← Back to Projects</button>
+
+      <div class="matrix-header">
+        <div class="mh-emoji" id="mh-emoji">🏙️</div>
+        <div class="mh-info">
+          <div class="mh-title" id="mh-title">Skyline Residency — Tower A</div>
+          <div class="mh-sub" id="mh-sub">📍 Bandra West, Mumbai · For Sale</div>
+          <div class="mh-stats">
+            <div class="mh-stat">
+              <div class="mh-stat-num" style="color:#6EE7B7;">58</div>
+              <div class="mh-stat-label">Available</div>
+            </div>
+            <div class="mh-stat">
+              <div class="mh-stat-num" style="color:#FCD34D;">12</div>
+              <div class="mh-stat-label">On Hold</div>
+            </div>
+            <div class="mh-stat">
+              <div class="mh-stat-num" style="color:rgba(255,255,255,.4);">18</div>
+              <div class="mh-stat-label">Sold</div>
+            </div>
+            <div class="mh-stat">
+              <div class="mh-stat-num" style="color:#C7D2FE;">8</div>
+              <div class="mh-stat-label">Booked</div>
+            </div>
+          </div>
+        </div>
+        <div class="mh-actions">
+          <button class="mh-btn solid" onclick="bulkRequestAll()">📬 Request All Available</button>
+          <button class="mh-btn glass" onclick="goToPage('shortlist',null)">⭐ Shortlist (<span id="matrix-sl-count">0</span>)</button>
+        </div>
+      </div>
+
+      <div class="tabs-bar">
+        <div class="tab active" onclick="setMatrixTab(this)">Matrix</div>
+        <div class="tab" onclick="setMatrixTab(this)">Documents</div>
+        <div class="tab" onclick="setMatrixTab(this)">Price List</div>
+        <div class="tab" onclick="setMatrixTab(this)">Showcase</div>
+      </div>
+
+      <div class="floor-bar" id="floor-bar"></div>
+
+      <div class="legend-bar">
+        <div class="legend-item"><div class="legend-dot available"></div> Available</div>
+        <div class="legend-item"><div class="legend-dot hold"></div> On Hold</div>
+        <div class="legend-item"><div class="legend-dot sold"></div> Sold</div>
+        <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
+        <div class="legend-item"><div class="legend-dot starred"></div> Shortlisted</div>
+        <span class="legend-hint">Click ☆ to shortlist · Click card to view &amp; request</span>
+      </div>
+
+      <div class="units-grid" id="units-grid"></div>
+    </div>
+
+    <!-- ══ PAGE: SHORTLIST ══ -->
+    <div id="page-shortlist">
+      <div class="sl-bulk-bar" id="sl-bulk-bar">
+        <div>
+          <div class="sl-bulk-text">⭐ Shortlisted Units — <span id="sl-bulk-count">0</span> units</div>
+          <div class="sl-bulk-sub">Send a single request to all owners at once, or request individually.</div>
+        </div>
+        <div class="sl-bulk-btns">
+          <button class="sl-bulk-btn clear" onclick="clearAll()">Clear All</button>
+          <button class="sl-bulk-btn send" onclick="bulkSendAll()">📬 Send All Requests</button>
+        </div>
+      </div>
+      <div class="sl-items-grid" id="sl-items-grid">
+        <div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-size:14px;">
+          No units shortlisted yet.<br>
+          <span style="font-size:12px;">Browse projects and click ☆ on any unit to shortlist it.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ PAGE: REQUESTS ══ -->
+    <div id="page-requests">
+      <div class="section-head" style="margin-bottom:16px;">
+        <div class="section-title">My Access Requests</div>
+        <div style="display:flex;gap:8px;">
+          <span style="font-size:12px;background:var(--success-light);color:#065F46;padding:4px 11px;border-radius:99px;font-weight:700;">1 Approved</span>
+          <span style="font-size:12px;background:var(--warning-light);color:#92400E;padding:4px 11px;border-radius:99px;font-weight:700;">2 Pending</span>
+        </div>
+      </div>
+      <div class="req-table">
+        <div class="req-table-head">
+          <div>Unit</div><div>Project</div><div>Sent On</div><div>Status</div><div>Action</div>
+        </div>
+        <div id="requests-body"></div>
+      </div>
+    </div>
+
+    <!-- PART 3 HERE -->
   </div>
+</div>
+
+<!-- ══ FLOATING SHORTLIST BAR ══ -->
+<div class="sl-float" id="sl-float">
+  ⭐ <span class="count" id="sl-float-count">0</span> units shortlisted
+  <button class="sl-float-btn go" onclick="goToPage('shortlist',null)">View &amp; Request →</button>
+  <button class="sl-float-btn clear" onclick="clearAll()">Clear</button>
 </div>
 
 <div class="toast" id="toast"></div>
