@@ -207,7 +207,180 @@ body {
 /* CONTENT WRAPPER */
 .content { padding: 24px 28px; flex: 1; }
 
-/* PART 2 & 3 STYLES + HTML BELOW */
+/* ═══════════════════════════════
+   STATS CARDS
+═══════════════════════════════ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px; margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  display: flex; align-items: flex-start; justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--t), transform var(--t);
+}
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.stat-left {}
+.stat-num {
+  font-size: 28px; font-weight: 800;
+  color: var(--text); letter-spacing: -0.03em; line-height: 1;
+}
+.stat-label {
+  font-size: 12px; font-weight: 500;
+  color: var(--subtext); margin-top: 5px;
+}
+.stat-delta {
+  font-size: 11px; font-weight: 600;
+  margin-top: 6px; display: inline-flex;
+  align-items: center; gap: 3px;
+  padding: 2px 7px; border-radius: 100px;
+}
+.stat-delta.up   { background: var(--success-light); color: var(--success); }
+.stat-delta.warn { background: var(--warning-light); color: #92400E; }
+.stat-icon-wrap {
+  width: 42px; height: 42px; border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; flex-shrink: 0;
+}
+.ic-blue   { background: var(--primary-light); }
+.ic-cyan   { background: var(--accent-light); }
+.ic-green  { background: var(--success-light); }
+.ic-yellow { background: var(--warning-light); }
+
+/* ═══════════════════════════════
+   SECTION HEADER
+═══════════════════════════════ */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px;
+}
+.section-title {
+  font-size: 15px; font-weight: 700;
+  color: var(--text); letter-spacing: -0.01em;
+}
+.section-title .pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11px; font-weight: 600;
+  background: var(--danger-light); color: var(--danger);
+  padding: 2px 8px; border-radius: 100px;
+  margin-left: 8px; vertical-align: middle;
+}
+.see-all {
+  font-size: 12px; font-weight: 600;
+  color: var(--primary); cursor: pointer;
+  transition: color var(--t);
+}
+.see-all:hover { color: var(--primary-hover); text-decoration: underline; }
+
+/* ═══════════════════════════════
+   TABS
+═══════════════════════════════ */
+.tabs {
+  display: flex; gap: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 4px; width: fit-content;
+  margin-bottom: 20px;
+}
+.tab {
+  padding: 7px 18px; border-radius: 9px;
+  font-size: 13px; font-weight: 500;
+  color: var(--subtext); cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+.tab.active { background: var(--surface); color: var(--text); font-weight: 600; box-shadow: var(--shadow-sm); }
+.tab:hover:not(.active) { color: var(--text); }
+
+/* ═══════════════════════════════
+   PROPERTY CARDS
+═══════════════════════════════ */
+.prop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px; margin-bottom: 28px;
+}
+.prop-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: box-shadow var(--t), transform var(--t);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+.prop-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.prop-img {
+  height: 148px;
+  background: linear-gradient(135deg, var(--primary-light) 0%, #C7D2FE 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 44px; position: relative;
+}
+.prop-img.img-cyan   { background: linear-gradient(135deg, var(--accent-light), #A5F3FC); }
+.prop-img.img-green  { background: linear-gradient(135deg, var(--success-light), #A7F3D0); }
+
+.prop-badge {
+  position: absolute; top: 10px; left: 10px;
+  padding: 3px 10px; border-radius: 100px;
+  font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+}
+.prop-badge.sale { background: var(--primary); color: #fff; }
+.prop-badge.rent { background: var(--accent);  color: #fff; }
+
+.prop-status {
+  position: absolute; top: 10px; right: 10px;
+  padding: 3px 10px; border-radius: 100px;
+  font-size: 10px; font-weight: 600;
+}
+.prop-status.active  { background: var(--success-light); color: var(--success); border: 1px solid #6EE7B7; }
+.prop-status.pending { background: var(--warning-light); color: #92400E;        border: 1px solid #FCD34D; }
+.prop-status.sold    { background: var(--danger-light);  color: var(--danger);  border: 1px solid #FCA5A5; }
+
+.prop-body { padding: 14px 16px; }
+.prop-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 3px; }
+.prop-loc  { font-size: 12px; color: var(--subtext); }
+.prop-price {
+  font-size: 17px; font-weight: 800; color: var(--text);
+  letter-spacing: -0.02em; margin: 10px 0 10px;
+}
+.prop-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.prop-tag {
+  font-size: 11px; font-weight: 500; color: var(--subtext);
+  background: var(--bg); border: 1px solid var(--border);
+  padding: 3px 9px; border-radius: 6px;
+}
+
+.prop-actions {
+  display: flex; gap: 8px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+}
+.prop-action-btn {
+  flex: 1; padding: 8px;
+  border-radius: var(--radius); font-size: 12px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', sans-serif;
+  border: 1px solid var(--border);
+  background: var(--bg); color: var(--text);
+  transition: background var(--t), color var(--t), border-color var(--t);
+}
+.prop-action-btn:hover { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+.prop-action-btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.prop-action-btn.primary:hover { background: var(--primary-hover); }
+
+@media (max-width: 1100px) {
+  .stats-row { grid-template-columns: repeat(2,1fr); }
+  .prop-grid  { grid-template-columns: repeat(2,1fr); }
+}
+@media (max-width: 640px) {
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .prop-grid  { grid-template-columns: 1fr; }
+}
 
 /* ═══════════════════════════════
    TOAST
@@ -288,7 +461,125 @@ body {
   </div>
 
   <div class="content" id="main-content">
-    <!-- PART 2 CONTENT INJECTED HERE -->
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-left">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Total Properties</div>
+          <span class="stat-delta up">↑ 2 this month</span>
+        </div>
+        <div class="stat-icon-wrap ic-blue">🏠</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-left">
+          <div class="stat-num">3</div>
+          <div class="stat-label">Pending Requests</div>
+          <span class="stat-delta warn">Needs review</span>
+        </div>
+        <div class="stat-icon-wrap ic-yellow">📋</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-left">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Active Listings</div>
+          <span class="stat-delta up">↑ Live now</span>
+        </div>
+        <div class="stat-icon-wrap ic-green">✅</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-left">
+          <div class="stat-num">₹2.4Cr</div>
+          <div class="stat-label">Total Value Listed</div>
+          <span class="stat-delta up">↑ 12% vs last month</span>
+        </div>
+        <div class="stat-icon-wrap ic-cyan">💰</div>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <div class="tab active">All Properties</div>
+      <div class="tab">For Sale</div>
+      <div class="tab">For Rent</div>
+      <div class="tab">Sold</div>
+    </div>
+
+    <!-- PROPERTIES -->
+    <div class="section-head">
+      <div class="section-title">My Properties</div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="prop-grid">
+
+      <div class="prop-card">
+        <div class="prop-img">🏙️
+          <div class="prop-badge sale">For Sale</div>
+          <div class="prop-status active">● Active</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Skyline Residency 4B</div>
+          <div class="prop-loc">📍 Bandra West, Mumbai</div>
+          <div class="prop-price">₹1.2 Cr</div>
+          <div class="prop-meta">
+            <span class="prop-tag">3 BHK</span>
+            <span class="prop-tag">1,450 sq.ft</span>
+            <span class="prop-tag">2 Bath</span>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn" onclick="openModal('requests')">Requests (2)</button>
+          <button class="prop-action-btn primary" onclick="openModal('edit')">Edit</button>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-img img-cyan">🏡
+          <div class="prop-badge rent">For Rent</div>
+          <div class="prop-status pending">⏳ Pending</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Green Valley Villa</div>
+          <div class="prop-loc">📍 Whitefield, Bangalore</div>
+          <div class="prop-price">₹85,000/mo</div>
+          <div class="prop-meta">
+            <span class="prop-tag">4 BHK</span>
+            <span class="prop-tag">2,800 sq.ft</span>
+            <span class="prop-tag">3 Bath</span>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn" onclick="openModal('requests')">Requests (1)</button>
+          <button class="prop-action-btn primary" onclick="openModal('edit')">Edit</button>
+        </div>
+      </div>
+
+      <div class="prop-card">
+        <div class="prop-img img-green">🏢
+          <div class="prop-badge sale">For Sale</div>
+          <div class="prop-status sold">✕ Sold</div>
+        </div>
+        <div class="prop-body">
+          <div class="prop-name">Marina Heights 12A</div>
+          <div class="prop-loc">📍 Alwarpet, Chennai</div>
+          <div class="prop-price">₹78 L</div>
+          <div class="prop-meta">
+            <span class="prop-tag">2 BHK</span>
+            <span class="prop-tag">980 sq.ft</span>
+            <span class="prop-tag">2 Bath</span>
+          </div>
+        </div>
+        <div class="prop-actions">
+          <button class="prop-action-btn">View History</button>
+          <button class="prop-action-btn primary">Relist</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PART 3: REQUESTS TABLE + MODALS HERE -->
+
   </div>
 </div>
 
@@ -305,6 +596,14 @@ function showTab(tab, el) {
 }
 function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); }
 function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); }
+// tab switcher
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
