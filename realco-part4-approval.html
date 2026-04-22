@@ -338,6 +338,216 @@ body {
 .chip-pend { background:var(--warning-light); color:#92400E; }
 .chip-req  { background:var(--danger-light);  color:#991B1B; }
 
+/* ═══════════════════════════════
+   PART 3 — RIGHT PANEL
+═══════════════════════════════ */
+
+/* Action Card */
+.action-card {
+  background:linear-gradient(160deg,#0F172A 0%,#1E293B 100%);
+  border-radius:var(--radius-lg); padding:22px;
+  margin-bottom:16px; color:#fff; border:1px solid rgba(255,255,255,.06);
+  box-shadow:var(--shadow-lg);
+}
+.ac-icon { font-size:28px; margin-bottom:10px; }
+.ac-title { font-size:17px; font-weight:800; margin-bottom:4px; }
+.ac-sub   { font-size:12.5px; opacity:.55; margin-bottom:20px; line-height:1.5; }
+.ac-btns  { display:flex; flex-direction:column; gap:10px; }
+.btn-approve {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:13px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:14px; font-weight:700;
+  background:var(--success); color:#fff;
+  transition:filter var(--t), transform var(--t);
+}
+.btn-approve:hover { filter:brightness(1.1); transform:translateY(-1px); }
+.btn-reject {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:13px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:14px; font-weight:700;
+  background:var(--danger); color:#fff;
+  transition:filter var(--t), transform var(--t);
+}
+.btn-reject:hover  { filter:brightness(1.1); transform:translateY(-1px); }
+.btn-message {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:11px; border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.15); cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  background:transparent; color:rgba(255,255,255,.7);
+  transition:background var(--t), color var(--t);
+}
+.btn-message:hover { background:rgba(255,255,255,.08); color:#fff; }
+.ac-decided {
+  display:none; text-align:center; padding:12px 0 4px;
+}
+.ac-decided .decided-icon { font-size:36px; margin-bottom:8px; }
+.ac-decided .decided-label { font-size:14px; font-weight:700; }
+.ac-decided .decided-sub   { font-size:12px; opacity:.55; margin-top:3px; }
+
+/* Note Card */
+.note-card-owner { padding:16px 20px 20px; }
+.note-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.note-textarea {
+  width:100%; border:1px solid var(--border); border-radius:var(--radius);
+  padding:10px 13px; font-family:'Inter',sans-serif; font-size:13px;
+  color:var(--text); background:var(--bg); resize:vertical; min-height:88px;
+  transition:border-color var(--t), box-shadow var(--t); outline:none;
+}
+.note-textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.12); }
+.note-save-btn {
+  margin-top:10px; padding:8px 16px; border-radius:var(--radius);
+  border:none; cursor:pointer; font-family:'Inter',sans-serif;
+  font-size:12.5px; font-weight:700;
+  background:var(--primary-light); color:var(--primary);
+  transition:background var(--t), color var(--t);
+}
+.note-save-btn:hover { background:var(--primary); color:#fff; }
+
+/* Checklist */
+.checklist { padding:8px 20px 16px; }
+.check-item {
+  display:flex; align-items:flex-start; gap:10px;
+  padding:9px 0; border-bottom:1px solid var(--border); cursor:pointer;
+}
+.check-item:last-child { border-bottom:none; }
+.check-box {
+  width:18px; height:18px; border-radius:5px; flex-shrink:0;
+  border:2px solid var(--border); margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; transition:all var(--t);
+}
+.check-item.checked .check-box { background:var(--success); border-color:var(--success); color:#fff; }
+.check-text { font-size:13px; color:var(--subtext); flex:1; line-height:1.4; transition:color var(--t); }
+.check-item.checked .check-text { color:var(--muted); text-decoration:line-through; }
+
+/* Activity Feed */
+.activity-feed { padding:8px 12px 16px; }
+.af-item {
+  display:flex; gap:11px; padding:8px 6px;
+  border-bottom:1px solid var(--border);
+}
+.af-item:last-child { border-bottom:none; }
+.af-dot {
+  width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:5px;
+}
+.af-dot.primary { background:var(--primary); }
+.af-dot.success { background:var(--success); }
+.af-dot.warning { background:var(--warning); }
+.af-dot.danger  { background:var(--danger); }
+.af-dot.muted   { background:var(--muted); }
+.af-msg  { font-size:12.5px; color:var(--subtext); flex:1; line-height:1.4; }
+.af-time { font-size:11px; color:var(--muted); white-space:nowrap; margin-top:1px; }
+
+/* Modals */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(15,23,42,.5);
+  backdrop-filter:blur(4px); z-index:200;
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal-box {
+  background:var(--surface); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg); width:100%; max-width:480px;
+  max-height:88vh; overflow-y:auto; animation:modalIn .22s ease;
+}
+@keyframes modalIn {
+  from { opacity:0; transform:scale(.96) translateY(8px); }
+  to   { opacity:1; transform:scale(1)  translateY(0); }
+}
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 22px; border-bottom:1px solid var(--border);
+}
+.modal-title { font-size:15px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; }
+.modal-close {
+  width:28px; height:28px; border-radius:8px; border:none; cursor:pointer;
+  background:var(--bg); color:var(--subtext); font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t), color var(--t);
+}
+.modal-close:hover { background:var(--border); color:var(--text); }
+.modal-body { padding:22px; }
+.modal-footer { padding:16px 22px; border-top:1px solid var(--border); display:flex; gap:10px; justify-content:flex-end; }
+
+/* Modal form elements */
+.mf-label { font-size:11.5px; font-weight:700; color:var(--subtext); margin-bottom:6px; display:block; }
+.mf-textarea {
+  width:100%; border:1px solid var(--border); border-radius:var(--radius);
+  padding:11px 13px; font-family:'Inter',sans-serif; font-size:13px;
+  color:var(--text); background:var(--bg); resize:vertical; min-height:100px;
+  outline:none; transition:border-color var(--t), box-shadow var(--t);
+}
+.mf-textarea:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.1); }
+.mf-row { margin-bottom:16px; }
+.mf-info {
+  background:var(--bg); border:1px solid var(--border);
+  border-radius:var(--radius); padding:14px 16px;
+  font-size:13px; color:var(--subtext); line-height:1.6; margin-bottom:16px;
+}
+.mf-info strong { color:var(--text); }
+
+/* Decision summary (inside approve/reject modal) */
+.decision-summary {
+  border-radius:var(--radius); padding:14px 16px; margin-bottom:16px;
+}
+.ds-approve { background:var(--success-light); border:1px solid #6EE7B7; }
+.ds-reject  { background:var(--danger-light);  border:1px solid #FECACA; }
+.ds-title { font-size:13.5px; font-weight:700; margin-bottom:4px; }
+.ds-approve .ds-title { color:#065F46; }
+.ds-reject  .ds-title { color:#991B1B; }
+.ds-text  { font-size:12.5px; line-height:1.5; }
+.ds-approve .ds-text { color:#065F46; }
+.ds-reject  .ds-text { color:#991B1B; }
+
+/* Doc viewer modal */
+.dv-preview {
+  background:var(--bg); border:1px solid var(--border); border-radius:var(--radius);
+  min-height:200px; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:8px;
+  margin-bottom:16px; padding:30px;
+}
+.dv-icon   { font-size:52px; }
+.dv-name   { font-size:14px; font-weight:700; color:var(--text); }
+.dv-meta   { font-size:12px; color:var(--muted); }
+
+/* Btn variants */
+.btn-primary {
+  padding:9px 20px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--primary); color:#fff;
+  transition:background var(--t), transform var(--t);
+}
+.btn-primary:hover { background:var(--primary-hover); transform:translateY(-1px); }
+.btn-danger-solid {
+  padding:9px 20px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--danger); color:#fff;
+  transition:background var(--t), transform var(--t);
+}
+.btn-danger-solid:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.btn-ghost {
+  padding:9px 16px; border-radius:var(--radius);
+  border:1px solid var(--border); cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  background:transparent; color:var(--subtext);
+  transition:background var(--t), color var(--t);
+}
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
+
+/* Agent-view overlay */
+.agent-overlay {
+  position:absolute; inset:0; z-index:10;
+  background:rgba(248,250,252,.9); backdrop-filter:blur(2px);
+  border-radius:var(--radius-lg);
+  display:none; align-items:center; justify-content:center; flex-direction:column; gap:8px;
+  text-align:center; padding:24px;
+}
+.agent-overlay.visible { display:flex; }
+.ao-icon  { font-size:32px; }
+.ao-title { font-size:14px; font-weight:700; color:var(--subtext); }
+.ao-sub   { font-size:12px; color:var(--muted); }
+
 @media (max-width:1100px) {
   .content { grid-template-columns:1fr; }
 }
@@ -587,19 +797,353 @@ body {
       </div>
 
     </div>
-    <div class="right-panel"><!-- PART 3 HERE --></div>
+    <div class="right-panel">
+
+      <!-- Action Card -->
+      <div class="action-card" id="action-card">
+        <div class="ac-icon">⚖️</div>
+        <div class="ac-title" id="action-title">Your Decision</div>
+        <div class="ac-sub" id="action-sub">Review all documents and terms carefully before approving or rejecting this deal request.</div>
+        <div class="ac-btns" id="ac-btns">
+          <button class="btn-approve" id="approve-btn" onclick="openModal('approve')">✅ Approve Deal</button>
+          <button class="btn-reject"  id="reject-btn"  onclick="openModal('reject')">❌ Reject Deal</button>
+          <button class="btn-message" onclick="openModal('message')">💬 Message Agent</button>
+        </div>
+        <div class="ac-decided" id="ac-decided">
+          <div class="decided-icon" id="decided-icon">✅</div>
+          <div class="decided-label" id="decided-label">Deal Approved</div>
+          <div class="decided-sub"  id="decided-sub">Decision recorded · Apr 22, 2026</div>
+        </div>
+        <!-- Agent view overlay -->
+        <div class="agent-overlay" id="agent-action-overlay">
+          <div class="ao-icon">🔒</div>
+          <div class="ao-title">Owner Action Required</div>
+          <div class="ao-sub">Only the property owner can approve or reject this deal.</div>
+        </div>
+      </div>
+
+      <!-- Owner's Private Note -->
+      <div class="card" style="position:relative; overflow:hidden;">
+        <div class="card-header">📝 My Private Note</div>
+        <div class="note-card-owner">
+          <div class="note-label">Only visible to you</div>
+          <textarea class="note-textarea" id="owner-note" placeholder="Add a private note about this deal...">Buyer seems genuine. Check the encumbrance certificate before final approval. Token amount to be collected via bank transfer only.</textarea>
+          <button class="note-save-btn" onclick="saveNote()">Save Note</button>
+        </div>
+        <div class="agent-overlay" id="agent-note-overlay">
+          <div class="ao-icon">🔒</div>
+          <div class="ao-title">Private Note</div>
+          <div class="ao-sub">Only the owner can view private notes.</div>
+        </div>
+      </div>
+
+      <!-- Owner Checklist -->
+      <div class="card" style="position:relative; overflow:hidden;">
+        <div class="card-header">☑️ Pre-Approval Checklist</div>
+        <div class="checklist">
+          <div class="check-item checked" onclick="toggleCheck(this)">
+            <div class="check-box">✓</div>
+            <div class="check-text">Documents verified by agent</div>
+          </div>
+          <div class="check-item checked" onclick="toggleCheck(this)">
+            <div class="check-box">✓</div>
+            <div class="check-text">Buyer's ID proof is valid</div>
+          </div>
+          <div class="check-item checked" onclick="toggleCheck(this)">
+            <div class="check-box">✓</div>
+            <div class="check-text">Bank pre-approval letter received</div>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-text">Encumbrance certificate submitted</div>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-text">Token amount transfer confirmed</div>
+          </div>
+          <div class="check-item" onclick="toggleCheck(this)">
+            <div class="check-box"></div>
+            <div class="check-text">Legal counsel reviewed sale deed</div>
+          </div>
+        </div>
+        <div class="agent-overlay" id="agent-checklist-overlay">
+          <div class="ao-icon">🔒</div>
+          <div class="ao-title">Owner Checklist</div>
+          <div class="ao-sub">Only the owner can manage this checklist.</div>
+        </div>
+      </div>
+
+      <!-- Activity Feed -->
+      <div class="card">
+        <div class="card-header">🕐 Activity</div>
+        <div class="activity-feed" id="activity-feed">
+          <div class="af-item">
+            <div class="af-dot primary"></div>
+            <div style="flex:1">
+              <div class="af-msg">Deal request submitted by Priya Sharma.</div>
+              <div class="af-time">Apr 19, 10:42 AM</div>
+            </div>
+          </div>
+          <div class="af-item">
+            <div class="af-dot warning"></div>
+            <div style="flex:1">
+              <div class="af-msg">Bank pre-approval letter uploaded. Pending review.</div>
+              <div class="af-time">Apr 19, 11:05 AM</div>
+            </div>
+          </div>
+          <div class="af-item">
+            <div class="af-dot success"></div>
+            <div style="flex:1">
+              <div class="af-msg">Sale deed draft verified by Realco system.</div>
+              <div class="af-time">Apr 19, 11:30 AM</div>
+            </div>
+          </div>
+          <div class="af-item">
+            <div class="af-dot muted"></div>
+            <div style="flex:1">
+              <div class="af-msg">Owner viewed deal details.</div>
+              <div class="af-time">Apr 22, 9:15 AM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: APPROVE ══ -->
+<div class="modal-overlay" id="modal-approve" onclick="handleBackdrop(event,'approve')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">✅ Approve Deal</div>
+      <button class="modal-close" onclick="closeModal('approve')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="decision-summary ds-approve">
+        <div class="ds-title">You are approving Deal #RLC-2847</div>
+        <div class="ds-text">Skyline Residency 4B — Offer ₹1.20 Cr by buyer Mr. Arun Mehta via agent Priya Sharma.</div>
+      </div>
+      <div class="mf-row">
+        <label class="mf-label">Message to Agent (optional)</label>
+        <textarea class="mf-textarea" id="approve-note" placeholder="E.g. Approve. Please proceed with the agreement drafting..."></textarea>
+      </div>
+      <div class="mf-info">
+        ℹ️ Approving will notify agent <strong>Priya Sharma</strong> and move the deal to the <strong>Agreement Stage</strong>. Token amount of <strong>₹5 Lakh</strong> becomes due.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('approve')">Cancel</button>
+      <button class="btn-primary" onclick="executeDecision('approved')">✅ Confirm Approval</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: REJECT ══ -->
+<div class="modal-overlay" id="modal-reject" onclick="handleBackdrop(event,'reject')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">❌ Reject Deal</div>
+      <button class="modal-close" onclick="closeModal('reject')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="decision-summary ds-reject">
+        <div class="ds-title">You are rejecting Deal #RLC-2847</div>
+        <div class="ds-text">This action will notify the agent and buyer. The deal will be marked as rejected.</div>
+      </div>
+      <div class="mf-row">
+        <label class="mf-label">Reason for Rejection <span style="color:var(--danger)">*</span></label>
+        <textarea class="mf-textarea" id="reject-note" placeholder="E.g. Offer price is too low. Expecting at least ₹1.22 Cr..."></textarea>
+      </div>
+      <div class="mf-info" style="border-color:var(--danger-light); background:var(--danger-light); color:#991B1B;">
+        ⚠️ This deal will be permanently closed. The agent may submit a revised offer separately.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('reject')">Cancel</button>
+      <button class="btn-danger-solid" onclick="executeDecision('rejected')">❌ Confirm Rejection</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: MESSAGE AGENT ══ -->
+<div class="modal-overlay" id="modal-message" onclick="handleBackdrop(event,'message')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">💬 Message Agent</div>
+      <button class="modal-close" onclick="closeModal('message')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="mf-info">
+        Sending a message to <strong>Priya Sharma</strong> regarding Deal <strong>#RLC-2847</strong>.
+      </div>
+      <div class="mf-row">
+        <label class="mf-label">Your Message</label>
+        <textarea class="mf-textarea" id="msg-body" placeholder="Type your message to the agent..."></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('message')">Cancel</button>
+      <button class="btn-primary" onclick="sendMessage()">Send Message</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: DOC VIEWER ══ -->
+<div class="modal-overlay" id="modal-docview" onclick="handleBackdrop(event,'docview')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="dv-title">📄 Document</div>
+      <button class="modal-close" onclick="closeModal('docview')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="dv-preview">
+        <div class="dv-icon" id="dv-icon">📄</div>
+        <div class="dv-name" id="dv-name">document.pdf</div>
+        <div class="dv-meta" id="dv-meta">Loading…</div>
+      </div>
+      <div class="mf-info" style="text-align:center; color:var(--subtext);">
+        Preview not available. Download the file to view its contents.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('docview')">Close</button>
+      <button class="btn-primary" onclick="showToast('📥 Downloading…'); closeModal('docview')">⬇️ Download</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+/* ── Modal helpers ── */
 function openModal(id)  { document.getElementById('modal-'+id).classList.add('open'); }
 function closeModal(id) { document.getElementById('modal-'+id).classList.remove('open'); }
+function handleBackdrop(e, id) { if(e.target === e.currentTarget) closeModal(id); }
+
+/* ── Toast ── */
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+/* ── Mode switch (Owner / Agent) ── */
+let currentMode = 'owner';
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('owner-mode-btn').classList.toggle('active-m', mode==='owner');
+  document.getElementById('agent-mode-btn').classList.toggle('active-m', mode==='agent');
+
+  const agentOverlays = ['agent-action-overlay','agent-note-overlay','agent-checklist-overlay'];
+  agentOverlays.forEach(id => {
+    const el = document.getElementById(id);
+    if(el) el.classList.toggle('visible', mode==='agent');
+  });
+  showToast(mode==='owner' ? '🏠 Viewing as Owner' : '🤝 Viewing as Agent');
+}
+
+/* ── View toggle (Owner View / Agent View) ── */
+function setView(btn, view) {
+  document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  switchMode(view === 'owner' ? 'owner' : 'agent');
+}
+
+/* ── Execute Decision ── */
+function executeDecision(decision) {
+  closeModal('approve');
+  closeModal('reject');
+
+  const banner = document.getElementById('status-banner');
+  const badge  = document.getElementById('deal-badge');
+  const btns   = document.getElementById('ac-btns');
+  const decided= document.getElementById('ac-decided');
+  const icon   = document.getElementById('decided-icon');
+  const label  = document.getElementById('decided-label');
+  const sub    = document.getElementById('decided-sub');
+  const tldot  = document.getElementById('tl-dot-review');
+  const tltitle= document.getElementById('tl-title-review');
+  const tldesc = document.getElementById('tl-desc-review');
+  const tltime = document.getElementById('tl-time-review');
+  const decDot = document.getElementById('tl-dot-decision');
+  const decTitle=document.getElementById('tl-title-decision');
+  const decDesc =document.getElementById('tl-desc-decision');
+
+  const now = 'Apr 22, 2026, ' + new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+
+  if(decision === 'approved') {
+    banner.className = 'status-banner approved';
+    banner.querySelector('.sb-icon').textContent = '✅';
+    banner.querySelector('strong').textContent   = 'Deal Approved';
+    banner.querySelector('span').textContent     = 'You approved this deal on ' + now;
+    banner.querySelector('.sb-badge').textContent= 'Approved';
+    badge.className = 'deal-badge dsb-approved';
+    badge.textContent= '✅ Approved';
+    icon.textContent = '✅'; label.textContent = 'Deal Approved'; sub.textContent = 'Decision recorded · ' + now;
+    tldot.className = 'tl-dot done'; tldot.textContent = '✓';
+    tltitle.textContent = 'Owner Approved'; tldesc.textContent = 'Deal approved. Proceeding to agreement stage.'; tltime.textContent = now;
+    decDot.className = 'tl-dot active'; decDot.textContent = '⏳';
+    decTitle.textContent = 'Agreement Drafting'; decDesc.textContent = 'Sale agreement being prepared.';
+    addActivity('✅ Owner approved the deal.', 'success', now);
+    showToast('✅ Deal #RLC-2847 approved successfully!');
+  } else {
+    banner.className = 'status-banner rejected';
+    banner.querySelector('.sb-icon').textContent = '❌';
+    banner.querySelector('strong').textContent   = 'Deal Rejected';
+    banner.querySelector('span').textContent     = 'You rejected this deal on ' + now;
+    banner.querySelector('.sb-badge').textContent= 'Rejected';
+    badge.className = 'deal-badge dsb-rejected';
+    badge.textContent= '❌ Rejected';
+    icon.textContent = '❌'; label.textContent = 'Deal Rejected'; sub.textContent = 'Decision recorded · ' + now;
+    tldot.className = 'tl-dot done'; tldot.textContent = '✗';
+    tltitle.textContent = 'Owner Rejected'; tldesc.textContent = 'Deal was rejected by owner.'; tltime.textContent = now;
+    decDot.className = 'tl-dot todo';
+    addActivity('❌ Owner rejected the deal.', 'danger', now);
+    showToast('❌ Deal #RLC-2847 rejected.');
+  }
+
+  btns.style.display   = 'none';
+  decided.style.display= 'block';
+}
+
+/* ── Activity Feed ── */
+function addActivity(msg, color, timeStr) {
+  const feed = document.getElementById('activity-feed');
+  const item = document.createElement('div');
+  item.className = 'af-item';
+  item.innerHTML = `<div class="af-dot ${color}"></div><div style="flex:1"><div class="af-msg">${msg}</div><div class="af-time">${timeStr}</div></div>`;
+  feed.insertBefore(item, feed.firstChild);
+}
+
+/* ── Checklist ── */
+function toggleCheck(el) {
+  el.classList.toggle('checked');
+  el.querySelector('.check-box').textContent = el.classList.contains('checked') ? '✓' : '';
+}
+
+/* ── Save Note ── */
+function saveNote() {
+  showToast('📝 Note saved privately.');
+}
+
+/* ── Send Message ── */
+function sendMessage() {
+  const body = document.getElementById('msg-body').value.trim();
+  if(!body) { showToast('⚠️ Please enter a message.'); return; }
+  closeModal('message');
+  document.getElementById('msg-body').value = '';
+  addActivity('💬 You sent a message to Priya Sharma.', 'primary', 'Just now');
+  showToast('💬 Message sent to Priya Sharma.');
+}
+
+/* ── Doc Viewer ── */
+function openDocViewer(title, icon, name, meta) {
+  document.getElementById('dv-title').innerHTML = icon + ' ' + title;
+  document.getElementById('dv-icon').textContent = icon;
+  document.getElementById('dv-name').textContent = name;
+  document.getElementById('dv-meta').textContent = meta;
+  openModal('docview');
 }
 </script>
 </body>
