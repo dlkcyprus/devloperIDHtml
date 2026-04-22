@@ -486,10 +486,146 @@ body {
 }
 .req-action-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
 
+/* ═══════════════════════════════
+   PART 3 — MODAL & FORMS
+═══════════════════════════════ */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(15,23,42,.45); backdrop-filter:blur(4px);
+  z-index:200; display:none; align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal-box {
+  background:var(--surface); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg); width:100%; max-width:700px;
+  max-height:90vh; overflow-y:auto;
+  animation:modalIn .22s ease;
+}
+.modal-box.sm { max-width:460px; }
+@keyframes modalIn {
+  from { opacity:0; transform:scale(.96) translateY(10px); }
+  to   { opacity:1; transform:scale(1) translateY(0); }
+}
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:var(--surface); z-index:1;
+}
+.modal-title { font-size:16px; font-weight:800; color:var(--text); }
+.modal-close {
+  width:28px; height:28px; border-radius:8px; border:none; cursor:pointer;
+  background:var(--bg); color:var(--subtext); font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t), color var(--t);
+}
+.modal-close:hover { background:var(--border); color:var(--text); }
+.modal-body   { padding:22px 24px; }
+.modal-footer {
+  padding:16px 24px; border-top:1px solid var(--border);
+  display:flex; gap:10px; justify-content:flex-end;
+  position:sticky; bottom:0; background:var(--surface);
+}
+
+/* Unit detail panel */
+.ud-hero {
+  border-radius:var(--radius); height:148px;
+  background:linear-gradient(135deg,#164E63,#0E7490,#312E81);
+  display:flex; align-items:center; justify-content:center;
+  font-size:54px; margin-bottom:16px;
+}
+.ud-price { font-size:24px; font-weight:800; color:var(--text); letter-spacing:-.02em; }
+.ud-sqm   { font-size:12px; color:var(--muted); margin-bottom:14px; }
+.ud-spec-row {
+  display:flex; justify-content:space-between;
+  padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;
+}
+.ud-spec-row:last-child { border-bottom:none; }
+.ud-spec-key { color:var(--subtext); }
+.ud-spec-val { color:var(--text); font-weight:600; }
+
+/* Progress steps */
+.steps { display:flex; align-items:center; margin-bottom:20px; }
+.step-item { display:flex; align-items:center; gap:6px; flex:1; }
+.step-circle {
+  width:26px; height:26px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; font-weight:700;
+}
+.step-circle.done   { background:var(--accent); color:#fff; }
+.step-circle.active { background:var(--text); color:#fff; }
+.step-circle.todo   { background:var(--border); color:var(--muted); }
+.step-label { font-size:11px; font-weight:500; color:var(--muted); }
+.step-label.active { color:var(--text); font-weight:700; }
+.step-line      { flex:1; height:2px; background:var(--border); margin:0 4px; }
+.step-line.done { background:var(--accent); }
+
+/* Form elements */
+.form-group { margin-bottom:14px; }
+.form-label {
+  display:block; font-size:11px; font-weight:700;
+  color:var(--subtext); letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;
+}
+.form-input, .form-textarea, .form-select {
+  width:100%; padding:10px 13px; border:1px solid var(--border); border-radius:var(--radius);
+  font-size:13.5px; font-family:'Inter',sans-serif; color:var(--text);
+  background:var(--bg); outline:none; transition:border-color var(--t), box-shadow var(--t);
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color:var(--accent); box-shadow:0 0 0 3px rgba(6,182,212,.1);
+}
+.form-textarea { min-height:80px; resize:vertical; }
+
+/* Upload zone */
+.upload-zone {
+  border:2px dashed var(--border); border-radius:var(--radius);
+  padding:16px; text-align:center; cursor:pointer;
+  transition:all var(--t); background:var(--bg);
+}
+.upload-zone:hover { border-color:var(--accent); background:var(--accent-light); }
+.upload-icon { font-size:22px; margin-bottom:5px; }
+.upload-text { font-size:12px; color:var(--muted); }
+.upload-text strong { color:var(--text); }
+
+/* Doc chips */
+.doc-chips { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.doc-chip {
+  display:flex; align-items:center; gap:5px;
+  background:var(--accent-light); border:1px solid #A5F3FC;
+  border-radius:6px; padding:4px 10px; font-size:11.5px; color:#0E7490;
+}
+.doc-chip span { cursor:pointer; color:var(--danger); transition:opacity var(--t); }
+.doc-chip span:hover { opacity:.7; }
+
+/* Buttons */
+.btn-ghost {
+  padding:9px 16px; border-radius:var(--radius);
+  border:1px solid var(--border); cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  background:transparent; color:var(--subtext);
+  transition:background var(--t), color var(--t);
+}
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
+.btn-accent {
+  padding:9px 22px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--accent); color:#fff;
+  transition:filter var(--t), transform var(--t);
+}
+.btn-accent:hover { filter:brightness(1.08); transform:translateY(-1px); }
+.btn-star {
+  padding:9px 16px; border-radius:var(--radius);
+  border:1px solid #FDE68A; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--warning-light); color:#92400E;
+  transition:all var(--t);
+}
+.btn-star:hover { background:var(--warning); color:#fff; border-color:var(--warning); }
+
 @media (max-width:768px) {
   .sidebar { transform:translateX(-100%); }
   .main { margin-left:0; }
   .content { padding:16px; }
+  .modal-box { max-width:100%; }
 }
 </style>
 </head>
@@ -655,6 +791,106 @@ body {
   </div>
 </div>
 
+<!-- ══ MODAL: UNIT DETAIL + REQUEST ══ -->
+<div class="modal-overlay" id="modal-unit" onclick="if(event.target===this)closeModal('unit')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="m-unit-title">Unit Detail</div>
+      <button class="modal-close" onclick="closeModal('unit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;">
+
+        <!-- Left: Unit detail -->
+        <div>
+          <div class="ud-hero">🏢</div>
+          <div class="ud-price" id="m-unit-price">₹1.2 Cr</div>
+          <div class="ud-sqm">₹8,500 / sq.ft</div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Config</span><span class="ud-spec-val" id="m-unit-config">3 BR · 2 Bath · 1 Car</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Aspect</span><span class="ud-spec-val">North</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Internal</span><span class="ud-spec-val">1,200 m²</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">External</span><span class="ud-spec-val">400 m²</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Total Area</span><span class="ud-spec-val">1,600 m²</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Floor</span><span class="ud-spec-val" id="m-unit-floor">2nd Floor</span></div>
+          <div class="ud-spec-row"><span class="ud-spec-key">Status</span><span class="ud-spec-val" id="m-unit-status" style="color:var(--success);">✅ Available</span></div>
+        </div>
+
+        <!-- Right: Request form -->
+        <div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;">📬 Send Access Request</div>
+          <div class="steps">
+            <div class="step-item">
+              <div class="step-circle done">✓</div>
+              <span class="step-label" style="color:var(--accent);">Unit</span>
+            </div>
+            <div class="step-line done"></div>
+            <div class="step-item">
+              <div class="step-circle active" id="sc-note">2</div>
+              <span class="step-label active" id="sl-note">Note</span>
+            </div>
+            <div class="step-line" id="sline-docs"></div>
+            <div class="step-item">
+              <div class="step-circle todo" id="sc-docs">3</div>
+              <span class="step-label" id="sl-docs">Docs</span>
+            </div>
+          </div>
+
+          <!-- Step 1: Note -->
+          <div id="modal-step-note">
+            <div class="form-group">
+              <label class="form-label">Message to Owner</label>
+              <textarea class="form-textarea" id="modal-msg" placeholder="e.g. My client is highly interested. Budget ready. Can we schedule a visit?"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Client Budget</label>
+              <input class="form-input" placeholder="e.g. ₹1.1 Cr – ₹1.3 Cr"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Visit Date</label>
+              <input class="form-input" type="date"/>
+            </div>
+          </div>
+
+          <!-- Step 2: Docs -->
+          <div id="modal-step-docs" style="display:none;">
+            <div class="form-group">
+              <label class="form-label">Agent License / RERA *</label>
+              <div class="upload-zone" onclick="addDoc('RERA_License.pdf')">
+                <div class="upload-icon">🪪</div>
+                <div class="upload-text"><strong>Click to upload</strong> RERA certificate</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">KYC Document *</label>
+              <div class="upload-zone" onclick="addDoc('KYC_Aadhar.pdf')">
+                <div class="upload-icon">📄</div>
+                <div class="upload-text"><strong>Click to upload</strong> Aadhar / PAN</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Client Proof of Funds</label>
+              <div class="upload-zone" onclick="addDoc('Client_Funds.pdf')">
+                <div class="upload-icon">💰</div>
+                <div class="upload-text"><strong>Click to upload</strong> Bank statement</div>
+              </div>
+            </div>
+            <div class="doc-chips" id="modal-doc-chips"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" id="modal-back-btn" style="display:none;" onclick="modalBack()">← Back</button>
+      <button class="btn-ghost" onclick="closeModal('unit')">Cancel</button>
+      <button class="btn-star" id="modal-star-btn" onclick="toggleStarFromModal()">☆ Shortlist</button>
+      <button class="btn-accent" id="modal-next-btn" onclick="modalNext()">Next: Upload Docs →</button>
+    </div>
+  </div>
+</div>
+  </div>
+</div>
+
 <!-- ══ FLOATING SHORTLIST BAR ══ -->
 <div class="sl-float" id="sl-float">
   ⭐ <span class="count" id="sl-float-count">0</span> units shortlisted
@@ -665,15 +901,435 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
+// ── STATE ──
+let shortlist    = [];   // {id, proj, price, beds, floor}
+let requested    = [];   // unit IDs that have been requested
+let modalStep    = 1;
+let modalDocs    = [];
+let currentUnit  = null;
+let currentFloor = 'north';
+
+// ── DATA ──
+const projects = [
+  {id:1,name:'Skyline Residency',sub:'Tower A',   loc:'Bandra West, Mumbai',    emoji:'🏙️',type:'sale', access:'granted',units:96,available:58,price:'₹85 L'},
+  {id:2,name:'Green Valley Villa',sub:'Phase 2',  loc:'Whitefield, Bangalore',  emoji:'🏡',type:'rent', access:'pending',units:24,available:12,price:'₹85K/mo'},
+  {id:3,name:'Marina Heights',   sub:'Block C',   loc:'Alwarpet, Chennai',      emoji:'🏢',type:'sale', access:'none',   units:48,available:30,price:'₹78 L'},
+  {id:4,name:'Rosewood Studios', sub:'Tower B',   loc:'Koregaon Park, Pune',    emoji:'🏠',type:'rent', access:'none',   units:36,available:22,price:'₹22K/mo'},
+  {id:5,name:'Prestige Tower',   sub:'North Wing',loc:'Powai, Mumbai',          emoji:'🏗️',type:'sale', access:'pending',units:60,available:40,price:'₹2.1 Cr'},
+  {id:6,name:'Palm Grove',       sub:'Phase 1',   loc:'Jubilee Hills, Hyderabad',emoji:'🏘️',type:'rent',access:'none',   units:18,available:10,price:'₹48K/mo'},
+  {id:7,name:'Sunrise Apartments',sub:'Block A',  loc:'Salt Lake, Kolkata',     emoji:'🌅',type:'sale', access:'none',   units:44,available:28,price:'₹65 L'},
+  {id:8,name:'Royal Enclave',    sub:'Tower 3',   loc:'Sector 62, Noida',       emoji:'👑',type:'sale', access:'none',   units:72,available:35,price:'₹1.5 Cr'},
+];
+
+const floorData = {
+  north:[
+    {id:'A-101',status:'available',price:'₹85 L', beds:'2 BR',floor:'GF'},
+    {id:'A-102',status:'hold',     price:'₹92 L', beds:'2 BR',floor:'GF'},
+    {id:'A-103',status:'available',price:'₹78 L', beds:'1 BR',floor:'GF'},
+    {id:'A-104',status:'available',price:'₹78 L', beds:'1 BR',floor:'GF'},
+    {id:'A-105',status:'available',price:'₹1.1 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-106',status:'booked',   price:'₹1.2 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-201',status:'sold',     price:'₹1.4 Cr',beds:'3 BR',floor:'2F'},
+    {id:'A-202',status:'available',price:'₹95 L', beds:'2 BR',floor:'2F'},
+    {id:'A-203',status:'available',price:'₹2.0 Cr',beds:'4 BR',floor:'2F'},
+    {id:'A-301',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'3F'},
+    {id:'A-401',status:'available',price:'₹2.1 Cr',beds:'4 BR',floor:'4F'},
+    {id:'A-501',status:'hold',     price:'₹2.5 Cr',beds:'Penthouse',floor:'5F'},
+  ],
+  south:[
+    {id:'B-101',status:'available',price:'₹80 L', beds:'2 BR',floor:'GF'},
+    {id:'B-102',status:'available',price:'₹80 L', beds:'2 BR',floor:'GF'},
+    {id:'B-201',status:'sold',     price:'₹1.1 Cr',beds:'3 BR',floor:'2F'},
+    {id:'B-202',status:'booked',   price:'₹1.0 Cr',beds:'2 BR',floor:'2F'},
+    {id:'B-301',status:'available',price:'₹1.5 Cr',beds:'3 BR',floor:'3F'},
+    {id:'B-401',status:'available',price:'₹1.9 Cr',beds:'4 BR',floor:'4F'},
+  ],
+  northeast:[
+    {id:'C-101',status:'available',price:'₹95 L', beds:'2 BR',floor:'GF'},
+    {id:'C-102',status:'hold',     price:'₹1.0 Cr',beds:'2 BR',floor:'GF'},
+    {id:'C-201',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'2F'},
+    {id:'C-301',status:'sold',     price:'₹1.6 Cr',beds:'3 BR',floor:'3F'},
+  ],
+  southwest:[
+    {id:'D-101',status:'available',price:'₹88 L', beds:'2 BR',floor:'GF'},
+    {id:'D-201',status:'available',price:'₹1.2 Cr',beds:'3 BR',floor:'2F'},
+    {id:'D-301',status:'booked',   price:'₹1.7 Cr',beds:'4 BR',floor:'3F'},
+  ]
+};
+
+const requestsData = [
+  {unit:'A-106',proj:'Skyline Residency',date:'Apr 13, 2026',status:'approved'},
+  {unit:'A-203',proj:'Skyline Residency',date:'Apr 14, 2026',status:'pending'},
+  {unit:'B-101',proj:'Green Valley Villa',date:'Apr 10, 2026',status:'pending'},
+];
+
+// ── RENDER PROJECTS ──
+function renderProjects(filter='') {
+  const grid     = document.getElementById('projects-grid');
+  const filtered = projects.filter(p =>
+    !filter || p.name.toLowerCase().includes(filter.toLowerCase()) ||
+    p.loc.toLowerCase().includes(filter.toLowerCase())
+  );
+  document.getElementById('proj-count').textContent = filtered.length + ' projects found';
+
+  grid.innerHTML = filtered.map(p => {
+    const btnMap = {
+      granted: `<button class="proj-btn view"    onclick="event.stopPropagation();openMatrix(${p.id})">📋 View Matrix</button>`,
+      pending: `<button class="proj-btn sent">⏳ Request Sent</button>`,
+      none:    `<button class="proj-btn request" onclick="event.stopPropagation();requestProject(${p.id})">📬 Request Access</button>`
+    };
+    const tagMap = {
+      granted: `<div class="proj-access-tag granted">✅ Access Granted</div>`,
+      pending: `<div class="proj-access-tag pending">⏳ Pending</div>`,
+      none: ''
+    };
+    return `
+    <div class="proj-card" onclick="openMatrix(${p.id})">
+      <div class="proj-img">
+        ${p.emoji}
+        ${tagMap[p.access]}
+        <div class="proj-dots" onclick="event.stopPropagation();showToast('⋯ Options for ${p.name}')">⋯</div>
+      </div>
+      <div class="proj-body">
+        <div class="proj-name">${p.name} <span style="font-weight:400;color:var(--muted);font-size:12px;">${p.sub}</span></div>
+        <div class="proj-loc">📍 ${p.loc}</div>
+        <div class="proj-stats">
+          <div class="proj-stat"><div class="proj-stat-num">${p.units}</div><div class="proj-stat-label">Units</div></div>
+          <div class="proj-stat"><div class="proj-stat-num" style="color:var(--success);">${p.available}</div><div class="proj-stat-label">Available</div></div>
+          <div class="proj-stat"><div class="proj-stat-num">${p.price}</div><div class="proj-stat-label">From</div></div>
+        </div>
+        ${btnMap[p.access]}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterProjects(val) { renderProjects(val); }
+
+function requestProject(id) {
+  const p = projects.find(x => x.id === id);
+  if (p) { p.access = 'pending'; renderProjects(); showToast('📬 Access request sent for ' + p.name); }
+}
+
+// ── MATRIX ──
+function openMatrix(projId) {
+  const p = projects.find(x => x.id === projId);
+  if (!p) return;
+  document.getElementById('mh-title').textContent = p.name + ' — ' + p.sub;
+  document.getElementById('mh-sub').textContent   = '📍 ' + p.loc + ' · For ' + (p.type === 'sale' ? 'Sale' : 'Rent');
+  document.getElementById('mh-emoji').textContent = p.emoji;
+  goToPage('matrix', null);
+  renderFloorTabs();
+  renderUnits();
+}
+
+function renderFloorTabs() {
+  const bar = document.getElementById('floor-bar');
+  bar.innerHTML = Object.entries(floorData).map(([key, units], i) => {
+    const label = key.charAt(0).toUpperCase() + key.slice(1);
+    const avail = units.filter(u => u.status === 'available').length;
+    return `<div class="floor-tab${i===0?' active':''}" onclick="setFloor(this,'${key}')">${label} <span class="fc">${avail} avail</span></div>`;
+  }).join('');
+  currentFloor = 'north';
+}
+
+function setFloor(el, key) {
+  document.querySelectorAll('.floor-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  currentFloor = key;
+  renderUnits();
+}
+
+function setMatrixTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('📂 ' + el.textContent + ' tab');
+}
+
+function renderUnits() {
+  const grid  = document.getElementById('units-grid');
+  const units = floorData[currentFloor] || [];
+  const statusLabels = {available:'● Available', hold:'⏳ On Hold', sold:'✖ Sold', booked:'📋 Booked'};
+
+  grid.innerHTML = units.map(u => {
+    const isStarred   = shortlist.find(s => s.id === u.id);
+    const isRequested = requested.includes(u.id);
+    let bottom = '';
+    if (u.status !== 'sold') {
+      bottom = isRequested
+        ? `<div class="unit-req-tag sent">✅ Request Sent</div>`
+        : `<div class="unit-req-tag tap">Tap to Request</div>`;
+    }
+    return `
+    <div class="unit-card ${u.status}${isStarred?' starred':''}${isRequested?' requested':''}" onclick="openUnitModal('${u.id}')">
+      <div class="unit-top">
+        <div class="unit-id">${u.id}</div>
+        ${u.status !== 'sold'
+          ? `<button class="star-btn" onclick="event.stopPropagation();toggleStar('${u.id}','${currentFloor}')">${isStarred?'⭐':'☆'}</button>`
+          : ''}
+      </div>
+      <div class="unit-status">${statusLabels[u.status]}</div>
+      <div class="unit-price">${u.price}</div>
+      <div class="unit-beds">${u.beds}</div>
+      ${bottom}
+    </div>`;
+  }).join('');
+
+  document.getElementById('matrix-sl-count').textContent = shortlist.length;
+}
+
+// ── SHORTLIST ──
+function toggleStar(id, floor) {
+  const idx = shortlist.findIndex(s => s.id === id);
+  if (idx > -1) {
+    shortlist.splice(idx, 1);
+    showToast('☆ Removed from shortlist');
+  } else {
+    const u = (floorData[floor] || []).find(x => x.id === id);
+    if (u) shortlist.push({id, proj:'Skyline Residency', price:u.price, beds:u.beds, floor:u.floor});
+    showToast('⭐ Added to shortlist!');
+  }
+  updateShortlistUI();
+  renderUnits();
+}
+
+function updateShortlistUI() {
+  const count = shortlist.length;
+  document.getElementById('sl-top-count').textContent   = count;
+  document.getElementById('sl-nav-badge').textContent   = count;
+  document.getElementById('sl-float-count').textContent = count;
+  document.getElementById('sl-bulk-count').textContent  = count;
+  document.getElementById('matrix-sl-count').textContent= count;
+  document.getElementById('sl-float').classList.toggle('visible', count > 0);
+}
+
+function clearAll() {
+  shortlist = [];
+  updateShortlistUI();
+  renderUnits();
+  renderShortlistPage();
+  showToast('🗑️ Shortlist cleared');
+}
+
+function renderShortlistPage() {
+  const grid = document.getElementById('sl-items-grid');
+  const bulk = document.getElementById('sl-bulk-bar');
+  if (shortlist.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:50px 20px;color:var(--muted);font-size:14px;">No units shortlisted yet.<br><span style="font-size:12px;">Browse projects and click ☆ on any unit.</span></div>`;
+    bulk.style.display = 'none';
+    return;
+  }
+  bulk.style.display = 'flex';
+  grid.innerHTML = shortlist.map(s => {
+    const isReq = requested.includes(s.id);
+    return `
+    <div class="sl-item-card starred">
+      <div class="sl-item-remove" onclick="toggleStar('${s.id}','north')">✕</div>
+      <div style="font-size:24px;margin-bottom:8px;">🏢</div>
+      <div class="sl-item-id">⭐ ${s.id}</div>
+      <div class="sl-item-proj">${s.proj} · ${s.floor}</div>
+      <div class="sl-item-price">${s.price}</div>
+      <div class="sl-item-tags">
+        <span class="sl-tag">${s.beds}</span>
+        <span class="sl-tag">North Facing</span>
+      </div>
+      <div class="sl-req-status ${isReq?'sent':'not-sent'}">${isReq?'✅ Request Sent':'📬 Not Requested Yet'}</div>
+      ${!isReq ? `<button onclick="quickRequest('${s.id}')" style="width:100%;margin-top:8px;padding:7px;border-radius:var(--radius);background:var(--accent);color:#fff;border:none;font-size:12.5px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;">Request Access</button>` : ''}
+    </div>`;
+  }).join('');
+}
+
+function bulkSendAll() {
+  const unsent = shortlist.filter(s => !requested.includes(s.id));
+  unsent.forEach(s => requested.push(s.id));
+  updateShortlistUI();
+  renderShortlistPage();
+  renderUnits();
+  renderRequests();
+  showToast(`📬 Requests sent for ${unsent.length} unit(s)!`);
+  document.getElementById('req-nav-badge').textContent = requested.length + 3;
+}
+
+function bulkRequestAll() {
+  const units = (floorData[currentFloor] || []).filter(u => u.status === 'available' && !requested.includes(u.id));
+  units.forEach(u => requested.push(u.id));
+  renderUnits();
+  showToast(`📬 Requested all ${units.length} available units!`);
+}
+
+function quickRequest(id) {
+  if (!requested.includes(id)) requested.push(id);
+  updateShortlistUI();
+  renderShortlistPage();
+  renderUnits();
+  renderRequests();
+  showToast('📬 Request sent for ' + id);
+  document.getElementById('req-nav-badge').textContent = requested.length + 3;
+}
+
+// ── UNIT MODAL ──
+function openUnitModal(id) {
+  const u = (floorData[currentFloor] || []).find(x => x.id === id);
+  if (!u || u.status === 'sold') return;
+  currentUnit = u;
+  modalStep = 1;
+  modalDocs = [];
+
+  document.getElementById('m-unit-title').textContent  = id;
+  document.getElementById('m-unit-price').textContent  = u.price;
+  document.getElementById('m-unit-config').textContent = u.beds + ' · 2 Bath · 1 Car';
+  document.getElementById('m-unit-floor').textContent  = u.floor;
+  const sMap = {available:'✅ Available', hold:'⏳ On Hold', booked:'📋 Booked'};
+  const cMap = {available:'var(--success)', hold:'var(--warning)', booked:'var(--primary)'};
+  const sEl  = document.getElementById('m-unit-status');
+  sEl.textContent = sMap[u.status] || '';
+  sEl.style.color = cMap[u.status] || 'var(--text)';
+
+  const isReq = requested.includes(id);
+  const nextBtn = document.getElementById('modal-next-btn');
+  nextBtn.textContent = isReq ? '✅ Already Requested' : 'Next: Upload Docs →';
+  nextBtn.disabled    = isReq;
+
+  const starBtn = document.getElementById('modal-star-btn');
+  starBtn.textContent = shortlist.find(s => s.id === id) ? '⭐ Shortlisted' : '☆ Shortlist';
+
+  // Reset to step 1
+  document.getElementById('modal-step-note').style.display = 'block';
+  document.getElementById('modal-step-docs').style.display = 'none';
+  document.getElementById('modal-back-btn').style.display  = 'none';
+  document.getElementById('modal-doc-chips').innerHTML = '';
+  document.getElementById('sc-note').className = 'step-circle active';
+  document.getElementById('sl-note').className = 'step-label active';
+  document.getElementById('sc-docs').className = 'step-circle todo';
+  document.getElementById('sl-docs').className = 'step-label';
+  document.getElementById('sline-docs').className = 'step-line';
+
+  openModal('unit');
+}
+
+function modalNext() {
+  if (modalStep === 1) {
+    document.getElementById('modal-step-note').style.display = 'none';
+    document.getElementById('modal-step-docs').style.display = 'block';
+    document.getElementById('modal-back-btn').style.display  = 'inline-flex';
+    document.getElementById('modal-next-btn').textContent    = '📬 Submit Request';
+    document.getElementById('sc-note').className  = 'step-circle done';
+    document.getElementById('sc-note').textContent= '✓';
+    document.getElementById('sl-note').className  = 'step-label';
+    document.getElementById('sc-docs').className  = 'step-circle active';
+    document.getElementById('sl-docs').className  = 'step-label active';
+    document.getElementById('sline-docs').className = 'step-line done';
+    modalStep = 2;
+  } else {
+    if (currentUnit && !requested.includes(currentUnit.id)) {
+      requested.push(currentUnit.id);
+      document.getElementById('req-nav-badge').textContent = requested.length + 3;
+      renderRequests();
+    }
+    closeModal('unit');
+    showToast('📬 Request submitted! Owner will be notified.');
+    renderUnits();
+    renderShortlistPage();
+  }
+}
+
+function modalBack() {
+  document.getElementById('modal-step-note').style.display = 'block';
+  document.getElementById('modal-step-docs').style.display = 'none';
+  document.getElementById('modal-back-btn').style.display  = 'none';
+  document.getElementById('modal-next-btn').textContent    = 'Next: Upload Docs →';
+  document.getElementById('sc-note').className   = 'step-circle active';
+  document.getElementById('sc-note').textContent = '2';
+  document.getElementById('sl-note').className   = 'step-label active';
+  document.getElementById('sc-docs').className   = 'step-circle todo';
+  document.getElementById('sl-docs').className   = 'step-label';
+  document.getElementById('sline-docs').className= 'step-line';
+  modalStep = 1;
+}
+
+function addDoc(name) {
+  if (modalDocs.includes(name)) { showToast('⚠️ Already added'); return; }
+  modalDocs.push(name);
+  const chips = document.getElementById('modal-doc-chips');
+  const chip  = document.createElement('div');
+  chip.className = 'doc-chip';
+  chip.id = 'mchip-' + name;
+  chip.innerHTML = `📄 ${name} <span onclick="removeModalDoc('${name}')">✕</span>`;
+  chips.appendChild(chip);
+  showToast('📎 ' + name + ' attached');
+}
+
+function removeModalDoc(name) {
+  modalDocs = modalDocs.filter(d => d !== name);
+  const el = document.getElementById('mchip-' + name);
+  if (el) el.remove();
+}
+
+function toggleStarFromModal() {
+  if (!currentUnit) return;
+  toggleStar(currentUnit.id, currentFloor);
+  document.getElementById('modal-star-btn').textContent =
+    shortlist.find(s => s.id === currentUnit.id) ? '⭐ Shortlisted' : '☆ Shortlist';
+}
+
+// ── REQUESTS TABLE ──
+function renderRequests() {
+  const body = document.getElementById('requests-body');
+  const extra = requested
+    .filter(id => !requestsData.find(r => r.unit === id))
+    .map(id => ({unit:id, proj:'Skyline Residency', date:'Apr 18, 2026', status:'pending'}));
+  const all = [...requestsData, ...extra];
+  const sMap = {
+    approved:`<span class="req-status-pill rsp-approved">✅ Approved</span>`,
+    pending: `<span class="req-status-pill rsp-pending">⏳ Pending</span>`,
+    rejected:`<span class="req-status-pill rsp-rejected">❌ Rejected</span>`
+  };
+  body.innerHTML = all.map(r => `
+    <div class="req-table-row">
+      <div><div class="req-unit-id">${r.unit}</div><div class="req-unit-sub">Unit · North Wing</div></div>
+      <div class="req-proj">${r.proj}</div>
+      <div class="req-date">${r.date}</div>
+      <div>${sMap[r.status] || sMap.pending}</div>
+      <div><button class="req-action-btn" onclick="showToast('📄 Viewing ${r.unit}')">View</button></div>
+    </div>`).join('');
+}
+
+// ── NAV ──
+function goToPage(page, navEl) {
+  ['projects','matrix','shortlist','requests'].forEach(p => {
+    document.getElementById('page-' + p).style.display = 'none';
+  });
+  document.getElementById('page-' + page).style.display = 'block';
+  const titles = {projects:'Browse Projects', matrix:'Property Matrix', shortlist:'My Shortlist', requests:'My Requests'};
+  document.getElementById('topbar-title').textContent = titles[page] || page;
+  if (navEl) {
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    navEl.classList.add('active');
+  }
+  if (page === 'shortlist') renderShortlistPage();
+  if (page === 'requests')  renderRequests();
+}
+
+function setPill(el) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  showToast('🔍 Filtered: ' + el.textContent);
+}
+
+// ── MODAL ──
+function openModal(id)  { const el = document.getElementById('modal-' + id); if(el) el.classList.add('open'); }
+function closeModal(id) { const el = document.getElementById('modal-' + id); if(el) el.classList.remove('open'); }
+
+// ── TOAST ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
 }
-function openModal(id)  { const el = document.getElementById('modal-'+id); if(el) el.classList.add('open'); }
-function closeModal(id) { const el = document.getElementById('modal-'+id); if(el) el.classList.remove('open'); }
-function goToPage(page) { showToast('📂 ' + page); }
-function filterProjects(v) { showToast('🔍 ' + v); }
+
+// ── INIT ──
+renderProjects();
+renderRequests();
 </script>
 </body>
 </html>
