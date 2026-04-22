@@ -383,6 +383,204 @@ body {
 }
 
 /* ═══════════════════════════════
+   REQUESTS TABLE
+═══════════════════════════════ */
+.requests-table {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 28px;
+}
+.req-table-head {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1fr 1fr 1.8fr;
+  padding: 11px 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 700;
+  color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+}
+.req-row {
+  display: grid;
+  grid-template-columns: 2fr 1.6fr 1fr 1fr 1.8fr;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  transition: background var(--t);
+}
+.req-row:last-child { border-bottom: none; }
+.req-row:hover { background: var(--bg); }
+
+.req-agent { display: flex; align-items: center; gap: 10px; }
+.req-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 12px; color: #fff; flex-shrink: 0;
+}
+.req-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+.req-email { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.req-prop  { font-size: 13px; font-weight: 500; color: var(--text); }
+.req-prop-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.req-date  { font-size: 12px; color: var(--subtext); }
+
+.req-status {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 100px;
+  font-size: 11px; font-weight: 600; width: fit-content;
+}
+.req-status.pending  { background: var(--warning-light); color: #92400E; }
+.req-status.approved { background: var(--success-light); color: var(--success); }
+.req-status.rejected { background: var(--danger-light);  color: var(--danger); }
+
+.req-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+.req-btn {
+  padding: 6px 12px; border-radius: 8px;
+  font-size: 11px; font-weight: 600;
+  cursor: pointer; border: none;
+  font-family: 'Inter', sans-serif;
+  transition: background var(--t), color var(--t), transform var(--t);
+}
+.req-btn:hover { transform: translateY(-1px); }
+.req-btn.approve { background: var(--success-light); color: var(--success); }
+.req-btn.approve:hover { background: var(--success); color: #fff; }
+.req-btn.reject  { background: var(--danger-light);  color: var(--danger); }
+.req-btn.reject:hover  { background: var(--danger); color: #fff; }
+.req-btn.view    { background: var(--bg); color: var(--subtext); border: 1px solid var(--border); }
+.req-btn.view:hover    { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+
+/* ═══════════════════════════════
+   MODAL
+═══════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,.45);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: none; align-items: center; justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  width: 560px; max-width: 100%;
+  max-height: 88vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp .25s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.modal-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.modal-close {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; cursor: pointer; color: var(--muted);
+  background: var(--bg); border: 1px solid var(--border);
+  transition: background var(--t), color var(--t);
+}
+.modal-close:hover { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
+.modal-body { padding: 20px 24px; }
+.modal-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* ── Form elements ── */
+.form-row   { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--text); margin-bottom: 5px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-size: 13.5px; font-family: 'Inter', sans-serif;
+  color: var(--text); background: var(--bg); outline: none;
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+  background: var(--surface);
+}
+.form-textarea { min-height: 80px; resize: vertical; }
+.form-select   { cursor: pointer; }
+
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 24px; text-align: center; cursor: pointer;
+  background: var(--bg);
+  transition: border-color var(--t), background var(--t);
+}
+.upload-zone:hover { border-color: var(--primary); background: var(--primary-light); }
+.upload-icon { font-size: 26px; margin-bottom: 8px; }
+.upload-text { font-size: 13px; color: var(--subtext); }
+.upload-text strong { color: var(--primary); }
+
+/* ── Modal buttons ── */
+.btn-cancel {
+  padding: 9px 20px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 13px; font-weight: 600; color: var(--subtext);
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+.btn-cancel:hover { background: var(--bg); color: var(--text); }
+.btn-submit {
+  padding: 9px 22px; border-radius: var(--radius);
+  background: var(--primary); color: #fff; border: none;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.btn-submit:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(79,70,229,.28);
+}
+.btn-submit.danger { background: var(--danger); }
+.btn-submit.danger:hover { background: #DC2626; box-shadow: 0 4px 14px rgba(239,68,68,.28); }
+
+/* ── Doc review items ── */
+.doc-note {
+  background: var(--primary-light); border: 1px solid #C7D2FE;
+  border-radius: var(--radius); padding: 12px 14px; margin-bottom: 18px;
+}
+.doc-note-label { font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+.doc-note-text  { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+.doc-list-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.doc-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 13px; border-radius: var(--radius);
+  background: var(--bg); border: 1px solid var(--border);
+  margin-bottom: 8px; cursor: pointer;
+  transition: border-color var(--t), background var(--t);
+}
+.doc-item:hover { background: var(--primary-light); border-color: var(--primary); }
+.doc-icon  { font-size: 20px; flex-shrink: 0; }
+.doc-name  { font-size: 13px; font-weight: 600; color: var(--text); }
+.doc-meta  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.doc-download {
+  margin-left: auto; font-size: 12px; font-weight: 600;
+  color: var(--primary); white-space: nowrap;
+  transition: color var(--t);
+}
+.doc-item:hover .doc-download { color: var(--primary-hover); }
+
+/* ═══════════════════════════════
    TOAST
 ═══════════════════════════════ */
 .toast {
@@ -578,8 +776,243 @@ body {
 
     </div>
 
-    <!-- PART 3: REQUESTS TABLE + MODALS HERE -->
+    <!-- REQUESTS TABLE -->
+    <div class="section-head">
+      <div class="section-title">
+        Agent Requests
+        <span class="pill">● 3 Pending</span>
+      </div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="requests-table">
+      <div class="req-table-head">
+        <div>Agent</div>
+        <div>Property</div>
+        <div>Date</div>
+        <div>Status</div>
+        <div>Actions</div>
+      </div>
 
+      <div class="req-row" id="row1">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#4F46E5;">PS</div>
+          <div>
+            <div class="req-name">Priya Sharma</div>
+            <div class="req-email">priya@realty.com</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Skyline Residency 4B</div>
+          <div class="req-prop-sub">For Sale · ₹1.2 Cr</div>
+        </div>
+        <div class="req-date">Apr 14, 2026</div>
+        <div><span class="req-status pending">⏳ Pending</span></div>
+        <div class="req-btns">
+          <button class="req-btn view"    onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" onclick="updateStatus('row1','approve')">✓ Approve</button>
+          <button class="req-btn reject"  onclick="updateStatus('row1','reject')">✕</button>
+        </div>
+      </div>
+
+      <div class="req-row" id="row2">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#10B981;">AK</div>
+          <div>
+            <div class="req-name">Amit Khanna</div>
+            <div class="req-email">amit.k@homes.in</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Green Valley Villa</div>
+          <div class="req-prop-sub">For Rent · ₹85K/mo</div>
+        </div>
+        <div class="req-date">Apr 13, 2026</div>
+        <div><span class="req-status approved">✅ Approved</span></div>
+        <div class="req-btns">
+          <button class="req-btn view" onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" style="opacity:.35;pointer-events:none;">✓ Approve</button>
+          <button class="req-btn reject"  style="opacity:.35;pointer-events:none;">✕</button>
+        </div>
+      </div>
+
+      <div class="req-row" id="row3">
+        <div class="req-agent">
+          <div class="req-avatar" style="background:#F59E0B;">NG</div>
+          <div>
+            <div class="req-name">Neha Gupta</div>
+            <div class="req-email">neha@proplink.in</div>
+          </div>
+        </div>
+        <div>
+          <div class="req-prop">Marina Heights 12A</div>
+          <div class="req-prop-sub">For Sale · ₹78 L</div>
+        </div>
+        <div class="req-date">Apr 10, 2026</div>
+        <div><span class="req-status pending">⏳ Pending</span></div>
+        <div class="req-btns">
+          <button class="req-btn view"    onclick="openModal('docreview')">📄 Docs</button>
+          <button class="req-btn approve" onclick="updateStatus('row3','approve')">✓ Approve</button>
+          <button class="req-btn reject"  onclick="updateStatus('row3','reject')">✕</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ MODAL: POST PROPERTY ══ -->
+<div class="modal-overlay" id="modal-post">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Post New Property</div>
+      <div class="modal-close" onclick="closeModal('post')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Property Title</label>
+          <input class="form-input" placeholder="e.g. Skyline Residency 4B"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-select">
+            <option>Apartment</option><option>Villa</option>
+            <option>Independent House</option><option>Studio</option><option>Commercial</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Listing Mode</label>
+          <select class="form-select"><option>For Sale</option><option>For Rent</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price</label>
+          <input class="form-input" placeholder="e.g. ₹1.2 Cr or ₹45,000/mo"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location / Address</label>
+        <input class="form-input" placeholder="Area, City"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Bedrooms</label>
+          <select class="form-select">
+            <option>1 BHK</option><option>2 BHK</option><option>3 BHK</option><option>4+ BHK</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Area (sq.ft)</label>
+          <input class="form-input" placeholder="e.g. 1450"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" placeholder="Describe your property…"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Upload Documents / Images</label>
+        <div class="upload-zone" onclick="showToast('📎 File picker opened')">
+          <div class="upload-icon">📎</div>
+          <div class="upload-text"><strong>Click to upload</strong> or drag &amp; drop<br/>PDF, JPG, PNG — up to 20MB</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Agent Access</label>
+        <select class="form-select">
+          <option>Open to all verified agents</option>
+          <option>Invite specific agents only</option>
+          <option>No agent access</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('post')">Cancel</button>
+      <button class="btn-submit" onclick="closeModal('post');showToast('🏠 Property listed successfully!')">Post Property</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: DOC REVIEW ══ -->
+<div class="modal-overlay" id="modal-docreview">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Agent Documents — Priya Sharma</div>
+      <div class="modal-close" onclick="closeModal('docreview')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="doc-note">
+        <div class="doc-note-label">📋 Request Note from Agent</div>
+        <div class="doc-note-text">"My client is very interested in this property and is ready with token amount. Please review the attached KYC and license documents."</div>
+      </div>
+      <div class="doc-list-title">Submitted Documents</div>
+      <div class="doc-item">
+        <div class="doc-icon">📄</div>
+        <div>
+          <div class="doc-name">Agent_License_PriyaSharma.pdf</div>
+          <div class="doc-meta">1.2 MB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon">🪪</div>
+        <div>
+          <div class="doc-name">KYC_Aadhar_PriyaSharma.pdf</div>
+          <div class="doc-meta">840 KB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div class="doc-item">
+        <div class="doc-icon">📊</div>
+        <div>
+          <div class="doc-name">Client_Proof_of_Funds.pdf</div>
+          <div class="doc-meta">520 KB · Uploaded Apr 14, 2026</div>
+        </div>
+        <div class="doc-download" onclick="showToast('📥 Downloading…')">↓ View</div>
+      </div>
+      <div style="margin-top:16px;">
+        <label class="form-label">Review Note (Optional)</label>
+        <textarea class="form-textarea" placeholder="Write a note to the agent before approving or rejecting…" style="min-height:60px;"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('docreview')">Cancel</button>
+      <button class="btn-submit danger" onclick="closeModal('docreview');updateStatus('row1','reject');showToast('❌ Request rejected')">Reject</button>
+      <button class="btn-submit" onclick="closeModal('docreview');updateStatus('row1','approve');showToast('✅ Request approved!')">Approve</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT (stub) ══ -->
+<div class="modal-overlay" id="modal-edit">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Property</div>
+      <div class="modal-close" onclick="closeModal('edit')">✕</div>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--subtext);font-size:14px;">Edit form coming soon.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('edit')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: REQUESTS (stub) ══ -->
+<div class="modal-overlay" id="modal-requests">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Requests for Property</div>
+      <div class="modal-close" onclick="closeModal('requests')">✕</div>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--subtext);font-size:14px;">Detailed request view coming soon.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('requests')">Close</button>
+    </div>
   </div>
 </div>
 
@@ -596,6 +1029,28 @@ function showTab(tab, el) {
 }
 function openModal(id){ document.getElementById('modal-'+id).classList.add('open'); }
 function closeModal(id){ document.getElementById('modal-'+id).classList.remove('open'); }
+function updateStatus(rowId, action) {
+  const row = document.getElementById(rowId);
+  if (!row) return;
+  const statusEl = row.querySelector('.req-status');
+  const btns = row.querySelectorAll('.req-btn.approve, .req-btn.reject');
+  if (action === 'approve') {
+    statusEl.className = 'req-status approved';
+    statusEl.textContent = '✅ Approved';
+    showToast('✅ Request approved successfully!');
+  } else {
+    statusEl.className = 'req-status rejected';
+    statusEl.textContent = '✕ Rejected';
+    showToast('❌ Request rejected.');
+  }
+  btns.forEach(b => { b.style.opacity = '.35'; b.style.pointerEvents = 'none'; });
+}
+
+// close modal on backdrop click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
+});
+
 // tab switcher
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
