@@ -209,13 +209,166 @@
     }
     .mobile-nav a:hover { color: var(--azure); }
 
+    /* ════════════════════════════
+       HERO
+    ════════════════════════════ */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 120px 0 110px;
+      background: linear-gradient(145deg, #EBF2FF 0%, #F0ECFF 50%, #FFF3D6 100%);
+    }
+    /* decorative blobs */
+    .hero::before, .hero::after {
+      content: ''; position: absolute; border-radius: 50%;
+      filter: blur(72px); pointer-events: none; z-index: 0;
+    }
+    .hero::before {
+      width: 480px; height: 480px;
+      background: rgba(79,142,247,.18);
+      top: -120px; right: -100px;
+    }
+    .hero::after {
+      width: 360px; height: 360px;
+      background: rgba(124,92,252,.14);
+      bottom: -80px; left: -80px;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; align-items: center;
+    }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .35rem 1rem .35rem .45rem;
+      background: var(--white); border-radius: 50px;
+      box-shadow: var(--shadow-sm); margin-bottom: 1.6rem;
+      font-size: .78rem; font-weight: 600; color: var(--ink-soft);
+    }
+    .hero-pill span {
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      color: var(--white); border-radius: 50px;
+      padding: .2rem .7rem; font-size: .7rem; letter-spacing: .05em;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+      font-weight: 700; margin-bottom: 1.4rem; line-height: 1.15;
+    }
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      font-size: 1.05rem; color: var(--ink-soft);
+      max-width: 460px; margin-bottom: 2.4rem; font-weight: 400;
+    }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .hero-trust {
+      margin-top: 2.8rem; display: flex; align-items: center; gap: 1rem;
+    }
+    .trust-avatars { display: flex; }
+    .trust-avatars span {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 2.5px solid var(--white);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .7rem; font-weight: 700; color: var(--white);
+      margin-left: -10px;
+    }
+    .trust-avatars span:first-child { margin-left: 0; }
+    .ta-1 { background: linear-gradient(135deg,#4F8EF7,#7C5CFC); }
+    .ta-2 { background: linear-gradient(135deg,#FF6B6B,#FFB830); }
+    .ta-3 { background: linear-gradient(135deg,#22C993,#4F8EF7); }
+    .ta-4 { background: linear-gradient(135deg,#7C5CFC,#FF6B6B); }
+    .trust-text { font-size: .82rem; color: var(--ink-soft); line-height: 1.4; }
+    .trust-text strong { display: block; color: var(--ink); font-weight: 600; }
+
+    /* hero visual card */
+    .hero-visual {
+      background: var(--white); border-radius: var(--radius);
+      box-shadow: var(--shadow-xl); padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .hv-top {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .hv-dots { display: flex; gap: .4rem; }
+    .hv-dots span {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .hv-dots span:nth-child(1) { background: #FF6B6B; }
+    .hv-dots span:nth-child(2) { background: var(--sun); }
+    .hv-dots span:nth-child(3) { background: var(--emerald); }
+    .hv-label { font-size: .72rem; font-weight: 600; color: var(--ink-muted); letter-spacing: .08em; text-transform: uppercase; }
+    .hv-metric {
+      background: var(--surface); border-radius: var(--radius-sm);
+      padding: 1.1rem 1.4rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hv-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-xs);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .ic-blue   { background: var(--azure-pale); }
+    .ic-violet { background: var(--violet-pale); }
+    .ic-green  { background: #D1FAF0; }
+    .hv-metric-val { font-size: 1.5rem; font-weight: 700; color: var(--ink); font-family: 'Playfair Display', serif; }
+    .hv-metric-lbl { font-size: .78rem; color: var(--ink-muted); }
+    .hv-bar-row { display: flex; flex-direction: column; gap: .5rem; }
+    .hv-bar-label { display: flex; justify-content: space-between; font-size: .78rem; color: var(--ink-soft); }
+    .hv-bar-track {
+      height: 7px; background: var(--border); border-radius: 50px; overflow: hidden;
+    }
+    .hv-bar-fill { height: 100%; border-radius: 50px; }
+    .bar-azure  { background: linear-gradient(90deg, var(--azure), var(--violet)); width: 82%; }
+    .bar-coral  { background: linear-gradient(90deg, var(--coral), var(--sun)); width: 67%; }
+    .bar-green  { background: linear-gradient(90deg, var(--emerald), var(--azure)); width: 91%; }
+
+    /* ════════════════════════════
+       STATS STRIP
+    ════════════════════════════ */
+    .stats {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0;
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2rem; text-align: center;
+    }
+    .stat-item { position: relative; }
+    .stat-item:not(:last-child)::after {
+      content: ''; position: absolute; right: 0; top: 15%;
+      height: 70%; width: 1px; background: var(--border);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      display: block; margin-bottom: .25rem;
+    }
+    .stat-label {
+      font-size: .78rem; font-weight: 600; color: var(--ink-muted);
+      text-transform: uppercase; letter-spacing: .09em;
+    }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .stats-grid  { grid-template-columns: repeat(2,1fr); }
+      .stat-item:nth-child(2)::after { display: none; }
+    }
     @media (max-width: 768px) {
       .nav-links, .btn-nav-wrap { display: none !important; }
       .hamburger { display: flex; }
       .section { padding: 75px 0; }
+      .hero { padding: 80px 0 70px; }
     }
     @media (max-width: 480px) {
       html { font-size: 16px; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
     }
 
   </style>
@@ -253,7 +406,103 @@
     <a href="#contact" class="btn btn-primary" onclick="closeMobile()">Get Started</a>
   </nav>
 
-  <!-- PARTS 2-4 WILL BE ADDED BELOW -->
+  <!-- ══ HERO ══ -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-inner">
+
+        <!-- left copy -->
+        <div>
+          <div class="hero-pill fade-up" data-delay="0">
+            <span>New</span> Launching 2026 design refresh
+          </div>
+          <h1 class="fade-up" data-delay="80">
+            We Build <em>Exceptional</em><br>Digital Products
+          </h1>
+          <p class="fade-up" data-delay="160">
+            A premium studio crafting high-performance websites, apps, and brand identities that drive real growth.
+          </p>
+          <div class="hero-cta fade-up" data-delay="240">
+            <a href="#portfolio" class="btn btn-primary">View Our Work</a>
+            <a href="#contact"   class="btn btn-ghost">Start a Project</a>
+          </div>
+          <div class="hero-trust fade-up" data-delay="320">
+            <div class="trust-avatars">
+              <span class="ta-1">SL</span>
+              <span class="ta-2">MK</span>
+              <span class="ta-3">AR</span>
+              <span class="ta-4">JD</span>
+            </div>
+            <div class="trust-text">
+              <strong>120+ happy clients</strong>
+              Rated 5★ across all projects
+            </div>
+          </div>
+        </div>
+
+        <!-- right visual -->
+        <div class="hero-visual fade-up" data-delay="200">
+          <div class="hv-top">
+            <div class="hv-dots"><span></span><span></span><span></span></div>
+            <span class="hv-label">Live Dashboard</span>
+          </div>
+          <div class="hv-metric">
+            <div class="hv-icon ic-blue">&#9670;</div>
+            <div>
+              <div class="hv-metric-val" data-count="98">0</div>
+              <div class="hv-metric-lbl">Client Satisfaction %</div>
+            </div>
+          </div>
+          <div class="hv-metric">
+            <div class="hv-icon ic-violet">&#9651;</div>
+            <div>
+              <div class="hv-metric-val" data-count="120">0</div>
+              <div class="hv-metric-lbl">Projects Delivered</div>
+            </div>
+          </div>
+          <div class="hv-bar-row">
+            <div class="hv-bar-label"><span>UI Design</span><span>82%</span></div>
+            <div class="hv-bar-track"><div class="hv-bar-fill bar-azure"></div></div>
+          </div>
+          <div class="hv-bar-row">
+            <div class="hv-bar-label"><span>Development</span><span>91%</span></div>
+            <div class="hv-bar-track"><div class="hv-bar-fill bar-green"></div></div>
+          </div>
+          <div class="hv-bar-row">
+            <div class="hv-bar-label"><span>Branding</span><span>67%</span></div>
+            <div class="hv-bar-track"><div class="hv-bar-fill bar-coral"></div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS ══ -->
+  <section class="stats">
+    <div class="container">
+      <div class="stats-grid fade-up">
+        <div class="stat-item">
+          <span class="stat-num" data-count="120" data-suffix="+">0</span>
+          <span class="stat-label">Projects Delivered</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="98" data-suffix="%">0</span>
+          <span class="stat-label">Client Satisfaction</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="8" data-suffix="+">0</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num" data-count="40" data-suffix="+">0</span>
+          <span class="stat-label">Global Clients</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTS 3-4 WILL BE ADDED BELOW -->
 
   <script>
     /* progress bar */
@@ -279,14 +528,37 @@
 
     /* fade-up observer */
     const io = new IntersectionObserver(entries => {
-      entries.forEach((e, i) => {
+      entries.forEach(e => {
         if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
+          setTimeout(() => e.target.classList.add('visible'), +(e.target.dataset.delay || 0));
           io.unobserve(e.target);
         }
       });
     }, { threshold: 0.1 });
     document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+
+    /* animated counters */
+    function countUp(el) {
+      const target = +el.dataset.count;
+      const suffix = el.dataset.suffix || '';
+      const dur = 1600;
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        el.textContent = Math.floor(p * p * target) + suffix;
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      })(t0);
+    }
+    const countObserver = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('[data-count]').forEach(countUp);
+          countObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.stats-grid, .hero-visual').forEach(el => countObserver.observe(el));
   </script>
 </body>
 </html>
