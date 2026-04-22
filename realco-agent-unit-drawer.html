@@ -246,7 +246,346 @@ body {
 }
 .toast.show { transform:translateY(0); opacity:1; }
 
-/* PARTS 2–3 BELOW */
+/* ═══════════════════════════════
+   PART 2 — CONTENT STYLES
+═══════════════════════════════ */
+
+/* Project banner */
+.project-banner {
+  background: linear-gradient(135deg, #0E7490 0%, #4F46E5 100%);
+  border-radius: var(--radius-lg); padding: 20px 24px;
+  color: #fff; display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px; gap: 16px;
+}
+.pb-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.pb-icon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(255,255,255,.18); display: flex; align-items: center;
+  justify-content: center; font-size: 24px; flex-shrink: 0;
+}
+.pb-name { font-size: 19px; font-weight: 800; letter-spacing: -.02em; }
+.pb-sub  { font-size: 13px; opacity: .82; margin-top: 2px; font-weight: 500; }
+.pb-tags { display: flex; gap: 7px; margin-top: 8px; flex-wrap: wrap; }
+.pb-tag {
+  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px;
+  background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.3);
+}
+.pb-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.pb-stat { text-align: right; }
+.pb-stat-num  { font-size: 22px; font-weight: 800; line-height: 1; }
+.pb-stat-lbl  { font-size: 11px; opacity: .75; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; }
+
+/* Info note */
+.info-note {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--accent-light); border: 1px solid #A5F3FC;
+  border-radius: var(--radius); padding: 12px 14px; margin-bottom: 18px;
+  font-size: 12.5px; color: #0E7490; line-height: 1.5;
+}
+.info-note-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* Tab bar */
+.tab-bar {
+  display: flex; gap: 4px; margin-bottom: 14px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 4px;
+}
+.tab-btn {
+  flex: 1; padding: 8px 12px; border-radius: 9px;
+  font-size: 13px; font-weight: 600; font-family: 'Inter', sans-serif;
+  cursor: pointer; border: none; background: transparent;
+  color: var(--subtext); transition: all var(--t);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+.tab-btn.active { background: var(--surface); color: var(--accent); box-shadow: var(--shadow-sm); }
+.tab-count {
+  font-size: 10px; font-weight: 800; padding: 1px 6px; border-radius: 99px;
+  background: var(--accent-light); color: #0E7490;
+}
+
+/* Floor toolbar */
+.floor-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 14px; gap: 12px; flex-wrap: wrap;
+}
+.floor-tabs-wrap { display: flex; gap: 5px; flex-wrap: wrap; }
+.floor-tab {
+  padding: 6px 14px; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 12px; font-weight: 600; color: var(--subtext);
+  cursor: pointer; transition: all var(--t); font-family: 'Inter', sans-serif;
+}
+.floor-tab:hover { border-color: var(--accent); color: var(--accent); }
+.floor-tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.toolbar-right { display: flex; align-items: center; gap: 8px; }
+.legend-wrap { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: var(--subtext); }
+.legend-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
+
+/* Units grid */
+.units-section { display: flex; flex-direction: column; gap: 10px; }
+
+/* Floor group */
+.floor-group {}
+.floor-group-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  cursor: pointer; margin-bottom: 6px; transition: background var(--t);
+}
+.floor-group-header:hover { background: var(--bg); }
+.fgh-left { display: flex; align-items: center; gap: 10px; }
+.fgh-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.fgh-counts { display: flex; gap: 6px; }
+.fgh-count {
+  font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 99px;
+}
+.fgh-count.av { background: var(--success-light); color: #065F46; }
+.fgh-count.ho { background: var(--warning-light); color: #92400E; }
+.fgh-count.bk { background: var(--primary-light); color: var(--primary); }
+.fgh-count.so { background: #F1F5F9; color: var(--subtext); }
+.fgh-chevron { font-size: 12px; color: var(--muted); transition: transform .2s; }
+.floor-group-header.collapsed .fgh-chevron { transform: rotate(-90deg); }
+
+.floor-units-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 8px; padding: 0 2px 8px;
+}
+
+/* Unit card */
+.unit-card {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: var(--radius); padding: 14px 13px;
+  cursor: pointer; transition: all .2s; position: relative;
+}
+.unit-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.unit-card.available  { border-color: #A7F3D0; }
+.unit-card.hold       { border-color: #FDE68A; }
+.unit-card.booked     { border-color: #C7D2FE; }
+.unit-card.sold       { opacity: .55; cursor: default; background: #F8FAFC; }
+.unit-card.sold:hover { transform: none; box-shadow: none; }
+
+.uc-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; }
+.uc-id { font-size: 15px; font-weight: 800; color: var(--text); letter-spacing: -.02em; }
+.uc-state {
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 99px;
+}
+.uc-state.available { background: var(--success-light); color: #065F46; }
+.uc-state.hold      { background: var(--warning-light); color: #92400E; }
+.uc-state.booked    { background: var(--primary-light); color: var(--primary); }
+.uc-state.sold      { background: #F1F5F9; color: var(--subtext); }
+
+.uc-price { font-size: 14px; font-weight: 800; color: var(--accent); margin-bottom: 2px; }
+.uc-spec  { font-size: 11.5px; color: var(--subtext); font-weight: 500; margin-bottom: 8px; }
+
+.uc-bottom { display: flex; align-items: center; justify-content: space-between; }
+.uc-tag {
+  font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 99px;
+  background: var(--accent-light); color: #0E7490;
+}
+.uc-tag.req-sent { background: var(--warning-light); color: #92400E; }
+.uc-tag.booked-t { background: var(--primary-light); color: var(--primary); }
+.uc-tag.sold-t   { background: #F1F5F9; color: var(--subtext); }
+.uc-star {
+  width: 24px; height: 24px; border-radius: 6px; border: none;
+  background: transparent; cursor: pointer; font-size: 13px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); transition: all var(--t); font-family: 'Inter', sans-serif;
+}
+.uc-star:hover { color: var(--warning); }
+.uc-star.starred { color: var(--warning); }
+
+/* Floating shortlist bar */
+.shortlist-bar {
+  position: fixed; bottom: 24px;
+  left: calc(var(--sidebar-w) + 24px);
+  right: calc(var(--drawer-w) + 24px);
+  background: var(--text); color: #fff;
+  border-radius: var(--radius-lg); padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  box-shadow: var(--shadow-lg); z-index: 60;
+  transform: translateY(120%); opacity: 0;
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+}
+.shortlist-bar.visible { transform: translateY(0); opacity: 1; }
+.shortlist-bar.drawer-active { right: calc(var(--drawer-w) + 24px); }
+.slb-left { display: flex; align-items: center; gap: 10px; }
+.slb-count {
+  background: var(--accent); color: #fff;
+  font-size: 13px; font-weight: 800;
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.slb-text { font-size: 13.5px; font-weight: 600; }
+.slb-right { display: flex; gap: 8px; }
+.slb-btn {
+  padding: 8px 16px; border-radius: var(--radius); border: none;
+  font-size: 12.5px; font-weight: 700; cursor: pointer;
+  font-family: 'Inter', sans-serif; transition: all .2s;
+}
+.slb-btn.clear  { background: rgba(255,255,255,.12); color: #fff; }
+.slb-btn.clear:hover { background: rgba(255,255,255,.2); }
+.slb-btn.send   { background: var(--accent); color: #fff; }
+.slb-btn.send:hover { background: var(--accent-hover); }
+
+/* ─── DRAWER CONTENT STYLES ─── */
+
+/* Details view */
+.dv-section { margin-bottom: 18px; }
+.dv-section-title {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 10px;
+}
+.specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.spec-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 11px 13px;
+}
+.spec-lbl { font-size: 10.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+.spec-val { font-size: 14px; font-weight: 800; color: var(--text); }
+
+.price-hero {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
+  border-radius: var(--radius); padding: 16px 18px; color: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.ph-label { font-size: 11px; font-weight: 600; opacity: .8; text-transform: uppercase; letter-spacing: .08em; }
+.ph-price { font-size: 24px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; }
+.ph-breakup { font-size: 11.5px; opacity: .8; margin-top: 2px; }
+.ph-star {
+  background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.35);
+  border-radius: 10px; width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; cursor: pointer; transition: all var(--t);
+}
+.ph-star:hover { background: rgba(255,255,255,.35); }
+
+.owner-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 13px;
+  display: flex; align-items: center; gap: 12px;
+}
+.ow-av {
+  width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+  background: var(--primary-light); display: flex; align-items: center;
+  justify-content: center; font-size: 14px; font-weight: 800; color: var(--primary);
+}
+.ow-name { font-size: 13.5px; font-weight: 700; color: var(--text); }
+.ow-meta { font-size: 11.5px; color: var(--subtext); margin-top: 2px; }
+
+.desc-text {
+  font-size: 13px; color: var(--subtext); line-height: 1.65;
+  background: var(--bg); border-radius: var(--radius);
+  padding: 13px; border: 1px solid var(--border);
+}
+
+/* Request steps */
+.req-steps-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; margin-bottom: 20px;
+}
+.rs-item { display: flex; align-items: center; }
+.rs-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; border: 2px solid var(--border);
+  background: var(--surface); color: var(--muted); transition: all .3s;
+}
+.rs-dot.active { border-color: var(--accent); background: var(--accent); color: #fff; }
+.rs-dot.done   { border-color: var(--success); background: var(--success); color: #fff; }
+.rs-line { width: 32px; height: 2px; background: var(--border); transition: background .3s; }
+.rs-line.done { background: var(--success); }
+
+.req-step-label {
+  text-align: center; font-size: 11px; font-weight: 700; color: var(--subtext);
+  text-transform: uppercase; letter-spacing: .07em; margin-bottom: 16px;
+}
+.req-step-label span { color: var(--accent); }
+
+.form-label {
+  font-size: 12px; font-weight: 700; color: var(--subtext);
+  text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px;
+  display: block;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-size: 13.5px; font-family: 'Inter', sans-serif; color: var(--text);
+  background: var(--surface); transition: border-color .2s, box-shadow .2s;
+  outline: none;
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(6,182,212,.12);
+}
+.form-textarea { resize: vertical; min-height: 88px; }
+.form-group { margin-bottom: 14px; }
+
+.doc-upload-area {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 20px; text-align: center; cursor: pointer;
+  transition: all .2s; margin-bottom: 12px;
+}
+.doc-upload-area:hover { border-color: var(--accent); background: var(--accent-light); }
+.doc-upload-icon { font-size: 22px; margin-bottom: 6px; }
+.doc-upload-text { font-size: 12.5px; color: var(--subtext); }
+.doc-upload-text strong { color: var(--accent); }
+
+.doc-list { display: flex; flex-direction: column; gap: 7px; }
+.doc-item {
+  display: flex; align-items: center; gap: 9px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 9px 12px;
+}
+.doc-icon { font-size: 18px; flex-shrink: 0; }
+.doc-name { font-size: 12.5px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-remove {
+  width: 22px; height: 22px; border-radius: 6px; border: none;
+  background: var(--danger-light); color: var(--danger);
+  font-size: 11px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; flex-shrink: 0; font-family: 'Inter', sans-serif;
+  transition: all .2s;
+}
+.doc-remove:hover { background: var(--danger); color: #fff; }
+
+.review-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px;
+}
+.review-card-title { font-size: 11.5px; font-weight: 700; color: var(--subtext); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 10px; }
+.review-row { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 13px; }
+.review-row-lbl { color: var(--subtext); font-weight: 500; }
+.review-row-val { font-weight: 700; color: var(--text); }
+
+.terms-check { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; }
+.terms-check input[type=checkbox] { margin-top: 2px; accent-color: var(--accent); width: 15px; height: 15px; }
+.terms-check label { font-size: 12px; color: var(--subtext); line-height: 1.5; cursor: pointer; }
+.terms-check label a { color: var(--accent); text-decoration: none; }
+
+/* Success view */
+.success-view {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 30px 20px; text-align: center;
+}
+.success-icon-wrap {
+  width: 72px; height: 72px; border-radius: 50%;
+  background: var(--success-light); display: flex; align-items: center;
+  justify-content: center; font-size: 32px; margin-bottom: 16px;
+}
+.success-title { font-size: 19px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
+.success-sub   { font-size: 13.5px; color: var(--subtext); line-height: 1.6; margin-bottom: 20px; }
+.success-unit-badge {
+  background: var(--accent-light); border: 1px solid #A5F3FC;
+  border-radius: var(--radius); padding: 10px 20px;
+  font-size: 15px; font-weight: 800; color: #0E7490; margin-bottom: 6px;
+}
+.success-req-id { font-size: 11.5px; color: var(--muted); font-weight: 600; margin-bottom: 20px; }
+.success-steps { text-align: left; width: 100%; margin-bottom: 20px; }
+.ss-step { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--subtext); }
+.ss-step:last-child { border-bottom: none; }
+.ss-step-icon { font-size: 15px; flex-shrink: 0; }
 
 @media (max-width:768px) {
   .sidebar { transform:translateX(-100%); }
@@ -306,8 +645,59 @@ body {
   </div>
 
   <div class="content">
-    <!-- PART 2 HERE -->
-  </div>
+
+    <!-- Project Banner -->
+    <div class="project-banner">
+      <div class="pb-left">
+        <div class="pb-icon">🏢</div>
+        <div>
+          <div class="pb-name">Skyline Residency — Tower A</div>
+          <div class="pb-sub">📍 Bandra West, Mumbai · RERA: P51900022222</div>
+          <div class="pb-tags">
+            <span class="pb-tag">🔓 Access Granted</span>
+            <span class="pb-tag">Luxury</span>
+            <span class="pb-tag">Ready to Move</span>
+          </div>
+        </div>
+      </div>
+      <div class="pb-right">
+        <div class="pb-stat">
+          <div class="pb-stat-num" id="stat-available">--</div>
+          <div class="pb-stat-lbl">Available</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Info note -->
+    <div class="info-note">
+      <span class="info-note-icon">ℹ️</span>
+      <span>You can click any available unit to view full details and raise an interest request. Shortlisted units appear in the floating bar below. <strong>Sold</strong> units cannot be selected.</span>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('all')">All Units <span class="tab-count" id="tab-all-count">0</span></button>
+      <button class="tab-btn" onclick="switchTab('available')">Available <span class="tab-count" id="tab-av-count">0</span></button>
+      <button class="tab-btn" onclick="switchTab('shortlist')">Shortlist <span class="tab-count" id="tab-sl-count">0</span></button>
+    </div>
+
+    <!-- Floor toolbar -->
+    <div class="floor-toolbar">
+      <div class="floor-tabs-wrap" id="floor-tabs"></div>
+      <div class="toolbar-right">
+        <div class="legend-wrap">
+          <div class="legend-item"><span class="legend-dot" style="background:#10B981"></span>Available</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#F59E0B"></span>Hold</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#4F46E5"></span>Booked</div>
+          <div class="legend-item"><span class="legend-dot" style="background:#94A3B8"></span>Sold</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Units section -->
+    <div class="units-section" id="units-section"></div>
+
+  </div><!-- /content -->
 </div>
 
 <!-- ══ DRAWER ══ -->
@@ -321,20 +711,680 @@ body {
     <button class="drawer-close" onclick="closeDrawer()">✕</button>
   </div>
   <div class="drawer-body" id="drawer-body">
-    <!-- DRAWER CONTENT PART 2 -->
-  </div>
+
+    <!-- VIEW: DETAILS -->
+    <div id="view-details">
+
+      <!-- Price hero -->
+      <div class="price-hero">
+        <div>
+          <div class="ph-label">Total Price</div>
+          <div class="ph-price" id="dp-price">₹2.45 Cr</div>
+          <div class="ph-breakup" id="dp-breakup">₹15,500/sq.ft · 1,580 sq.ft</div>
+        </div>
+        <div class="ph-star" id="ph-star" onclick="toggleDrawerStar()">☆</div>
+      </div>
+
+      <!-- Specs -->
+      <div class="dv-section">
+        <div class="dv-section-title">Unit Specifications</div>
+        <div class="specs-grid">
+          <div class="spec-card">
+            <div class="spec-lbl">Type</div>
+            <div class="spec-val" id="dp-type">3 BHK</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-lbl">Floor</div>
+            <div class="spec-val" id="dp-floor">Floor 8</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-lbl">Carpet Area</div>
+            <div class="spec-val" id="dp-carpet">920 sq.ft</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-lbl">Super Area</div>
+            <div class="spec-val" id="dp-super">1,580 sq.ft</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-lbl">Facing</div>
+            <div class="spec-val" id="dp-facing">East</div>
+          </div>
+          <div class="spec-card">
+            <div class="spec-lbl">Parking</div>
+            <div class="spec-val" id="dp-parking">2 Covered</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Owner -->
+      <div class="dv-section">
+        <div class="dv-section-title">Listed By</div>
+        <div class="owner-card">
+          <div class="ow-av" id="dp-ow-av">SK</div>
+          <div>
+            <div class="ow-name" id="dp-ow-name">Suresh Kumar</div>
+            <div class="ow-meta" id="dp-ow-meta">Builder · Verified ✅</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="dv-section">
+        <div class="dv-section-title">About This Unit</div>
+        <div class="desc-text" id="dp-desc">Premium east-facing unit with unobstructed city views. Features Italian marble flooring, modular kitchen, and 2 covered parking slots. Project amenities include clubhouse, pool, and 24/7 security.</div>
+      </div>
+
+      <!-- Amenities -->
+      <div class="dv-section">
+        <div class="dv-section-title">Amenities</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🏊 Pool</span>
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🏋️ Gym</span>
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🎭 Clubhouse</span>
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🔒 24/7 Security</span>
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🅿️ Parking</span>
+          <span class="uc-tag" style="font-size:11.5px;padding:4px 11px;">🌳 Garden</span>
+        </div>
+      </div>
+
+    </div><!-- /view-details -->
+
+    <!-- VIEW: REQUEST (3 steps) -->
+    <div id="view-request" style="display:none;">
+
+      <!-- Steps bar -->
+      <div class="req-steps-bar">
+        <div class="rs-item">
+          <div class="rs-dot active" id="rs1">1</div>
+        </div>
+        <div class="rs-line" id="rl1"></div>
+        <div class="rs-item">
+          <div class="rs-dot" id="rs2">2</div>
+        </div>
+        <div class="rs-line" id="rl2"></div>
+        <div class="rs-item">
+          <div class="rs-dot" id="rs3">3</div>
+        </div>
+      </div>
+
+      <!-- Step 1: Note -->
+      <div id="req-step-1">
+        <div class="req-step-label">Step 1 of 3 — <span>Interest Note</span></div>
+
+        <div class="form-group">
+          <label class="form-label">Budget Range</label>
+          <select class="form-select" id="rq-budget">
+            <option>Up to ₹1 Cr</option>
+            <option>₹1 Cr – ₹2 Cr</option>
+            <option selected>₹2 Cr – ₹3 Cr</option>
+            <option>₹3 Cr – ₹5 Cr</option>
+            <option>Above ₹5 Cr</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Timeline</label>
+          <select class="form-select" id="rq-timeline">
+            <option>Immediate (within 30 days)</option>
+            <option selected>1–3 months</option>
+            <option>3–6 months</option>
+            <option>6+ months</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Purpose</label>
+          <select class="form-select" id="rq-purpose">
+            <option>Self-Use</option>
+            <option>Investment</option>
+            <option>Rental Income</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message to Owner</label>
+          <textarea class="form-textarea" id="rq-note" placeholder="Introduce your client and note any specific requirements…"></textarea>
+        </div>
+      </div><!-- /step-1 -->
+
+      <!-- Step 2: Documents -->
+      <div id="req-step-2" style="display:none;">
+        <div class="req-step-label">Step 2 of 3 — <span>Attach Documents</span></div>
+
+        <div class="doc-upload-area" onclick="addDoc()">
+          <div class="doc-upload-icon">📎</div>
+          <div class="doc-upload-text"><strong>Click to attach</strong> client KYC, PAN, or bank pre-approval</div>
+        </div>
+
+        <div class="doc-list" id="doc-list"></div>
+
+        <p style="font-size:12px;color:var(--muted);margin-top:8px;text-align:center;">Documents are optional. Max 5 files, 10 MB each.</p>
+      </div><!-- /step-2 -->
+
+      <!-- Step 3: Review & Submit -->
+      <div id="req-step-3" style="display:none;">
+        <div class="req-step-label">Step 3 of 3 — <span>Review &amp; Submit</span></div>
+
+        <div class="review-card">
+          <div class="review-card-title">Unit Details</div>
+          <div class="review-row"><span class="review-row-lbl">Unit</span><span class="review-row-val" id="rv-unit">—</span></div>
+          <div class="review-row"><span class="review-row-lbl">Type</span><span class="review-row-val" id="rv-type">—</span></div>
+          <div class="review-row"><span class="review-row-lbl">Price</span><span class="review-row-val" id="rv-price">—</span></div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-card-title">Request Details</div>
+          <div class="review-row"><span class="review-row-lbl">Budget</span><span class="review-row-val" id="rv-budget">—</span></div>
+          <div class="review-row"><span class="review-row-lbl">Timeline</span><span class="review-row-val" id="rv-timeline">—</span></div>
+          <div class="review-row"><span class="review-row-lbl">Purpose</span><span class="review-row-val" id="rv-purpose">—</span></div>
+          <div class="review-row"><span class="review-row-lbl">Docs</span><span class="review-row-val" id="rv-docs">None</span></div>
+        </div>
+
+        <div class="terms-check">
+          <input type="checkbox" id="terms-chk" onchange="document.getElementById('footer-submit').disabled=!this.checked"/>
+          <label for="terms-chk">I confirm this request is made on behalf of a genuine client and I agree to Realco's <a href="#">Terms of Use</a>.</label>
+        </div>
+      </div><!-- /step-3 -->
+
+    </div><!-- /view-request -->
+
+    <!-- VIEW: SUCCESS -->
+    <div id="view-success" style="display:none;">
+      <div class="success-view">
+        <div class="success-icon-wrap">✅</div>
+        <div class="success-title">Request Submitted!</div>
+        <div class="success-sub">Your interest request has been sent to the owner. You'll be notified once they respond.</div>
+        <div class="success-unit-badge" id="suc-unit">A-203</div>
+        <div class="success-req-id" id="suc-req-id">Ref: REQ-0000</div>
+        <div class="success-steps" style="width:100%">
+          <div class="ss-step"><span class="ss-step-icon">📤</span> Request sent to owner</div>
+          <div class="ss-step"><span class="ss-step-icon">🔍</span> Owner reviews within 24–48 hrs</div>
+          <div class="ss-step"><span class="ss-step-icon">📞</span> Site visit arranged upon approval</div>
+          <div class="ss-step"><span class="ss-step-icon">📄</span> Documents forwarded securely</div>
+        </div>
+      </div>
+    </div><!-- /view-success -->
+
+  </div><!-- /drawer-body -->
   <div class="drawer-footer" id="drawer-footer"></div>
+</div>
+
+<!-- Floating shortlist bar -->
+<div class="shortlist-bar" id="shortlist-bar">
+  <div class="slb-left">
+    <div class="slb-count" id="slb-count">0</div>
+    <div class="slb-text">units shortlisted</div>
+  </div>
+  <div class="slb-right">
+    <button class="slb-btn clear" onclick="clearShortlist()">Clear All</button>
+    <button class="slb-btn send" onclick="bulkRequest()">Send All Requests</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
+/* ═══════════════════════════════════════════════
+   REALCO — Agent Unit Drawer · Full JS (Part 3)
+═══════════════════════════════════════════════ */
+
+/* ── DATA ── */
+const FLOORS = [
+  { id:'all', label:'All Floors' },
+  { id:'f8',  label:'Floor 8' },
+  { id:'f9',  label:'Floor 9' },
+  { id:'f10', label:'Floor 10' },
+  { id:'f11', label:'Floor 11' },
+];
+
+const UNITS = [
+  // Floor 8
+  { id:'A-801', floor:'f8', floorLabel:'Floor 8', type:'2 BHK', carpet:780, super:1280, facing:'East',  parking:1, price:18500, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-802', floor:'f8', floorLabel:'Floor 8', type:'3 BHK', carpet:920, super:1580, facing:'East',  parking:2, price:15500, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-803', floor:'f8', floorLabel:'Floor 8', type:'3 BHK', carpet:940, super:1600, facing:'West',  parking:2, price:14800, status:'hold',      owner:'Meera Patel',  ownerInitials:'MP', ownerType:'Owner' },
+  { id:'A-804', floor:'f8', floorLabel:'Floor 8', type:'4 BHK', carpet:1200,super:2100, facing:'North', parking:3, price:16200, status:'sold',      owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-805', floor:'f8', floorLabel:'Floor 8', type:'2 BHK', carpet:750, super:1250, facing:'South', parking:1, price:17500, status:'available', owner:'Raj Verma',    ownerInitials:'RV', ownerType:'Owner' },
+  // Floor 9
+  { id:'A-901', floor:'f9', floorLabel:'Floor 9', type:'2 BHK', carpet:780, super:1280, facing:'East',  parking:1, price:19000, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-902', floor:'f9', floorLabel:'Floor 9', type:'3 BHK', carpet:920, super:1580, facing:'East',  parking:2, price:16000, status:'booked',    owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-903', floor:'f9', floorLabel:'Floor 9', type:'3 BHK', carpet:940, super:1600, facing:'West',  parking:2, price:15200, status:'available', owner:'Meera Patel',  ownerInitials:'MP', ownerType:'Owner' },
+  { id:'A-904', floor:'f9', floorLabel:'Floor 9', type:'4 BHK', carpet:1200,super:2100, facing:'North', parking:3, price:16800, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  // Floor 10
+  { id:'A-1001',floor:'f10',floorLabel:'Floor 10',type:'2 BHK', carpet:780, super:1280, facing:'East',  parking:1, price:19500, status:'available', owner:'Raj Verma',    ownerInitials:'RV', ownerType:'Owner' },
+  { id:'A-1002',floor:'f10',floorLabel:'Floor 10',type:'3 BHK', carpet:920, super:1580, facing:'East',  parking:2, price:16500, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-1003',floor:'f10',floorLabel:'Floor 10',type:'3 BHK', carpet:940, super:1600, facing:'West',  parking:2, price:15800, status:'hold',      owner:'Meera Patel',  ownerInitials:'MP', ownerType:'Owner' },
+  { id:'A-1004',floor:'f10',floorLabel:'Floor 10',type:'4 BHK', carpet:1200,super:2100, facing:'North', parking:3, price:17200, status:'sold',      owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  // Floor 11
+  { id:'A-1101',floor:'f11',floorLabel:'Floor 11',type:'3 BHK', carpet:950, super:1620, facing:'East',  parking:2, price:17000, status:'available', owner:'Suresh Kumar', ownerInitials:'SK', ownerType:'Builder' },
+  { id:'A-1102',floor:'f11',floorLabel:'Floor 11',type:'4 BHK', carpet:1250,super:2200, facing:'North', parking:3, price:18000, status:'available', owner:'Raj Verma',    ownerInitials:'RV', ownerType:'Owner' },
+  { id:'A-1103',floor:'f11',floorLabel:'Floor 11',type:'3 BHK', carpet:920, super:1580, facing:'West',  parking:2, price:16200, status:'booked',    owner:'Meera Patel',  ownerInitials:'MP', ownerType:'Owner' },
+];
+
+/* ── STATE ── */
+let currentFloor   = 'all';
+let currentTab     = 'all';
+let shortlist      = new Set();
+let requestCount   = 0;
+let sentRequests   = new Set();
+let activeUnit     = null;
+let docFiles       = [];
+let drawerState    = 'details'; // 'details' | 'request' | 'success'
+let reqStep        = 1;
+let collapsedFloors = new Set();
+
+/* ── UTILS ── */
+function fmtPrice(ratePerSqft, superArea) {
+  const total = ratePerSqft * superArea;
+  if (total >= 10000000) return '₹' + (total/10000000).toFixed(2) + ' Cr';
+  return '₹' + (total/100000).toFixed(1) + ' L';
+}
+function fmtArea(n) { return n.toLocaleString('en-IN') + ' sq.ft'; }
+function fmtRate(n) { return '₹' + n.toLocaleString('en-IN') + '/sq.ft'; }
+function genReqId() { return 'REQ-' + String(Math.floor(1000 + Math.random()*9000)); }
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
 }
-function closeDrawer() { showToast('Drawer closed'); }
+
+/* ── COUNTS ── */
+function updateCounts() {
+  const visible = getVisible();
+  const avCount = UNITS.filter(u => u.status === 'available').length;
+
+  document.getElementById('stat-available').textContent = avCount;
+
+  document.getElementById('tab-all-count').textContent  = UNITS.length;
+  document.getElementById('tab-av-count').textContent   = avCount;
+  document.getElementById('tab-sl-count').textContent   = shortlist.size;
+
+  document.getElementById('sl-nav').textContent       = shortlist.size;
+  document.getElementById('req-nav').textContent      = requestCount;
+  document.getElementById('sl-top-count').textContent = shortlist.size;
+  document.getElementById('slb-count').textContent    = shortlist.size;
+
+  const bar = document.getElementById('shortlist-bar');
+  if (shortlist.size > 0) bar.classList.add('visible');
+  else bar.classList.remove('visible');
+}
+
+/* ── FLOOR TABS ── */
+function renderFloorTabs() {
+  const wrap = document.getElementById('floor-tabs');
+  wrap.innerHTML = FLOORS.map(f =>
+    `<button class="floor-tab ${currentFloor===f.id?'active':''}" onclick="setFloor('${f.id}')">${f.label}</button>`
+  ).join('');
+}
+
+function setFloor(id) {
+  currentFloor = id;
+  renderFloorTabs();
+  renderUnits();
+}
+
+/* ── TAB ── */
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', ['all','available','shortlist'][i] === tab);
+  });
+  renderUnits();
+}
+
+/* ── FILTER ── */
+function getVisible() {
+  return UNITS.filter(u => {
+    if (currentFloor !== 'all' && u.floor !== currentFloor) return false;
+    if (currentTab === 'available' && u.status !== 'available') return false;
+    if (currentTab === 'shortlist' && !shortlist.has(u.id)) return false;
+    return true;
+  });
+}
+
+/* ── RENDER UNITS ── */
+function renderUnits() {
+  const section = document.getElementById('units-section');
+  const visible = getVisible();
+
+  if (visible.length === 0) {
+    section.innerHTML = `<div style="text-align:center;padding:50px 20px;color:var(--muted)">
+      <div style="font-size:32px;margin-bottom:10px">🔍</div>
+      <div style="font-size:15px;font-weight:700;color:var(--subtext)">No units found</div>
+      <div style="font-size:13px;margin-top:4px">Try a different filter or floor</div>
+    </div>`;
+    return;
+  }
+
+  // Group by floor
+  const floorOrder = ['f8','f9','f10','f11'];
+  const grouped = {};
+  visible.forEach(u => {
+    if (!grouped[u.floor]) grouped[u.floor] = [];
+    grouped[u.floor].push(u);
+  });
+
+  const floorsToShow = currentFloor === 'all'
+    ? floorOrder.filter(f => grouped[f])
+    : [currentFloor].filter(f => grouped[f]);
+
+  section.innerHTML = floorsToShow.map(floorId => {
+    const units = grouped[floorId];
+    const floor = FLOORS.find(f => f.id === floorId);
+    const avC = units.filter(u=>u.status==='available').length;
+    const hoC = units.filter(u=>u.status==='hold').length;
+    const bkC = units.filter(u=>u.status==='booked').length;
+    const soC = units.filter(u=>u.status==='sold').length;
+    const isCollapsed = collapsedFloors.has(floorId);
+
+    const countBadges = [
+      avC ? `<span class="fgh-count av">${avC} Available</span>` : '',
+      hoC ? `<span class="fgh-count ho">${hoC} Hold</span>` : '',
+      bkC ? `<span class="fgh-count bk">${bkC} Booked</span>` : '',
+      soC ? `<span class="fgh-count so">${soC} Sold</span>` : '',
+    ].join('');
+
+    const unitCards = units.map(u => {
+      const isStar   = shortlist.has(u.id);
+      const isReq    = sentRequests.has(u.id);
+      const price    = fmtPrice(u.price, u.super);
+      const spec     = `${u.type} · ${fmtArea(u.carpet)} carpet`;
+      const tagClass = isReq ? 'req-sent' : u.status==='booked' ? 'booked-t' : u.status==='sold' ? 'sold-t' : '';
+      const tagLabel = isReq ? '📤 Requested' : u.status==='available' ? '✓ Available' : u.status==='hold' ? '⏸ On Hold' : u.status==='booked' ? '📋 Booked' : '🔒 Sold';
+      const clickable = u.status !== 'sold';
+
+      return `<div class="unit-card ${u.status}${isReq?' requested':''}"
+          onclick="${clickable ? `openDrawer('${u.id}')` : ''}">
+        <div class="uc-top">
+          <div class="uc-id">${u.id}</div>
+          <div class="uc-state ${u.status}">${u.status === 'sold' ? '🔒 Sold' : u.status==='hold' ? '⏸ Hold' : u.status==='booked' ? '📋 Booked' : '● Avail'}</div>
+        </div>
+        <div class="uc-price">${price}</div>
+        <div class="uc-spec">${spec}</div>
+        <div class="uc-bottom">
+          <span class="uc-tag ${tagClass}">${tagLabel}</span>
+          ${clickable ? `<button class="uc-star${isStar?' starred':''}" onclick="event.stopPropagation();toggleStar('${u.id}')">${isStar?'★':'☆'}</button>` : ''}
+        </div>
+      </div>`;
+    }).join('');
+
+    return `<div class="floor-group">
+      <div class="floor-group-header${isCollapsed?' collapsed':''}" onclick="toggleFloorGroup('${floorId}')">
+        <div class="fgh-left">
+          <div class="fgh-name">${floor.label}</div>
+          <div class="fgh-counts">${countBadges}</div>
+        </div>
+        <span class="fgh-chevron">▼</span>
+      </div>
+      <div class="floor-units-grid" id="fg-${floorId}" style="${isCollapsed?'display:none':''}">
+        ${unitCards}
+      </div>
+    </div>`;
+  }).join('');
+
+  updateCounts();
+}
+
+/* ── FLOOR GROUP TOGGLE ── */
+function toggleFloorGroup(floorId) {
+  const grid   = document.getElementById('fg-'+floorId);
+  const header = grid.previousElementSibling;
+  if (collapsedFloors.has(floorId)) {
+    collapsedFloors.delete(floorId);
+    grid.style.display = '';
+    header.classList.remove('collapsed');
+  } else {
+    collapsedFloors.add(floorId);
+    grid.style.display = 'none';
+    header.classList.add('collapsed');
+  }
+}
+
+/* ── SHORTLIST ── */
+function toggleStar(id) {
+  if (shortlist.has(id)) {
+    shortlist.delete(id);
+    showToast('Removed from shortlist');
+  } else {
+    shortlist.add(id);
+    showToast('⭐ Added to shortlist');
+  }
+  renderUnits();
+  if (activeUnit && activeUnit.id === id) updateDrawerStar();
+}
+
+function toggleDrawerStar() {
+  if (!activeUnit) return;
+  toggleStar(activeUnit.id);
+}
+
+function updateDrawerStar() {
+  const star = document.getElementById('ph-star');
+  if (!star || !activeUnit) return;
+  const starred = shortlist.has(activeUnit.id);
+  star.textContent = starred ? '★' : '☆';
+  star.style.color = starred ? 'var(--warning)' : '';
+}
+
+function clearShortlist() {
+  shortlist.clear();
+  renderUnits();
+  showToast('Shortlist cleared');
+}
+
+function bulkRequest() {
+  if (shortlist.size === 0) return;
+  shortlist.forEach(id => sentRequests.add(id));
+  shortlist.clear();
+  requestCount += sentRequests.size;
+  renderUnits();
+  showToast(`📤 ${sentRequests.size} requests sent!`);
+}
+
+/* ── DRAWER ── */
+function setDrawerOpen(open) {
+  const drawer  = document.getElementById('drawer');
+  const overlay = document.getElementById('drawer-overlay');
+  const main    = document.getElementById('main');
+  const bar     = document.getElementById('shortlist-bar');
+  if (open) {
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    main.classList.add('drawer-open');
+    bar.classList.add('drawer-active');
+  } else {
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    main.classList.remove('drawer-open');
+    bar.classList.remove('drawer-active');
+  }
+}
+
+function openDrawer(unitId) {
+  const unit = UNITS.find(u => u.id === unitId);
+  if (!unit) return;
+  activeUnit = unit;
+  docFiles   = [];
+  reqStep    = 1;
+
+  // Header
+  document.getElementById('dh-id').textContent = unit.id;
+  const statusEl = document.getElementById('dh-status');
+  statusEl.textContent = unit.status === 'available' ? '● Available' : unit.status === 'hold' ? '● On Hold' : '● Booked';
+  statusEl.className = 'dh-status ' + (unit.status === 'available' ? 'available' : unit.status === 'hold' ? 'hold' : 'booked');
+
+  // Detail view fields
+  const price    = fmtPrice(unit.price, unit.super);
+  const breakup  = `${fmtRate(unit.price)} · ${fmtArea(unit.super)}`;
+  document.getElementById('dp-price').textContent   = price;
+  document.getElementById('dp-breakup').textContent = breakup;
+  document.getElementById('dp-type').textContent    = unit.type;
+  document.getElementById('dp-floor').textContent   = unit.floorLabel;
+  document.getElementById('dp-carpet').textContent  = fmtArea(unit.carpet);
+  document.getElementById('dp-super').textContent   = fmtArea(unit.super);
+  document.getElementById('dp-facing').textContent  = unit.facing;
+  document.getElementById('dp-parking').textContent = unit.parking + ' Covered';
+  document.getElementById('dp-ow-av').textContent   = unit.ownerInitials;
+  document.getElementById('dp-ow-name').textContent = unit.owner;
+  document.getElementById('dp-ow-meta').textContent = unit.ownerType + ' · Verified ✅';
+
+  showDetailView();
+  setDrawerOpen(true);
+}
+
+function showDetailView() {
+  document.getElementById('view-details').style.display  = '';
+  document.getElementById('view-request').style.display  = 'none';
+  document.getElementById('view-success').style.display  = 'none';
+  drawerState = 'details';
+  updateDrawerStar();
+
+  if (activeUnit && activeUnit.status === 'available' && !sentRequests.has(activeUnit.id)) {
+    setFooter('details');
+  } else {
+    setFooter('readonly');
+  }
+}
+
+function closeDrawer() {
+  setDrawerOpen(false);
+  activeUnit = null;
+}
+
+/* ── DRAWER FOOTER ── */
+function setFooter(state) {
+  const footer = document.getElementById('drawer-footer');
+
+  if (state === 'details') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="closeDrawer()">Close</button>
+      <button class="df-btn gold" onclick="toggleDrawerStar()">⭐ Shortlist</button>
+      <button class="df-btn primary" onclick="startRequest()">Request →</button>`;
+
+  } else if (state === 'req-step-1') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="showDetailView()">← Back</button>
+      <button class="df-btn primary" onclick="goReqStep(2)">Next →</button>`;
+
+  } else if (state === 'req-step-2') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="goReqStep(1)">← Back</button>
+      <button class="df-btn primary" onclick="goReqStep(3)">Next →</button>`;
+
+  } else if (state === 'req-step-3') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="goReqStep(2)">← Back</button>
+      <button class="df-btn success" id="footer-submit" onclick="submitRequest()" disabled>Submit ✓</button>`;
+
+  } else if (state === 'success') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="closeDrawer()">Close</button>
+      <button class="df-btn gold" onclick="showDetailView(); setFooter('readonly')">View Details</button>`;
+
+  } else if (state === 'readonly') {
+    footer.innerHTML = `
+      <button class="df-btn cancel" onclick="closeDrawer()">Close</button>`;
+  }
+}
+
+/* ── REQUEST FLOW ── */
+function startRequest() {
+  document.getElementById('view-details').style.display  = 'none';
+  document.getElementById('view-request').style.display  = '';
+  document.getElementById('view-success').style.display  = 'none';
+  drawerState = 'request';
+  reqStep = 1;
+  updateStepUI();
+  setFooter('req-step-1');
+  renderDocList();
+}
+
+function goReqStep(step) {
+  reqStep = step;
+  updateStepUI();
+  setFooter('req-step-' + step);
+  if (step === 3) populateReview();
+  document.getElementById('drawer-body').scrollTop = 0;
+}
+
+function updateStepUI() {
+  [1,2,3].forEach(s => {
+    document.getElementById('req-step-'+s).style.display = s === reqStep ? '' : 'none';
+  });
+  // Dots
+  [1,2,3].forEach(s => {
+    const dot = document.getElementById('rs'+s);
+    dot.className = 'rs-dot ' + (s < reqStep ? 'done' : s === reqStep ? 'active' : '');
+    dot.textContent = s < reqStep ? '✓' : s;
+  });
+  // Lines
+  [1,2].forEach(l => {
+    document.getElementById('rl'+l).className = 'rs-line ' + (l < reqStep ? 'done' : '');
+  });
+  // Uncheck terms on step 3
+  if (reqStep === 3) {
+    const chk = document.getElementById('terms-chk');
+    if (chk) { chk.checked = false; document.getElementById('footer-submit').disabled = true; }
+  }
+}
+
+function populateReview() {
+  if (!activeUnit) return;
+  document.getElementById('rv-unit').textContent    = activeUnit.id;
+  document.getElementById('rv-type').textContent    = activeUnit.type;
+  document.getElementById('rv-price').textContent   = fmtPrice(activeUnit.price, activeUnit.super);
+  document.getElementById('rv-budget').textContent  = document.getElementById('rq-budget').value;
+  document.getElementById('rv-timeline').textContent= document.getElementById('rq-timeline').value;
+  document.getElementById('rv-purpose').textContent = document.getElementById('rq-purpose').value;
+  document.getElementById('rv-docs').textContent    = docFiles.length > 0 ? docFiles.length + ' file(s)' : 'None';
+}
+
+function submitRequest() {
+  if (!activeUnit) return;
+  sentRequests.add(activeUnit.id);
+  requestCount++;
+
+  const reqId = genReqId();
+  document.getElementById('suc-unit').textContent   = activeUnit.id;
+  document.getElementById('suc-req-id').textContent = 'Ref: ' + reqId;
+
+  document.getElementById('view-request').style.display = 'none';
+  document.getElementById('view-success').style.display = '';
+  drawerState = 'success';
+  setFooter('success');
+  updateCounts();
+  renderUnits();
+  showToast('📤 Request submitted for ' + activeUnit.id);
+}
+
+/* ── DOCS ── */
+function addDoc() {
+  if (docFiles.length >= 5) { showToast('Max 5 documents'); return; }
+  const names = ['Client_KYC.pdf', 'PAN_Card.pdf', 'Bank_PreApproval.pdf', 'Income_Proof.pdf', 'Passport.pdf'];
+  docFiles.push(names[docFiles.length] || 'Document_' + (docFiles.length+1) + '.pdf');
+  renderDocList();
+}
+
+function removeDoc(i) {
+  docFiles.splice(i, 1);
+  renderDocList();
+}
+
+function renderDocList() {
+  const list = document.getElementById('doc-list');
+  if (!list) return;
+  if (docFiles.length === 0) { list.innerHTML = ''; return; }
+  list.innerHTML = docFiles.map((f,i) => `
+    <div class="doc-item">
+      <span class="doc-icon">📄</span>
+      <span class="doc-name">${f}</span>
+      <button class="doc-remove" onclick="removeDoc(${i})">✕</button>
+    </div>`).join('');
+}
+
+/* ── INIT ── */
+renderFloorTabs();
+renderUnits();
 </script>
 </body>
 </html>
