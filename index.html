@@ -371,6 +371,166 @@
       .stats-grid { grid-template-columns: repeat(2,1fr); gap: 1.5rem; }
     }
 
+    /* ════════════════════════════
+       SERVICES
+    ════════════════════════════ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; margin-top: 3.5rem;
+    }
+    .svc-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2.2rem 2rem;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), border-color var(--t);
+      position: relative; overflow: hidden;
+    }
+    .svc-card::after {
+      content: ''; position: absolute;
+      inset: 0; border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      opacity: 0; transition: opacity var(--t);
+      z-index: 0;
+    }
+    .svc-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+    .svc-card:hover::after { opacity: 1; }
+    .svc-card:hover .svc-icon,
+    .svc-card:hover h3,
+    .svc-card:hover p,
+    .svc-card:hover .svc-link { color: var(--white); }
+    .svc-card:hover .svc-icon { background: rgba(255,255,255,.2); }
+    .svc-card > * { position: relative; z-index: 1; }
+    .svc-icon {
+      width: 54px; height: 54px;
+      background: var(--azure-pale);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.4rem;
+      transition: background var(--t);
+    }
+    .svc-card h3 { font-size: 1.1rem; margin-bottom: .65rem; transition: color var(--t); }
+    .svc-card p  { font-size: .88rem; color: var(--ink-soft); line-height: 1.7; transition: color var(--t); }
+    .svc-link {
+      display: inline-flex; align-items: center; gap: .3rem;
+      margin-top: 1.1rem; font-size: .82rem; font-weight: 600;
+      color: var(--azure); text-decoration: none;
+      transition: color var(--t), gap var(--t);
+    }
+    .svc-link:hover { gap: .6rem; }
+
+    /* ════════════════════════════
+       PROCESS
+    ════════════════════════════ */
+    .process-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 3.5rem; position: relative;
+    }
+    .process-grid::before {
+      content: ''; position: absolute;
+      top: 28px; left: calc(12.5% + 16px); right: calc(12.5% + 16px);
+      height: 2px;
+      background: linear-gradient(90deg, var(--azure), var(--violet));
+      z-index: 0;
+    }
+    .process-step { text-align: center; padding: 0 1rem; position: relative; z-index: 1; }
+    .step-num {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      color: var(--white); font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.4rem;
+      box-shadow: 0 4px 16px rgba(79,142,247,.35);
+    }
+    .process-step h4 { font-size: 1rem; margin-bottom: .5rem; }
+    .process-step p  { font-size: .84rem; color: var(--ink-soft); line-height: 1.65; }
+
+    /* ════════════════════════════
+       PORTFOLIO
+    ════════════════════════════ */
+    .portfolio-filters {
+      display: flex; gap: .6rem; flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      padding: .4rem 1.1rem; border-radius: 50px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .05em;
+      text-transform: uppercase; cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--white); color: var(--ink-soft);
+      transition: all var(--t);
+    }
+    .filter-btn.active,
+    .filter-btn:hover {
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      border-color: transparent; color: var(--white);
+    }
+    /* bento grid */
+    .bento {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 240px 200px;
+      gap: 1.25rem;
+    }
+    .bento-item {
+      border-radius: var(--radius); overflow: hidden;
+      position: relative; cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease);
+    }
+    .bento-item:hover { transform: scale(1.02); box-shadow: var(--shadow-xl); }
+    .bento-item:nth-child(1) { grid-column: span 2; }
+    .bento-item:nth-child(4) { grid-column: span 2; }
+    .bento-thumb {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+    }
+    .bt-1 { background: linear-gradient(135deg, #EBF2FF, #C5D9FF); }
+    .bt-2 { background: linear-gradient(135deg, #F0ECFF, #D5C8FF); }
+    .bt-3 { background: linear-gradient(135deg, #D1FAF0, #A3EED8); }
+    .bt-4 { background: linear-gradient(135deg, #FFF3D6, #FFD980); }
+    .bt-5 { background: linear-gradient(135deg, #FFE5E5, #FFBDBD); }
+    .bento-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,23,42,.75) 0%, transparent 55%);
+      opacity: 0; transition: opacity var(--t);
+      display: flex; align-items: flex-end; padding: 1.5rem;
+    }
+    .bento-item:hover .bento-overlay { opacity: 1; }
+    .bento-info h4 { font-size: 1rem; color: var(--white); margin-bottom: .3rem; }
+    .bento-info p  { font-size: .78rem; color: rgba(255,255,255,.75); }
+    .bento-tag {
+      display: inline-block; margin-top: .5rem;
+      padding: .2rem .7rem; border-radius: 50px;
+      background: rgba(255,255,255,.2);
+      font-size: .68rem; font-weight: 700; letter-spacing: .07em;
+      color: var(--white); text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 960px) {
+      .services-grid { grid-template-columns: repeat(2,1fr); }
+      .process-grid  { grid-template-columns: repeat(2,1fr); gap: 2rem; }
+      .process-grid::before { display: none; }
+      .bento {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: repeat(3, 200px);
+      }
+      .bento-item:nth-child(1),
+      .bento-item:nth-child(4) { grid-column: span 1; }
+    }
+    @media (max-width: 600px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .process-grid  { grid-template-columns: 1fr; }
+      .bento { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .bento-item:nth-child(1),
+      .bento-item:nth-child(4) { grid-column: span 1; }
+      .bento-thumb { height: 180px; }
+    }
+
   </style>
 </head>
 <body>
@@ -502,7 +662,159 @@
     </div>
   </section>
 
-  <!-- PARTS 3-4 WILL BE ADDED BELOW -->
+  <!-- ══ SERVICES ══ -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="centered fade-up">
+        <p class="eyebrow">What We Do</p>
+        <h2 class="section-title">Services Built for Growth</h2>
+        <p class="section-sub">Precision-crafted solutions that elevate your brand and accelerate your business.</p>
+      </div>
+      <div class="services-grid">
+        <div class="svc-card fade-up" data-delay="0">
+          <div class="svc-icon">&#9670;</div>
+          <h3>UI / UX Design</h3>
+          <p>Intuitive, beautiful interfaces that delight users and convert visitors into loyal customers.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+        <div class="svc-card fade-up" data-delay="80">
+          <div class="svc-icon">&#10022;</div>
+          <h3>Web Development</h3>
+          <p>Blazing-fast, pixel-perfect websites built on modern stacks engineered for scale.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+        <div class="svc-card fade-up" data-delay="160">
+          <div class="svc-icon">&#9724;</div>
+          <h3>Brand Identity</h3>
+          <p>Cohesive visual systems — logos, color, type — that command instant recognition.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+        <div class="svc-card fade-up" data-delay="0">
+          <div class="svc-icon">&#9651;</div>
+          <h3>Mobile Apps</h3>
+          <p>Native and cross-platform apps engineered for seamless, premium performance.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+        <div class="svc-card fade-up" data-delay="80">
+          <div class="svc-icon">&#9737;</div>
+          <h3>SEO &amp; Growth</h3>
+          <p>Data-driven strategies that grow organic visibility and drive qualified traffic.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+        <div class="svc-card fade-up" data-delay="160">
+          <div class="svc-icon">&#9654;</div>
+          <h3>Ongoing Support</h3>
+          <p>Priority maintenance and dedicated support to keep your digital presence flawless.</p>
+          <a href="#contact" class="svc-link">Learn more &#8594;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PROCESS ══ -->
+  <section class="section section-alt" id="process">
+    <div class="container">
+      <div class="centered fade-up">
+        <p class="eyebrow">How We Work</p>
+        <h2 class="section-title">Our 4-Step Process</h2>
+        <p class="section-sub">A proven framework that takes your idea from concept to a live, polished product.</p>
+      </div>
+      <div class="process-grid fade-up" data-delay="100">
+        <div class="process-step">
+          <div class="step-num">1</div>
+          <h4>Discovery</h4>
+          <p>We deep-dive into your goals, audience, and competitive landscape to set a clear strategy.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">2</div>
+          <h4>Design</h4>
+          <p>Wireframes, prototypes, and high-fidelity mockups — refined until every detail is perfect.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">3</div>
+          <h4>Build</h4>
+          <p>Clean, tested code shipped in sprints with full transparency and regular check-ins.</p>
+        </div>
+        <div class="process-step">
+          <div class="step-num">4</div>
+          <h4>Launch &amp; Grow</h4>
+          <p>We deploy, monitor, and iterate — turning launch day into a long-term growth engine.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ PORTFOLIO ══ -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:2rem;" class="fade-up">
+        <div>
+          <p class="eyebrow">Our Work</p>
+          <h2 class="section-title" style="margin-bottom:0">Selected Projects</h2>
+        </div>
+        <div class="portfolio-filters">
+          <button class="filter-btn active">All</button>
+          <button class="filter-btn">Design</button>
+          <button class="filter-btn">Dev</button>
+          <button class="filter-btn">Branding</button>
+        </div>
+      </div>
+      <div class="bento fade-up" data-delay="100">
+        <div class="bento-item">
+          <div class="bento-thumb bt-1">&#9670;</div>
+          <div class="bento-overlay">
+            <div class="bento-info">
+              <h4>Aurum E-Commerce</h4>
+              <p>Luxury retail platform with bespoke checkout</p>
+              <span class="bento-tag">Web Design</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-item">
+          <div class="bento-thumb bt-2">&#9651;</div>
+          <div class="bento-overlay">
+            <div class="bento-info">
+              <h4>Cerulean Finance</h4>
+              <p>Fintech dashboard &amp; mobile app</p>
+              <span class="bento-tag">Mobile App</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-item">
+          <div class="bento-thumb bt-3">&#9724;</div>
+          <div class="bento-overlay">
+            <div class="bento-info">
+              <h4>Verdant Health</h4>
+              <p>Wellness brand &amp; booking platform</p>
+              <span class="bento-tag">Branding</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-item">
+          <div class="bento-thumb bt-4">&#9737;</div>
+          <div class="bento-overlay">
+            <div class="bento-info">
+              <h4>Solaris SaaS</h4>
+              <p>B2B analytics dashboard &amp; design system</p>
+              <span class="bento-tag">UI / UX</span>
+            </div>
+          </div>
+        </div>
+        <div class="bento-item">
+          <div class="bento-thumb bt-5">&#9654;</div>
+          <div class="bento-overlay">
+            <div class="bento-info">
+              <h4>Maison Hospitality</h4>
+              <p>Full identity for a luxury hotel group</p>
+              <span class="bento-tag">Branding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PART 4 WILL BE ADDED BELOW -->
 
   <script>
     /* progress bar */
@@ -559,6 +871,14 @@
       });
     }, { threshold: 0.3 });
     document.querySelectorAll('.stats-grid, .hero-visual').forEach(el => countObserver.observe(el));
+
+    /* portfolio filter buttons (visual only) */
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
   </script>
 </body>
 </html>
