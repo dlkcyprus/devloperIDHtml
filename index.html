@@ -6,288 +6,182 @@
   <title>DevloperID — Premium Digital Solutions</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ── */
+
+    /* ═══════════════════════════════
+       PART 1 — FOUNDATION
+    ═══════════════════════════════ */
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold:        #C9A84C;
-      --gold-light:  #E8C97A;
-      --gold-pale:   #F7F0DC;
-      --cream:       #FAFAF7;
+      /* Bright, modern palette */
+      --azure:       #4F8EF7;   /* primary blue  */
+      --azure-dark:  #2D6FE8;
+      --azure-pale:  #EBF2FF;
+      --violet:      #7C5CFC;   /* accent violet */
+      --violet-pale: #F0ECFF;
+      --coral:       #FF6B6B;   /* highlight     */
+      --emerald:     #22C993;   /* success/badge */
+      --sun:         #FFB830;   /* warm accent   */
+
       --white:       #FFFFFF;
-      --ink:         #1A1A2E;
-      --ink-soft:    #4A4A6A;
-      --ink-muted:   #8888AA;
-      --border:      #E8E4D8;
-      --shadow-sm:   0 2px 12px rgba(26,26,46,.06);
-      --shadow-md:   0 8px 32px rgba(26,26,46,.10);
-      --shadow-lg:   0 20px 60px rgba(26,26,46,.14);
-      --radius:      16px;
-      --radius-sm:   8px;
-      --transition:  .28s cubic-bezier(.4,0,.2,1);
+      --surface:     #F8F9FE;   /* page bg       */
+      --surface-2:   #F0F4FF;   /* alt section   */
+      --ink:         #0F172A;
+      --ink-soft:    #475569;
+      --ink-muted:   #94A3B8;
+      --border:      #E2E8F0;
+
+      --shadow-sm:   0 1px 8px  rgba(79,142,247,.10);
+      --shadow-md:   0 6px 24px rgba(79,142,247,.15);
+      --shadow-lg:   0 16px 56px rgba(79,142,247,.20);
+      --shadow-xl:   0 28px 80px rgba(15,23,42,.15);
+
+      --radius:      20px;
+      --radius-sm:   10px;
+      --radius-xs:   6px;
+      --ease:        cubic-bezier(.4,0,.2,1);
+      --t:           .26s;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; font-size: 17px; }
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--cream);
+      background: var(--surface);
       color: var(--ink);
-      line-height: 1.7;
+      line-height: 1.75;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ── Typography ── */
-    h1, h2, h3, h4 { font-family: 'Playfair Display', serif; line-height: 1.25; }
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+      color: var(--ink);
+    }
+
+    /* ── Scroll progress bar ── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; z-index: 200;
+      height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--azure), var(--violet));
+      transition: width .1s linear;
+    }
 
     /* ── Utilities ── */
-    .container { width: 90%; max-width: 1160px; margin: 0 auto; }
-    .gold-text  { color: var(--gold); }
+    .container   { width: 90%; max-width: 1180px; margin: 0 auto; }
+    .section     { padding: 110px 0; }
+    .section-alt { background: var(--surface-2); }
 
-    /* ── Navbar ── */
-    .navbar {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(250,250,247,.82);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid var(--border);
-      padding: 0;
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .13em;
+      text-transform: uppercase; color: var(--azure);
+      margin-bottom: .9rem;
     }
-    .navbar-inner {
-      display: flex; align-items: center; justify-content: space-between;
-      height: 72px;
+    .eyebrow::before {
+      content: ''; display: block;
+      width: 20px; height: 2px;
+      background: var(--azure); border-radius: 2px;
     }
-    .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.45rem; font-weight: 700;
-      color: var(--ink); text-decoration: none; letter-spacing: .02em;
+    .section-title {
+      font-size: clamp(1.9rem, 3.5vw, 2.75rem);
+      font-weight: 700; margin-bottom: 1.1rem;
     }
-    .logo span { color: var(--gold); }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; transition: opacity var(--transition); }
-    .nav-links.hidden { display: none; }
-    .nav-links a {
-      font-size: .875rem; font-weight: 500; letter-spacing: .04em;
-      color: var(--ink-soft); text-decoration: none; text-transform: uppercase;
-      transition: color var(--transition);
+    .section-sub {
+      font-size: 1rem; color: var(--ink-soft);
+      max-width: 500px; font-weight: 400; line-height: 1.8;
     }
-    .nav-links a:hover { color: var(--gold); }
-    .btn-nav {
-      padding: .55rem 1.4rem;
-      border: 1.5px solid var(--gold);
-      border-radius: 50px;
-      font-size: .875rem; font-weight: 500; letter-spacing: .05em;
-      color: var(--gold); background: transparent; text-decoration: none;
-      text-transform: uppercase; transition: background var(--transition), color var(--transition);
-      cursor: pointer;
-    }
-    .btn-nav:hover { background: var(--gold); color: var(--white); }
+    .centered { text-align: center; }
+    .centered .section-sub { margin: 0 auto; }
+    .centered .eyebrow { justify-content: center; }
+    .centered .eyebrow::before { display: none; }
 
-    /* ── Hero ── */
-    .hero {
-      padding: 120px 0 100px;
-      background: linear-gradient(135deg, var(--white) 0%, var(--gold-pale) 100%);
-      border-bottom: 1px solid var(--border);
-      text-align: center;
-    }
-    .hero-badge {
+    /* ── Badges ── */
+    .badge {
       display: inline-block;
-      padding: .35rem 1rem;
-      background: var(--gold-pale);
-      border: 1px solid var(--gold-light);
+      padding: .28rem .85rem;
       border-radius: 50px;
-      font-size: .78rem; font-weight: 600; letter-spacing: .1em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 2rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .07em;
+      text-transform: uppercase;
     }
-    .hero h1 {
-      font-size: clamp(2.4rem, 5vw, 4rem);
-      font-weight: 700; color: var(--ink); margin-bottom: 1.5rem;
-      max-width: 700px; margin-left: auto; margin-right: auto;
+    .badge-blue   { background: var(--azure-pale);  color: var(--azure); }
+    .badge-violet { background: var(--violet-pale); color: var(--violet); }
+    .badge-green  { background: #D1FAF0; color: #0D9B6E; }
+    .badge-sun    { background: #FFF3D6; color: #B87A00; }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .85rem 2rem;
+      border-radius: 50px;
+      font-size: .9rem; font-weight: 600; letter-spacing: .03em;
+      text-decoration: none; cursor: pointer; border: none;
+      transition: transform var(--t) var(--ease), box-shadow var(--t) var(--ease), background var(--t);
     }
-    .hero h1 em { font-style: normal; color: var(--gold); }
-    .hero p {
-      font-size: 1.125rem; color: var(--ink-soft); max-width: 520px;
-      margin: 0 auto 2.8rem; font-weight: 300;
-    }
-    .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn:hover { transform: translateY(-2px); }
+
     .btn-primary {
-      padding: .85rem 2.2rem;
-      background: var(--gold);
-      border: 1.5px solid var(--gold);
-      border-radius: 50px;
-      font-size: .95rem; font-weight: 600; letter-spacing: .04em;
-      color: var(--white); text-decoration: none; text-transform: uppercase;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-      box-shadow: 0 4px 18px rgba(201,168,76,.35);
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      color: var(--white);
+      box-shadow: 0 4px 18px rgba(79,142,247,.38);
     }
-    .btn-primary:hover {
-      background: var(--gold-light); border-color: var(--gold-light);
-      transform: translateY(-2px); box-shadow: 0 8px 28px rgba(201,168,76,.45);
-    }
-    .btn-outline {
-      padding: .85rem 2.2rem;
-      background: transparent;
-      border: 1.5px solid var(--ink);
-      border-radius: 50px;
-      font-size: .95rem; font-weight: 600; letter-spacing: .04em;
-      color: var(--ink); text-decoration: none; text-transform: uppercase;
-      transition: border-color var(--transition), color var(--transition), transform var(--transition);
-    }
-    .btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+    .btn-primary:hover { box-shadow: 0 10px 32px rgba(79,142,247,.45); }
 
-    /* ── Stats Strip ── */
-    .stats {
+    .btn-ghost {
       background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 40px 0;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-sm);
     }
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 2rem; text-align: center;
-    }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.25rem; font-weight: 700; color: var(--gold);
-      display: block; margin-bottom: .2rem;
-    }
-    .stat-label { font-size: .8rem; font-weight: 500; color: var(--ink-muted); text-transform: uppercase; letter-spacing: .08em; }
+    .btn-ghost:hover { border-color: var(--azure); color: var(--azure); box-shadow: var(--shadow-md); }
 
-    /* ── Section Common ── */
-    .section { padding: 100px 0; }
-    .section-label {
-      font-size: .75rem; font-weight: 600; letter-spacing: .14em;
-      text-transform: uppercase; color: var(--gold); margin-bottom: .75rem;
-    }
-    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 700; margin-bottom: 1.25rem; }
-    .section-sub { font-size: 1rem; color: var(--ink-soft); max-width: 480px; font-weight: 300; }
-
-    /* ── Services ── */
-    .services { background: var(--cream); }
-    .services-header { text-align: center; margin-bottom: 4rem; }
-    .services-header .section-sub { margin: 0 auto; }
-    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
-    .card {
+    .btn-white {
       background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 2.5rem 2rem;
-      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
-      box-shadow: var(--shadow-sm);
+      color: var(--azure);
+      box-shadow: 0 4px 18px rgba(15,23,42,.15);
     }
-    .card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--gold-light); }
-    .card-icon {
-      width: 52px; height: 52px;
-      background: var(--gold-pale);
-      border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.5rem; margin-bottom: 1.5rem;
-    }
-    .card h3 { font-size: 1.2rem; margin-bottom: .75rem; }
-    .card p { font-size: .9rem; color: var(--ink-soft); line-height: 1.65; }
+    .btn-white:hover { box-shadow: 0 10px 32px rgba(15,23,42,.2); }
 
-    /* ── Portfolio ── */
-    .portfolio { background: var(--white); }
-    .portfolio-header { margin-bottom: 3.5rem; }
-    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .portfolio-item {
-      border-radius: var(--radius);
-      overflow: hidden;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      transition: transform var(--transition), box-shadow var(--transition);
-    }
-    .portfolio-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-    .portfolio-thumb {
-      height: 200px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 3rem;
-    }
-    .thumb-1 { background: linear-gradient(135deg, #F0EAD6, #E8C97A); }
-    .thumb-2 { background: linear-gradient(135deg, #EAF0F6, #A8C8E8); }
-    .thumb-3 { background: linear-gradient(135deg, #F6EAF0, #E8A8C8); }
-    .portfolio-info { padding: 1.5rem; background: var(--white); }
-    .portfolio-info h4 { font-size: 1.05rem; margin-bottom: .4rem; }
-    .portfolio-info p { font-size: .85rem; color: var(--ink-muted); }
-    .tag {
-      display: inline-block; margin-top: .75rem;
-      padding: .25rem .75rem; border-radius: 50px;
-      background: var(--gold-pale); color: var(--gold);
-      font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
-    }
-
-    /* ── Testimonials ── */
-    .testimonials { background: var(--cream); }
-    .testimonials-header { text-align: center; margin-bottom: 4rem; }
-    .testimonials-header .section-sub { margin: 0 auto; }
-    .testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
-    .testi-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 2rem;
-      box-shadow: var(--shadow-sm);
-    }
-    .testi-stars { color: var(--gold); font-size: 1rem; letter-spacing: .1em; margin-bottom: 1rem; }
-    .testi-text { font-size: .9rem; color: var(--ink-soft); line-height: 1.7; margin-bottom: 1.5rem; font-style: italic; }
-    .testi-author { display: flex; align-items: center; gap: .875rem; }
-    .avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      background: var(--gold-pale); border: 2px solid var(--gold-light);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: .85rem; color: var(--gold);
-    }
-    .author-name { font-size: .875rem; font-weight: 600; }
-    .author-title { font-size: .78rem; color: var(--ink-muted); }
-
-    /* ── CTA Banner ── */
-    .cta-banner {
-      background: linear-gradient(135deg, var(--ink) 0%, #2D2D50 100%);
-      padding: 100px 0; text-align: center;
-    }
-    .cta-banner h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--white); margin-bottom: 1rem; }
-    .cta-banner p { font-size: 1rem; color: rgba(255,255,255,.65); max-width: 460px; margin: 0 auto 2.5rem; font-weight: 300; }
-    .btn-gold {
-      padding: .9rem 2.4rem;
-      background: var(--gold); border: none; border-radius: 50px;
-      font-size: .95rem; font-weight: 600; letter-spacing: .05em;
-      color: var(--white); text-decoration: none; text-transform: uppercase; cursor: pointer;
-      transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-      box-shadow: 0 4px 20px rgba(201,168,76,.4);
-    }
-    .btn-gold:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,168,76,.5); }
-
-    /* ── Footer ── */
-    .footer {
-      background: var(--white); border-top: 1px solid var(--border);
-      padding: 60px 0 32px;
-    }
-    .footer-top {
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
-      margin-bottom: 3rem;
-    }
-    .footer-brand p { font-size: .875rem; color: var(--ink-soft); margin-top: .75rem; max-width: 260px; line-height: 1.65; }
-    .footer-col h5 {
-      font-family: 'Inter', sans-serif;
-      font-size: .75rem; font-weight: 700; letter-spacing: .1em;
-      text-transform: uppercase; color: var(--ink); margin-bottom: 1.25rem;
-    }
-    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
-    .footer-col a { font-size: .875rem; color: var(--ink-soft); text-decoration: none; transition: color var(--transition); }
-    .footer-col a:hover { color: var(--gold); }
-    .footer-bottom {
-      border-top: 1px solid var(--border); padding-top: 1.5rem;
-      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
-    }
-    .footer-bottom p { font-size: .8rem; color: var(--ink-muted); }
-    .footer-bottom a { color: var(--gold); text-decoration: none; }
-
-    /* ── Responsive ── */
-    /* ── Scroll-fade animations ── */
+    /* ── Fade-up animation ── */
     .fade-up {
-      opacity: 0; transform: translateY(32px);
-      transition: opacity .6s ease, transform .6s ease;
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .6s var(--ease), transform .6s var(--ease);
     }
     .fade-up.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── Mobile hamburger ── */
+    /* ════════════════════════════
+       NAVBAR
+    ════════════════════════════ */
+    .navbar {
+      position: sticky; top: 3px; z-index: 100;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 70px;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 700;
+      color: var(--ink); text-decoration: none; letter-spacing: .01em;
+    }
+    .logo span {
+      background: linear-gradient(135deg, var(--azure), var(--violet));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2.2rem; list-style: none; }
+    .nav-links a {
+      font-size: .82rem; font-weight: 600; letter-spacing: .06em;
+      color: var(--ink-soft); text-decoration: none; text-transform: uppercase;
+      transition: color var(--t);
+    }
+    .nav-links a:hover { color: var(--azure); }
+
     .hamburger {
       display: none; flex-direction: column; gap: 5px;
       cursor: pointer; background: none; border: none; padding: 4px;
@@ -295,54 +189,55 @@
     .hamburger span {
       display: block; width: 24px; height: 2px;
       background: var(--ink); border-radius: 2px;
-      transition: transform var(--transition), opacity var(--transition);
+      transition: transform var(--t), opacity var(--t);
     }
     .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
     .hamburger.open span:nth-child(2) { opacity: 0; }
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* ── Mobile nav drawer ── */
     .mobile-nav {
-      display: none; position: fixed; inset: 72px 0 0 0;
-      background: rgba(250,250,247,.97); backdrop-filter: blur(18px);
+      display: none; position: fixed; inset: 73px 0 0 0;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(20px);
       flex-direction: column; align-items: center; justify-content: center;
-      gap: 2.5rem; z-index: 99;
+      gap: 2.2rem; z-index: 99;
     }
     .mobile-nav.open { display: flex; }
     .mobile-nav a {
-      font-size: 1.4rem; font-weight: 500; letter-spacing: .06em;
-      color: var(--ink); text-decoration: none; text-transform: uppercase;
-      transition: color var(--transition);
+      font-size: 1.35rem; font-weight: 600; color: var(--ink);
+      text-decoration: none; text-transform: uppercase; letter-spacing: .06em;
+      transition: color var(--t);
     }
-    .mobile-nav a:hover { color: var(--gold); }
+    .mobile-nav a:hover { color: var(--azure); }
 
     @media (max-width: 768px) {
-      .nav-links { display: none !important; }
-      .btn-nav { display: none; }
+      .nav-links, .btn-nav-wrap { display: none !important; }
       .hamburger { display: flex; }
-      .footer-top { grid-template-columns: 1fr 1fr; }
-      .hero { padding: 80px 0 70px; }
-      .section { padding: 70px 0; }
+      .section { padding: 75px 0; }
     }
     @media (max-width: 480px) {
-      .footer-top { grid-template-columns: 1fr; }
-      .footer-bottom { flex-direction: column; text-align: center; }
+      html { font-size: 16px; }
     }
+
   </style>
 </head>
 <body>
 
-  <!-- ── Navbar ── -->
+  <div id="progress-bar"></div>
+
+  <!-- ══ NAVBAR ══ -->
   <nav class="navbar">
     <div class="container navbar-inner">
       <a href="#" class="logo">Devloper<span>ID</span></a>
       <ul class="nav-links">
         <li><a href="#services">Services</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#portfolio">Work</a></li>
         <li><a href="#testimonials">Clients</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <a href="#contact" class="btn-nav">Get Started</a>
+      <div class="btn-nav-wrap">
+        <a href="#contact" class="btn btn-primary" style="padding:.55rem 1.4rem;font-size:.82rem;">Get Started</a>
+      </div>
       <button class="hamburger" id="hamburger" aria-label="Toggle menu">
         <span></span><span></span><span></span>
       </button>
@@ -350,293 +245,48 @@
   </nav>
 
   <nav class="mobile-nav" id="mobileNav">
-    <a href="#services"      onclick="closeMobile()">Services</a>
-    <a href="#portfolio"     onclick="closeMobile()">Portfolio</a>
-    <a href="#testimonials"  onclick="closeMobile()">Clients</a>
-    <a href="#contact"       onclick="closeMobile()">Contact</a>
-    <a href="#contact" class="btn-primary" onclick="closeMobile()">Get Started</a>
+    <a href="#services"     onclick="closeMobile()">Services</a>
+    <a href="#process"      onclick="closeMobile()">Process</a>
+    <a href="#portfolio"    onclick="closeMobile()">Work</a>
+    <a href="#testimonials" onclick="closeMobile()">Clients</a>
+    <a href="#contact"      onclick="closeMobile()">Contact</a>
+    <a href="#contact" class="btn btn-primary" onclick="closeMobile()">Get Started</a>
   </nav>
 
-  <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="container">
-      <span class="hero-badge">Premium Digital Studio</span>
-      <h1>Crafting <em>Exceptional</em><br>Digital Experiences</h1>
-      <p>We design and build high-end digital products that elevate brands and captivate audiences.</p>
-      <div class="hero-cta">
-        <a href="#portfolio" class="btn-primary">View Our Work</a>
-        <a href="#contact" class="btn-outline">Start a Project</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Stats ── -->
-  <section class="stats">
-    <div class="container">
-      <div class="stats-grid fade-up">
-        <div>
-          <span class="stat-num">120+</span>
-          <span class="stat-label">Projects Delivered</span>
-        </div>
-        <div>
-          <span class="stat-num">98%</span>
-          <span class="stat-label">Client Satisfaction</span>
-        </div>
-        <div>
-          <span class="stat-num">8+</span>
-          <span class="stat-label">Years Experience</span>
-        </div>
-        <div>
-          <span class="stat-num">40+</span>
-          <span class="stat-label">Global Clients</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Services ── -->
-  <section class="section services" id="services">
-    <div class="container">
-      <div class="services-header">
-        <p class="section-label">What We Do</p>
-        <h2 class="section-title">Premium Services</h2>
-        <p class="section-sub">Tailored solutions built with precision, elegance, and a focus on your growth.</p>
-      </div>
-      <div class="services-grid fade-up">
-        <div class="card">
-          <div class="card-icon">&#9670;</div>
-          <h3>UI / UX Design</h3>
-          <p>Luxurious interfaces crafted to delight users and reflect your brand's sophistication.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#10022;</div>
-          <h3>Web Development</h3>
-          <p>High-performance, pixel-perfect websites built on modern, scalable technology stacks.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#9724;</div>
-          <h3>Brand Identity</h3>
-          <p>Cohesive visual systems — logos, palettes, typography — that command instant recognition.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#9651;</div>
-          <h3>Mobile Apps</h3>
-          <p>Native and cross-platform mobile experiences engineered for seamless performance.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#9737;</div>
-          <h3>SEO &amp; Growth</h3>
-          <p>Data-driven strategies that organically grow visibility and drive qualified traffic.</p>
-        </div>
-        <div class="card">
-          <div class="card-icon">&#9670;</div>
-          <h3>Ongoing Support</h3>
-          <p>Dedicated maintenance and priority support to keep your digital presence flawless.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Portfolio ── -->
-  <section class="section portfolio" id="portfolio">
-    <div class="container">
-      <div class="portfolio-header">
-        <p class="section-label">Our Work</p>
-        <h2 class="section-title">Selected Projects</h2>
-        <p class="section-sub">A curated selection of work we're proud to stand behind.</p>
-      </div>
-      <div class="portfolio-grid fade-up">
-        <div class="portfolio-item">
-          <div class="portfolio-thumb thumb-1">&#9670;</div>
-          <div class="portfolio-info">
-            <h4>Aurum E-Commerce</h4>
-            <p>Luxury retail platform with bespoke checkout experience.</p>
-            <span class="tag">Web Design</span>
-          </div>
-        </div>
-        <div class="portfolio-item">
-          <div class="portfolio-thumb thumb-2">&#9651;</div>
-          <div class="portfolio-info">
-            <h4>Cerulean Finance App</h4>
-            <p>Clean, trustworthy dashboard for a fintech startup.</p>
-            <span class="tag">Mobile App</span>
-          </div>
-        </div>
-        <div class="portfolio-item">
-          <div class="portfolio-thumb thumb-3">&#9654;</div>
-          <div class="portfolio-info">
-            <h4>Maison Brand Identity</h4>
-            <p>Full visual identity system for a high-end hospitality brand.</p>
-            <span class="tag">Branding</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Testimonials ── -->
-  <section class="section testimonials" id="testimonials">
-    <div class="container">
-      <div class="testimonials-header">
-        <p class="section-label">Client Stories</p>
-        <h2 class="section-title">What Clients Say</h2>
-        <p class="section-sub">Trusted by discerning brands who value craft and excellence.</p>
-      </div>
-      <div class="testi-grid fade-up">
-        <div class="testi-card">
-          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testi-text">"The team delivered a design far beyond our expectations. Elegant, fast, and our conversions jumped 38% in the first month."</p>
-          <div class="testi-author">
-            <div class="avatar">SL</div>
-            <div>
-              <div class="author-name">Sophie Laurent</div>
-              <div class="author-title">CEO, Maison Collective</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testi-text">"Professional, precise, and truly understood our brand vision. The mobile app they built feels premium in every interaction."</p>
-          <div class="testi-author">
-            <div class="avatar">MK</div>
-            <div>
-              <div class="author-name">Marcus Klein</div>
-              <div class="author-title">CTO, Cerulean Finance</div>
-            </div>
-          </div>
-        </div>
-        <div class="testi-card">
-          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-          <p class="testi-text">"Exceptional attention to detail. Our new identity has completely transformed how clients perceive our business."</p>
-          <div class="testi-author">
-            <div class="avatar">AR</div>
-            <div>
-              <div class="author-name">Amina Reyes</div>
-              <div class="author-title">Founder, Aurum Studio</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── CTA Banner ── -->
-  <section class="cta-banner" id="contact">
-    <div class="container">
-      <h2>Ready to Build Something<br><em class="gold-text">Extraordinary?</em></h2>
-      <p>Let's discuss your project and create a digital experience your audience will remember.</p>
-      <a href="mailto:hello@devloperid.com" class="btn-gold">Start a Conversation</a>
-    </div>
-  </section>
-
-  <!-- ── Footer ── -->
-  <footer class="footer">
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-brand">
-          <a href="#" class="logo">Devloper<span>ID</span></a>
-          <p>A premium digital studio crafting exceptional web experiences since 2016.</p>
-        </div>
-        <div class="footer-col">
-          <h5>Services</h5>
-          <ul>
-            <li><a href="#">UI / UX Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Brand Identity</a></li>
-            <li><a href="#">Mobile Apps</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Company</h5>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Portfolio</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h5>Contact</h5>
-          <ul>
-            <li><a href="mailto:hello@devloperid.com">hello@devloperid.com</a></li>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">Instagram</a></li>
-            <li><a href="#">Dribbble</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2026 DevloperID. All rights reserved.</p>
-        <p><a href="#">Privacy Policy</a> &nbsp;·&nbsp; <a href="#">Terms of Service</a></p>
-      </div>
-    </div>
-  </footer>
+  <!-- PARTS 2-4 WILL BE ADDED BELOW -->
 
   <script>
-    /* ── Mobile menu ── */
-    const hamburger  = document.getElementById('hamburger');
-    const mobileNav  = document.getElementById('mobileNav');
+    /* progress bar */
+    const bar = document.getElementById('progress-bar');
+    window.addEventListener('scroll', () => {
+      const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+      bar.style.width = pct + '%';
+    }, { passive: true });
 
-    hamburger.addEventListener('click', () => {
-      const open = mobileNav.classList.toggle('open');
-      hamburger.classList.toggle('open', open);
-      document.body.style.overflow = open ? 'hidden' : '';
+    /* mobile menu */
+    const hbg = document.getElementById('hamburger');
+    const mnav = document.getElementById('mobileNav');
+    hbg.addEventListener('click', () => {
+      const o = mnav.classList.toggle('open');
+      hbg.classList.toggle('open', o);
+      document.body.style.overflow = o ? 'hidden' : '';
     });
-
     function closeMobile() {
-      mobileNav.classList.remove('open');
-      hamburger.classList.remove('open');
+      mnav.classList.remove('open');
+      hbg.classList.remove('open');
       document.body.style.overflow = '';
     }
 
-    /* ── Scroll-fade via IntersectionObserver ── */
-    const observer = new IntersectionObserver((entries) => {
+    /* fade-up observer */
+    const io = new IntersectionObserver(entries => {
       entries.forEach((e, i) => {
         if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-          observer.unobserve(e.target);
+          setTimeout(() => e.target.classList.add('visible'), e.target.dataset.delay || 0);
+          io.unobserve(e.target);
         }
       });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-    /* ── Animated stat counters ── */
-    function animateCount(el, target, suffix) {
-      const duration = 1600;
-      const start    = performance.now();
-      const update   = (now) => {
-        const t   = Math.min((now - start) / duration, 1);
-        const val = Math.floor(t * t * target);
-        el.textContent = val + suffix;
-        if (t < 1) requestAnimationFrame(update);
-        else el.textContent = target + suffix;
-      };
-      requestAnimationFrame(update);
-    }
-
-    const statsGrid = document.querySelector('.stats-grid');
-    const statsObserver = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        document.querySelectorAll('.stat-num').forEach(el => {
-          const raw    = el.textContent.trim();
-          const suffix = raw.replace(/[0-9]/g, '');
-          const target = parseInt(raw);
-          animateCount(el, target, suffix);
-        });
-        statsObserver.unobserve(statsGrid);
-      }
-    }, { threshold: 0.4 });
-
-    statsObserver.observe(statsGrid);
-
-    /* ── Navbar scroll shadow ── */
-    const navbar = document.querySelector('.navbar');
-    window.addEventListener('scroll', () => {
-      navbar.style.boxShadow = window.scrollY > 10
-        ? '0 2px 20px rgba(26,26,46,.10)'
-        : 'none';
-    }, { passive: true });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
   </script>
 </body>
 </html>
