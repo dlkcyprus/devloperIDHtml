@@ -4,214 +4,357 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Realco — Deal Approval Flow</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
+/* ═══════════════════════════════
+   DESIGN SYSTEM
+═══════════════════════════════ */
 :root {
-  --navy: #0D1B3E;
-  --navy2: #162654;
-  --gold: #C9A84C;
-  --gold-light: #E8C96A;
-  --cream: #F8F4EE;
-  --white: #FFFFFF;
-  --gray: #6B7280;
-  --border: #E5E0D8;
-  --red: #E05252;
-  --green: #3BAA7F;
-  --orange: #E07B30;
-  --blue: #3B6FD4;
-  --sidebar-w: 240px;
+  --bg:            #F8FAFC;
+  --surface:       #FFFFFF;
+  --primary:       #4F46E5;
+  --primary-hover: #4338CA;
+  --primary-light: #EEF2FF;
+  --accent:        #06B6D4;
+  --accent-light:  #ECFEFF;
+  --text:          #0F172A;
+  --subtext:       #475569;
+  --muted:         #94A3B8;
+  --border:        #E2E8F0;
+  --success:       #10B981;
+  --success-light: #D1FAE5;
+  --warning:       #F59E0B;
+  --warning-light: #FEF3C7;
+  --danger:        #EF4444;
+  --danger-light:  #FEE2E2;
+  --sidebar-w:     240px;
+  --topbar-h:      60px;
+  --radius:        12px;
+  --radius-lg:     16px;
+  --shadow-sm:     0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+  --shadow-md:     0 4px 16px rgba(15,23,42,.08), 0 2px 6px rgba(15,23,42,.04);
+  --shadow-lg:     0 12px 40px rgba(15,23,42,.10);
+  --t: .18s;
 }
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-height:100vh;}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg); color: var(--text);
+  display: flex; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
 
-/* ── SIDEBAR ── */
-.sidebar{width:var(--sidebar-w);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;}
-.sidebar-logo{padding:24px 20px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.07);}
-.logo-icon{width:32px;height:32px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:var(--navy);}
-.logo-text{font-family:'Playfair Display',serif;font-size:20px;color:white;font-weight:700;}
-.nav-section{padding:20px 12px 8px;}
-.nav-label{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;padding:0 8px;margin-bottom:6px;}
-.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:rgba(255,255,255,0.55);font-size:13.5px;cursor:pointer;transition:all 0.2s;margin-bottom:2px;}
-.nav-item:hover{background:rgba(255,255,255,0.06);color:white;}
-.nav-item.active{background:rgba(201,168,76,0.15);color:var(--gold);}
-.sidebar-mode{margin:12px 16px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 14px;}
-.mode-label{font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:6px;}
-.mode-switch{display:flex;gap:6px;}
-.mode-btn{flex:1;padding:6px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:all 0.18s;}
-.mode-btn.owner-m{background:rgba(201,168,76,0.2);color:var(--gold);}
-.mode-btn.agent-m{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);}
-.mode-btn.agent-m.active-m{background:rgba(59,111,212,0.25);color:#7BA7F7;}
-.mode-btn.owner-m.active-m{background:rgba(201,168,76,0.25);color:var(--gold);}
-.sidebar-footer{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.07);}
-.logout-btn{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer;padding:8px 12px;border-radius:8px;transition:all 0.2s;}
-.logout-btn:hover{color:var(--red);background:rgba(224,82,82,0.08);}
+/* ═══════════════════════════════
+   SIDEBAR
+═══════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: fixed; top:0; left:0; bottom:0; z-index:50;
+}
+.sidebar-logo {
+  height: var(--topbar-h); padding: 0 20px;
+  display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.logo-icon { width:32px; height:32px; background:var(--primary); border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; color:#fff; }
+.logo-text  { font-size:18px; font-weight:800; color:var(--text); letter-spacing:-0.03em; }
+.logo-text span { color:var(--primary); }
 
-/* ── MAIN ── */
-.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;}
-.topbar{background:white;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:40;}
-.topbar-left{display:flex;align-items:center;gap:12px;}
-.back-link{font-size:13px;color:var(--gray);cursor:pointer;display:flex;align-items:center;gap:5px;transition:color 0.15s;}
-.back-link:hover{color:var(--navy);}
-.breadcrumb{font-size:13px;color:var(--gray);}
-.breadcrumb span{color:var(--navy);font-weight:600;}
-.topbar-right{display:flex;align-items:center;gap:10px;}
-.view-toggle{display:flex;background:var(--cream);border:1px solid var(--border);border-radius:8px;padding:3px;gap:3px;}
-.vt-btn{padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;font-family:'DM Sans',sans-serif;color:var(--gray);background:transparent;}
-.vt-btn.active{background:var(--navy);color:white;}
+/* Mode switch */
+.sidebar-mode {
+  margin: 10px 10px 4px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 12px;
+}
+.mode-label { font-size:10px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; font-weight:700; margin-bottom:8px; }
+.mode-switch { display:flex; gap:6px; }
+.mode-btn {
+  flex:1; padding:7px; border-radius:9px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  border:none; font-family:'Inter',sans-serif;
+  transition: all var(--t);
+  color: var(--muted); background: var(--surface);
+  border: 1px solid var(--border);
+}
+.mode-btn.owner-m.active-m { background:var(--primary-light); color:var(--primary); border-color:#C7D2FE; }
+.mode-btn.agent-m.active-m { background:var(--accent-light);  color:#0E7490;         border-color:#A5F3FC; }
+.mode-btn:not(.active-m):hover { background:var(--bg); color:var(--subtext); }
 
-/* ── CONTENT LAYOUT ── */
-.content{padding:28px 32px;flex:1;display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
+.nav-section { padding:12px 10px 4px; }
+.nav-label { font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); padding:0 8px; margin-bottom:4px; }
+.nav-item {
+  display:flex; align-items:center; gap:9px;
+  padding:9px 10px; border-radius:var(--radius);
+  color:var(--subtext); font-size:13.5px; font-weight:500;
+  cursor:pointer; transition:background var(--t), color var(--t); margin-bottom:1px;
+}
+.nav-item:hover  { background:var(--bg); color:var(--text); }
+.nav-item.active { background:var(--primary-light); color:var(--primary); font-weight:600; }
+.nav-icon { font-size:15px; width:20px; text-align:center; flex-shrink:0; }
 
-/* ── LEFT PANEL ── */
-.left-panel{}
+.sidebar-footer { margin-top:auto; padding:12px; border-top:1px solid var(--border); }
+.logout-btn {
+  display:flex; align-items:center; gap:8px;
+  color:var(--subtext); font-size:13px; font-weight:500;
+  cursor:pointer; padding:9px 10px; border-radius:var(--radius);
+  transition:background var(--t), color var(--t);
+}
+.logout-btn:hover { color:var(--danger); background:var(--danger-light); }
 
-/* DEAL HERO CARD */
-.deal-hero{background:white;border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:20px;}
-.deal-hero-img{height:180px;background:linear-gradient(135deg,#1a3a6e,#0d1b3e);display:flex;align-items:center;justify-content:center;font-size:64px;position:relative;}
-.deal-mode{position:absolute;top:14px;left:14px;background:var(--navy);color:white;font-size:10px;font-weight:700;padding:4px 12px;border-radius:100px;letter-spacing:0.05em;}
-.deal-id{position:absolute;top:14px;right:14px;background:rgba(255,255,255,0.12);backdrop-filter:blur(4px);color:rgba(255,255,255,0.8);font-size:11px;font-weight:500;padding:4px 12px;border-radius:100px;}
-.deal-body{padding:20px 24px;}
-.deal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:4px;}
-.deal-loc{font-size:13px;color:var(--gray);margin-bottom:16px;}
-.deal-specs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
-.deal-spec{background:var(--cream);border-radius:6px;padding:6px 12px;font-size:12px;color:var(--navy);display:flex;align-items:center;gap:5px;}
-.deal-price-row{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--border);}
-.deal-price{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--navy);}
-.deal-status-badge{padding:6px 18px;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:0.03em;}
-.dsb-pending{background:rgba(224,123,48,0.1);color:var(--orange);border:1px solid rgba(224,123,48,0.25);}
-.dsb-approved{background:rgba(59,170,127,0.1);color:var(--green);border:1px solid rgba(59,170,127,0.25);}
-.dsb-rejected{background:rgba(224,82,82,0.1);color:var(--red);border:1px solid rgba(224,82,82,0.2);}
+/* ═══════════════════════════════
+   MAIN + TOPBAR
+═══════════════════════════════ */
+.main { margin-left:var(--sidebar-w); flex:1; display:flex; flex-direction:column; min-width:0; }
+.topbar {
+  background:var(--surface); height:var(--topbar-h);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 28px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:40; flex-shrink:0;
+}
+.topbar-left { display:flex; align-items:center; gap:10px; }
+.back-link {
+  font-size:13px; color:var(--subtext); cursor:pointer;
+  display:flex; align-items:center; gap:4px; font-weight:500;
+  transition:color var(--t);
+}
+.back-link:hover { color:var(--text); }
+.sep { color:var(--border); font-size:16px; }
+.breadcrumb { font-size:13px; color:var(--subtext); font-weight:400; }
+.breadcrumb span { color:var(--text); font-weight:700; }
 
-/* PARTIES CARD */
-.parties-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px 24px;margin-bottom:20px;}
-.card-title-sm{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.parties-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.party-item{background:var(--cream);border-radius:10px;padding:14px 16px;}
-.party-role{font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:8px;}
-.party-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:white;margin-bottom:8px;}
-.party-name{font-size:14px;font-weight:600;color:var(--navy);}
-.party-detail{font-size:12px;color:var(--gray);margin-top:2px;}
-.party-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;color:var(--green);margin-top:4px;}
+.view-toggle {
+  display:flex; background:var(--bg);
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:3px; gap:3px;
+}
+.vt-btn {
+  padding:6px 16px; border-radius:9px;
+  font-size:12px; font-weight:600; cursor:pointer;
+  border:none; font-family:'Inter',sans-serif;
+  color:var(--subtext); background:transparent;
+  transition:all var(--t);
+}
+.vt-btn.active { background:var(--surface); color:var(--text); box-shadow:var(--shadow-sm); }
+.vt-btn:hover:not(.active) { color:var(--text); }
 
-/* TIMELINE */
-.timeline-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px 24px;margin-bottom:20px;}
-.timeline{position:relative;padding-left:24px;}
-.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--border);}
-.tl-item{position:relative;margin-bottom:22px;}
-.tl-item:last-child{margin-bottom:0;}
-.tl-dot{position:absolute;left:-24px;top:3px;width:16px;height:16px;border-radius:50%;border:2px solid var(--border);background:white;display:flex;align-items:center;justify-content:center;font-size:8px;}
-.tl-dot.done{background:var(--green);border-color:var(--green);color:white;}
-.tl-dot.active{background:var(--orange);border-color:var(--orange);color:white;}
-.tl-dot.pending{background:white;border-color:var(--border);}
-.tl-dot.approved{background:var(--green);border-color:var(--green);}
-.tl-dot.rejected{background:var(--red);border-color:var(--red);}
-.tl-time{font-size:11px;color:var(--gray);margin-bottom:3px;}
-.tl-title{font-size:13.5px;font-weight:600;color:var(--navy);}
-.tl-desc{font-size:12px;color:var(--gray);margin-top:3px;line-height:1.5;}
-.tl-note{background:var(--cream);border-radius:7px;padding:10px 12px;margin-top:8px;font-size:12px;color:var(--navy);font-style:italic;border-left:3px solid var(--gold);}
+/* ═══════════════════════════════
+   CONTENT GRID
+═══════════════════════════════ */
+.content {
+  padding:24px 28px; flex:1;
+  display:grid; grid-template-columns:1fr 360px;
+  gap:20px; align-items:start;
+}
 
-/* DOCS PANEL */
-.docs-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px 24px;margin-bottom:20px;}
-.doc-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:9px;background:var(--cream);margin-bottom:8px;cursor:pointer;transition:all 0.15s;border:1px solid transparent;}
-.doc-row:hover{border-color:var(--gold);background:rgba(201,168,76,0.05);}
-.doc-row:last-child{margin-bottom:0;}
-.doc-icon-box{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.doc-icon-box.pdf{background:rgba(224,82,82,0.1);}
-.doc-icon-box.img{background:rgba(59,111,212,0.1);}
-.doc-icon-box.doc{background:rgba(59,170,127,0.1);}
-.doc-info{flex:1;}
-.doc-name{font-size:13px;font-weight:600;color:var(--navy);}
-.doc-meta{font-size:11px;color:var(--gray);margin-top:2px;}
-.doc-verified{font-size:10px;color:var(--green);font-weight:600;}
-.doc-actions{display:flex;gap:6px;}
-.doc-act-btn{padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:white;color:var(--navy);font-family:'DM Sans',sans-serif;transition:all 0.15s;}
-.doc-act-btn:hover{background:var(--navy);color:white;border-color:var(--navy);}
-.doc-act-btn.primary{background:var(--navy);color:white;border-color:var(--navy);}
+/* shared card base */
+.card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--radius-lg); box-shadow:var(--shadow-sm);
+  margin-bottom:16px;
+}
+.card-header {
+  padding:16px 20px; border-bottom:1px solid var(--border);
+  font-size:13px; font-weight:700; color:var(--text);
+  display:flex; align-items:center; gap:8px;
+}
 
-/* ── RIGHT PANEL ── */
-.right-panel{}
+/* ═══════════════════════════════
+   TOAST
+═══════════════════════════════ */
+.toast {
+  position:fixed; bottom:24px; right:24px;
+  background:var(--text); color:#fff;
+  padding:12px 18px; border-radius:var(--radius-lg);
+  font-size:13.5px; font-weight:500;
+  border-left:3px solid var(--primary);
+  box-shadow:var(--shadow-lg);
+  transform:translateY(80px); opacity:0;
+  transition:all .32s cubic-bezier(.34,1.56,.64,1);
+  z-index:999; max-width:300px;
+}
+.toast.show { transform:translateY(0); opacity:1; }
 
-/* ACTION CARD */
-.action-card{background:var(--navy);border-radius:14px;padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
-.action-card::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);pointer-events:none;}
-.action-title{font-family:'Playfair Display',serif;font-size:17px;color:white;font-weight:600;margin-bottom:6px;}
-.action-sub{font-size:12px;color:rgba(255,255,255,0.5);margin-bottom:20px;line-height:1.5;}
-.action-btns{display:flex;flex-direction:column;gap:10px;}
-.act-btn{width:100%;padding:12px;border-radius:9px;font-size:13.5px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
-.act-btn.approve{background:var(--green);color:white;}
-.act-btn.approve:hover{background:#2d9a6e;transform:translateY(-1px);box-shadow:0 6px 18px rgba(59,170,127,0.35);}
-.act-btn.reject{background:rgba(224,82,82,0.12);color:var(--red);border:1px solid rgba(224,82,82,0.25);}
-.act-btn.reject:hover{background:rgba(224,82,82,0.2);}
-.act-btn.msg{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.1);}
-.act-btn.msg:hover{background:rgba(255,255,255,0.12);color:white;}
-.act-btn:disabled{opacity:0.4;pointer-events:none;}
+/* ═══════════════════════════════
+   PART 2 — LEFT PANEL
+═══════════════════════════════ */
 
-/* NOTE CARD */
-.note-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:16px;}
-.note-textarea{width:100%;min-height:90px;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;resize:vertical;transition:border-color 0.2s;}
-.note-textarea:focus{border-color:var(--gold);}
-.note-send{width:100%;margin-top:10px;padding:10px;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;transition:all 0.2s;}
-.note-send:hover{background:var(--gold-light);}
+/* Status Banner */
+.status-banner {
+  display:flex; align-items:center; gap:12px;
+  padding:14px 18px; border-radius:var(--radius);
+  font-size:13.5px; font-weight:600; margin-bottom:16px;
+  border:1px solid transparent;
+}
+.status-banner.pending  { background:var(--warning-light); color:#92400E; border-color:#FDE68A; }
+.status-banner.approved { background:var(--success-light); color:#065F46; border-color:#6EE7B7; }
+.status-banner.rejected { background:var(--danger-light);  color:#991B1B; border-color:#FECACA; }
+.sb-icon { font-size:18px; flex-shrink:0; }
+.sb-text strong { display:block; font-size:13.5px; }
+.sb-text span   { font-size:12px; font-weight:400; opacity:.75; }
+.sb-badge {
+  margin-left:auto; padding:3px 10px; border-radius:99px;
+  font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
+}
+.pending  .sb-badge { background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; }
+.approved .sb-badge { background:#D1FAE5; color:#065F46; border:1px solid #6EE7B7; }
+.rejected .sb-badge { background:#FEE2E2; color:#991B1B; border:1px solid #FECACA; }
 
-/* CHECKLIST CARD */
-.checklist-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px;margin-bottom:16px;}
-.check-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
-.check-item:last-child{border-bottom:none;}
-.check-box{width:20px;height:20px;border-radius:5px;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;transition:all 0.18s;flex-shrink:0;}
-.check-box.checked{background:var(--green);border-color:var(--green);color:white;}
-.check-label{font-size:13px;color:var(--navy);}
-.check-label.done{text-decoration:line-through;color:var(--gray);}
+/* Deal Hero Card */
+.deal-hero {
+  background:linear-gradient(135deg,#312E81 0%,#4F46E5 60%,#0E7490 100%);
+  border-radius:var(--radius-lg); padding:22px 22px 18px;
+  margin-bottom:16px; color:#fff; position:relative; overflow:hidden;
+}
+.deal-hero::before {
+  content:''; position:absolute; top:-40px; right:-40px;
+  width:180px; height:180px; border-radius:50%;
+  background:rgba(255,255,255,.06);
+}
+.deal-hero::after {
+  content:''; position:absolute; bottom:-30px; left:40px;
+  width:120px; height:120px; border-radius:50%;
+  background:rgba(255,255,255,.04);
+}
+.deal-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  background:rgba(255,255,255,.15); border:1px solid rgba(255,255,255,.2);
+  padding:4px 10px; border-radius:99px; margin-bottom:12px;
+}
+.deal-property { font-size:22px; font-weight:800; margin-bottom:4px; line-height:1.2; }
+.deal-sub      { font-size:13px; opacity:.75; margin-bottom:16px; }
+.deal-meta {
+  display:grid; grid-template-columns:1fr 1fr 1fr;
+  gap:12px; position:relative; z-index:1;
+}
+.dm-item label { font-size:10px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; opacity:.6; display:block; margin-bottom:3px; }
+.dm-item value { font-size:16px; font-weight:800; display:block; }
+.dm-item small { font-size:11px; opacity:.65; }
+.deal-id-badge {
+  position:absolute; top:18px; right:18px;
+  background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2);
+  border-radius:8px; padding:6px 10px; text-align:right; z-index:1;
+}
+.deal-id-badge .did { font-size:13px; font-weight:800; }
+.deal-id-badge .dts { font-size:10px; opacity:.6; }
 
-/* ACTIVITY FEED */
-.activity-card{background:white;border-radius:14px;border:1px solid var(--border);padding:20px;}
-.activity-item{display:flex;gap:10px;margin-bottom:14px;}
-.activity-item:last-child{margin-bottom:0;}
-.act-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;flex-shrink:0;}
-.act-text{font-size:12.5px;color:var(--navy);line-height:1.5;}
-.act-text span{font-weight:600;}
-.act-time{font-size:11px;color:var(--gray);margin-top:2px;}
+/* Deal Badge (dynamic status) */
+.deal-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; border-radius:99px; font-size:11px; font-weight:700;
+  letter-spacing:.05em; text-transform:uppercase; margin-top:10px;
+}
+.dsb-pending  { background:rgba(245,158,11,.2);  color:#FEF3C7; border:1px solid rgba(245,158,11,.3); }
+.dsb-approved { background:rgba(16,185,129,.2);  color:#D1FAE5; border:1px solid rgba(16,185,129,.3); }
+.dsb-rejected { background:rgba(239,68,68,.2);   color:#FEE2E2; border:1px solid rgba(239,68,68,.3); }
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(13,27,62,0.55);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;}
-.modal-overlay.open{display:flex;}
-.modal{background:white;border-radius:16px;width:520px;max-height:88vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);animation:slideUp 0.3s ease;}
-@keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-.modal-header{padding:22px 26px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.modal-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--navy);font-weight:600;}
-.modal-close{font-size:20px;cursor:pointer;color:var(--gray);}
-.modal-body{padding:22px 26px;}
-.modal-footer{padding:16px 26px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
-.btn-cancel{padding:10px 22px;border-radius:8px;border:1px solid var(--border);background:white;font-size:13px;font-weight:600;color:var(--gray);font-family:'DM Sans',sans-serif;cursor:pointer;}
-.btn-approve{padding:10px 24px;border-radius:8px;background:var(--green);color:white;border:none;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;}
-.btn-reject{padding:10px 24px;border-radius:8px;background:var(--red);color:white;border:none;font-size:13px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;}
-.form-group{margin-bottom:14px;}
-.form-label{display:block;font-size:11px;font-weight:600;color:var(--navy);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;}
-.form-textarea{width:100%;min-height:90px;border:2px solid var(--border);border-radius:8px;padding:11px 14px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;resize:vertical;}
-.form-textarea:focus{border-color:var(--green);}
+/* Parties Card */
+.parties-card .party-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
+.party-cell {
+  background:var(--surface); padding:16px 18px;
+  display:flex; flex-direction:column; gap:4px;
+}
+.party-cell:first-child { border-radius:0 0 0 var(--radius-lg); }
+.party-cell:last-child  { border-radius:0 0 var(--radius-lg) 0; }
+.party-role {
+  font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  display:flex; align-items:center; gap:6px;
+}
+.party-role .role-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.owner-dot { background:var(--primary); }
+.agent-dot { background:var(--accent); }
+.party-avatar {
+  width:38px; height:38px; border-radius:10px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px; font-weight:800; margin:6px 0 4px; flex-shrink:0;
+}
+.owner-av { background:var(--primary-light); color:var(--primary); }
+.agent-av { background:var(--accent-light);  color:#0E7490; }
+.party-name   { font-size:14px; font-weight:700; color:var(--text); }
+.party-detail { font-size:12px; color:var(--subtext); }
+.party-contact {
+  display:inline-flex; align-items:center; gap:5px;
+  margin-top:6px; font-size:11.5px; font-weight:600;
+  color:var(--primary); cursor:pointer; transition:opacity var(--t);
+}
+.party-contact:hover { opacity:.7; }
 
-/* DOC VIEWER MODAL */
-.doc-viewer{background:var(--cream);border-radius:10px;height:300px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:56px;flex-direction:column;gap:12px;}
-.doc-viewer-name{font-size:14px;font-weight:600;color:var(--navy);}
-.doc-viewer-meta{font-size:12px;color:var(--gray);}
+/* Agent Note */
+.note-card .note-body {
+  padding:16px 20px; font-size:13.5px; line-height:1.7;
+  color:var(--subtext); font-style:italic;
+  border-left:3px solid var(--accent); background:var(--accent-light);
+  border-radius:0 var(--radius) var(--radius) 0; margin:16px 20px;
+}
 
-/* TOAST */
-.toast{position:fixed;bottom:28px;right:28px;background:var(--navy);color:white;padding:13px 20px;border-radius:10px;font-size:13.5px;border-left:4px solid var(--gold);box-shadow:0 8px 30px rgba(0,0,0,0.2);transform:translateY(80px);opacity:0;transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);z-index:999;}
-.toast.show{transform:translateY(0);opacity:1;}
+/* Timeline */
+.timeline { padding:16px 20px 20px; }
+.tl-item { display:flex; gap:14px; position:relative; padding-bottom:20px; }
+.tl-item:last-child { padding-bottom:0; }
+.tl-item:not(:last-child)::before {
+  content:''; position:absolute; left:13px; top:28px;
+  width:2px; bottom:0; background:var(--border);
+}
+.tl-dot {
+  width:28px; height:28px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; border:2px solid var(--border); background:var(--surface);
+  position:relative; z-index:1;
+}
+.tl-dot.done   { background:var(--success); border-color:var(--success); color:#fff; }
+.tl-dot.active { background:var(--warning); border-color:var(--warning); color:#fff; }
+.tl-dot.todo   { background:var(--surface); border-color:var(--border); color:var(--muted); }
+.tl-content { flex:1; padding-top:2px; }
+.tl-title { font-size:13.5px; font-weight:700; color:var(--text); }
+.tl-desc  { font-size:12px; color:var(--subtext); margin-top:2px; line-height:1.5; }
+.tl-time  { font-size:11px; color:var(--muted); margin-top:3px; }
 
-/* STATUS BANNER */
-.status-banner{border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px;font-size:13.5px;font-weight:500;}
-.status-banner.pending{background:rgba(224,123,48,0.1);border:1px solid rgba(224,123,48,0.25);color:var(--orange);}
-.status-banner.approved{background:rgba(59,170,127,0.1);border:1px solid rgba(59,170,127,0.25);color:var(--green);}
-.status-banner.rejected{background:rgba(224,82,82,0.1);border:1px solid rgba(224,82,82,0.2);color:var(--red);}
+/* Documents Panel */
+.doc-list { padding:8px 12px 16px; }
+.doc-row {
+  display:flex; align-items:center; gap:12px;
+  padding:10px 10px; border-radius:var(--radius);
+  transition:background var(--t); cursor:pointer;
+}
+.doc-row:hover { background:var(--bg); }
+.doc-icon-box {
+  width:36px; height:36px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.doc-icon-box.pdf  { background:#FEE2E2; }
+.doc-icon-box.img  { background:#DBEAFE; }
+.doc-icon-box.doc  { background:#EDE9FE; }
+.doc-name   { font-size:13px; font-weight:600; color:var(--text); flex:1; }
+.doc-meta   { font-size:11px; color:var(--muted); margin-top:1px; }
+.doc-status-chip {
+  padding:3px 8px; border-radius:99px; font-size:10.5px; font-weight:700;
+  white-space:nowrap;
+}
+.chip-ok   { background:var(--success-light); color:#065F46; }
+.chip-pend { background:var(--warning-light); color:#92400E; }
+.chip-req  { background:var(--danger-light);  color:#991B1B; }
+
+@media (max-width:1100px) {
+  .content { grid-template-columns:1fr; }
+}
+@media (max-width:768px) {
+  .sidebar { transform:translateX(-100%); }
+  .main { margin-left:0; }
+  .content { padding:16px; }
+}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
+<!-- ══ SIDEBAR ══ -->
 <div class="sidebar">
   <div class="sidebar-logo">
     <div class="logo-icon">R</div>
-    <span class="logo-text">realco</span>
+    <span class="logo-text">real<span>co</span></span>
   </div>
 
   <div class="sidebar-mode">
@@ -224,531 +367,240 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);display:flex;min-h
 
   <div class="nav-section">
     <div class="nav-label">Navigation</div>
-    <div class="nav-item">📊 &nbsp;Dashboard</div>
-    <div class="nav-item">🏠 &nbsp;Properties</div>
-    <div class="nav-item active">📋 &nbsp;Deal #RLC-2847</div>
-    <div class="nav-item">📁 &nbsp;Documents</div>
-    <div class="nav-item">🔔 &nbsp;Notifications</div>
+    <div class="nav-item"><span class="nav-icon">📊</span> Dashboard</div>
+    <div class="nav-item"><span class="nav-icon">🏠</span> Properties</div>
+    <div class="nav-item active"><span class="nav-icon">📋</span> Deal #RLC-2847</div>
+    <div class="nav-item"><span class="nav-icon">📁</span> Documents</div>
+    <div class="nav-item"><span class="nav-icon">🔔</span> Notifications</div>
   </div>
+
   <div class="sidebar-footer">
-    <div class="logout-btn">🚪 &nbsp;Logout</div>
+    <div class="logout-btn"><span>🚪</span> Logout</div>
   </div>
 </div>
 
-<!-- MAIN -->
+<!-- ══ MAIN ══ -->
 <div class="main">
   <div class="topbar">
     <div class="topbar-left">
       <div class="back-link">← Back</div>
-      <div style="color:var(--border);font-size:16px;">/</div>
+      <span class="sep">/</span>
       <div class="breadcrumb">Agent Requests / <span>Deal #RLC-2847</span></div>
     </div>
-    <div class="topbar-right">
-      <div class="view-toggle">
-        <button class="vt-btn active" onclick="setView(this,'owner')">Owner View</button>
-        <button class="vt-btn" onclick="setView(this,'agent')">Agent View</button>
-      </div>
+    <div class="view-toggle">
+      <button class="vt-btn active" onclick="setView(this,'owner')">Owner View</button>
+      <button class="vt-btn" onclick="setView(this,'agent')">Agent View</button>
     </div>
   </div>
 
   <div class="content">
-    <!-- ── LEFT ── -->
     <div class="left-panel">
 
-      <!-- STATUS BANNER -->
+      <!-- Status Banner -->
       <div class="status-banner pending" id="status-banner">
-        ⏳ &nbsp;<strong>Pending Owner Review</strong> — Waiting for Rajesh Kumar to approve or reject this request.
+        <span class="sb-icon">⏳</span>
+        <div class="sb-text">
+          <strong>Awaiting Your Decision</strong>
+          <span>Review the deal details below before approving or rejecting.</span>
+        </div>
+        <span class="sb-badge">Pending</span>
       </div>
 
-      <!-- DEAL HERO -->
+      <!-- Deal Hero -->
       <div class="deal-hero">
-        <div class="deal-hero-img">🏙️
-          <div class="deal-mode">FOR SALE</div>
-          <div class="deal-id">Deal #RLC-2847</div>
+        <div class="deal-tag">🏢 Residential Flat</div>
+        <div class="deal-id-badge">
+          <div class="did">#RLC-2847</div>
+          <div class="dts">Submitted Apr 19</div>
         </div>
-        <div class="deal-body">
-          <div class="deal-title">Skyline Residency 4B</div>
-          <div class="deal-loc">📍 Bandra West, Mumbai — 4th Floor, Tower A</div>
-          <div class="deal-specs">
-            <div class="deal-spec">🛏 3 BHK</div>
-            <div class="deal-spec">📐 1,450 sq.ft</div>
-            <div class="deal-spec">🚿 2 Baths</div>
-            <div class="deal-spec">🏗 Ready to Move</div>
-            <div class="deal-spec">🅿️ 2 Parking</div>
+        <div class="deal-property">Skyline Residency 4B</div>
+        <div class="deal-sub">Koramangala, Bengaluru — 3 BHK · 1,620 sq ft · 3rd Floor</div>
+        <div class="deal-meta">
+          <div class="dm-item">
+            <label>Offer Price</label>
+            <value>₹1.20 Cr</value>
+            <small>Listed ₹1.25 Cr</small>
           </div>
-          <div class="deal-price-row">
-            <div class="deal-price">₹1.2 Crore</div>
-            <div class="deal-status-badge dsb-pending" id="deal-badge">⏳ Pending Approval</div>
+          <div class="dm-item">
+            <label>Brokerage</label>
+            <value>₹72,000</value>
+            <small>2% of offer</small>
+          </div>
+          <div class="dm-item">
+            <label>Token Amount</label>
+            <value>₹5 Lakh</value>
+            <small>Due on approval</small>
           </div>
         </div>
+        <div class="deal-badge dsb-pending" id="deal-badge">⏳ Pending Approval</div>
       </div>
 
-      <!-- PARTIES -->
-      <div class="parties-card">
-        <div class="card-title-sm">👥 Deal Parties</div>
-        <div class="parties-grid">
-          <div class="party-item">
-            <div class="party-role">Property Owner</div>
-            <div class="party-avatar" style="background:var(--navy);">RK</div>
+      <!-- Parties -->
+      <div class="card parties-card">
+        <div class="card-header">
+          👥 Parties Involved
+        </div>
+        <div class="party-grid">
+          <div class="party-cell">
+            <div class="party-role"><span class="role-dot owner-dot"></span> Property Owner</div>
+            <div class="party-avatar owner-av">RK</div>
             <div class="party-name">Rajesh Kumar</div>
-            <div class="party-detail">Mumbai · Owner since 2019</div>
-            <div class="party-badge">✅ Verified Owner</div>
+            <div class="party-detail">Owner · Verified ✓</div>
+            <div class="party-contact">📞 +91 98400 12345</div>
           </div>
-          <div class="party-item">
-            <div class="party-role">Real Estate Agent</div>
-            <div class="party-avatar" style="background:var(--blue);">PS</div>
+          <div class="party-cell">
+            <div class="party-role"><span class="role-dot agent-dot"></span> Listed Agent</div>
+            <div class="party-avatar agent-av">PS</div>
             <div class="party-name">Priya Sharma</div>
-            <div class="party-detail">RERA Reg: MH12345 · 8 yrs exp</div>
-            <div class="party-badge">✅ Verified Agent</div>
+            <div class="party-detail">RERA #KA-AG-00219</div>
+            <div class="party-contact">📞 +91 88000 54321</div>
           </div>
         </div>
       </div>
 
-      <!-- AGENT NOTE -->
-      <div class="parties-card">
-        <div class="card-title-sm">💬 Agent's Request Note</div>
-        <div style="background:rgba(59,111,212,0.06);border:1px solid rgba(59,111,212,0.15);border-radius:9px;padding:14px 16px;font-size:13.5px;color:var(--navy);line-height:1.65;border-left:3px solid var(--blue);">
-          "My client Mr. Rohan Verma is extremely interested in this property and has verified funds ready. He is looking for a ready-to-move apartment in Bandra West for his family. We would like to schedule a site visit at your convenience and are open to discussing the final price. Please review the attached documents."
+      <!-- Agent's Note -->
+      <div class="card note-card">
+        <div class="card-header">💬 Agent's Request Note</div>
+        <div class="note-body">
+          "The buyer — Mr. Arun Mehta — is highly motivated and pre-approved for a home loan up to ₹1.3 Cr.
+          He is ready for a quick closure within 30 days. The offer at ₹1.20 Cr is firm.
+          Kindly review the documents and approve at the earliest."
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--gray);display:flex;align-items:center;gap:6px;">
-          📅 Sent on <strong style="color:var(--navy);">April 14, 2026</strong> &nbsp;·&nbsp; 🏠 Client Budget: <strong style="color:var(--navy);">₹1.1Cr – ₹1.3Cr</strong> &nbsp;·&nbsp; 📆 Visit: <strong style="color:var(--navy);">Apr 18, 2026</strong>
+        <div style="padding:0 20px 14px; font-size:12px; color:var(--muted);">
+          — Priya Sharma · Submitted Apr 19, 2026, 10:42 AM
         </div>
       </div>
 
-      <!-- TIMELINE -->
-      <div class="timeline-card">
-        <div class="card-title-sm">🕐 Deal Timeline</div>
+      <!-- Timeline -->
+      <div class="card">
+        <div class="card-header">📅 Deal Timeline</div>
         <div class="timeline">
+
           <div class="tl-item">
             <div class="tl-dot done">✓</div>
-            <div class="tl-time">Apr 12, 2026 · 10:30 AM</div>
-            <div class="tl-title">Property Listed by Owner</div>
-            <div class="tl-desc">Rajesh Kumar posted Skyline Residency 4B on Realco with all details and documents.</div>
+            <div class="tl-content">
+              <div class="tl-title">Property Listed</div>
+              <div class="tl-desc">Skyline Residency 4B listed by owner on Realco.</div>
+              <div class="tl-time">Apr 10, 2026</div>
+            </div>
           </div>
+
           <div class="tl-item">
             <div class="tl-dot done">✓</div>
-            <div class="tl-time">Apr 14, 2026 · 2:15 PM</div>
-            <div class="tl-title">Agent Sent Deal Request</div>
-            <div class="tl-desc">Priya Sharma submitted a deal request with client note and 3 supporting documents.</div>
-            <div class="tl-note">"Client ready with token amount. Requesting urgent review."</div>
+            <div class="tl-content">
+              <div class="tl-title">Agent Matched</div>
+              <div class="tl-desc">Priya Sharma accepted the listing and began marketing.</div>
+              <div class="tl-time">Apr 12, 2026</div>
+            </div>
           </div>
+
           <div class="tl-item">
             <div class="tl-dot done">✓</div>
-            <div class="tl-time">Apr 14, 2026 · 4:00 PM</div>
-            <div class="tl-title">Documents Submitted</div>
-            <div class="tl-desc">Agent uploaded 3 documents: RERA License, KYC (Aadhar), and Client Proof of Funds.</div>
+            <div class="tl-content">
+              <div class="tl-title">Buyer Found</div>
+              <div class="tl-desc">Mr. Arun Mehta shortlisted and made an offer.</div>
+              <div class="tl-time">Apr 17, 2026</div>
+            </div>
           </div>
-          <div class="tl-item">
+
+          <div class="tl-item" id="tl-item-review">
             <div class="tl-dot active" id="tl-dot-review">⏳</div>
-            <div class="tl-time" id="tl-time-review">Apr 15, 2026 — In Progress</div>
-            <div class="tl-title" id="tl-title-review">Owner Reviewing Request</div>
-            <div class="tl-desc" id="tl-desc-review">Rajesh Kumar is reviewing the agent's note and uploaded documents.</div>
+            <div class="tl-content">
+              <div class="tl-title" id="tl-title-review">Owner Review</div>
+              <div class="tl-desc" id="tl-desc-review">Awaiting owner approval or rejection of deal terms.</div>
+              <div class="tl-time" id="tl-time-review">In Progress · Apr 19, 2026</div>
+            </div>
           </div>
-          <div class="tl-item" id="tl-decision" style="opacity:0.35;">
-            <div class="tl-dot pending" id="tl-dot-decision"></div>
-            <div class="tl-time">Awaiting decision…</div>
-            <div class="tl-title" id="tl-title-decision">Owner Decision</div>
-            <div class="tl-desc" id="tl-desc-decision">Approve or reject the agent's request after reviewing all documents.</div>
+
+          <div class="tl-item" id="tl-decision">
+            <div class="tl-dot todo" id="tl-dot-decision">4</div>
+            <div class="tl-content">
+              <div class="tl-title" id="tl-title-decision">Decision &amp; Agreement</div>
+              <div class="tl-desc" id="tl-desc-decision">Sale agreement to be signed once deal is approved.</div>
+              <div class="tl-time">Pending</div>
+            </div>
           </div>
-          <div class="tl-item" style="opacity:0.25;" id="tl-final">
-            <div class="tl-dot pending"></div>
-            <div class="tl-time">Upcoming</div>
-            <div class="tl-title">Site Visit & Deal Closure</div>
-            <div class="tl-desc">Upon approval, agent schedules site visit and deal proceeds to agreement stage.</div>
+
+          <div class="tl-item" id="tl-final">
+            <div class="tl-dot todo">5</div>
+            <div class="tl-content">
+              <div class="tl-title">Registration &amp; Handover</div>
+              <div class="tl-desc">Property registration and final handover to buyer.</div>
+              <div class="tl-time">Scheduled · May 20, 2026</div>
+            </div>
           </div>
+
         </div>
       </div>
 
-      <!-- DOCUMENTS -->
-      <div class="docs-card">
-        <div class="card-title-sm" style="margin-bottom:14px;">📁 Submitted Documents</div>
+      <!-- Documents -->
+      <div class="card">
+        <div class="card-header">📄 Submitted Documents</div>
+        <div class="doc-list">
 
-        <div class="doc-row" onclick="openDocViewer('Agent_RERA_License.pdf','🪪','RERA License — Priya Sharma','1.2 MB · PDF · Apr 14, 2026')">
-          <div class="doc-icon-box pdf">🪪</div>
-          <div class="doc-info">
-            <div class="doc-name">Agent_RERA_License.pdf</div>
-            <div class="doc-meta">1.2 MB · Uploaded Apr 14, 2026</div>
-            <div class="doc-verified">✅ Verified</div>
+          <div class="doc-row" onclick="openDocViewer('Sale Deed Draft','📄','sale-deed.pdf','Uploaded Apr 19 · 2.4 MB · PDF')">
+            <div class="doc-icon-box pdf">📄</div>
+            <div>
+              <div class="doc-name">Sale Deed Draft</div>
+              <div class="doc-meta">Uploaded Apr 19 · 2.4 MB</div>
+            </div>
+            <span class="doc-status-chip chip-ok">Verified</span>
           </div>
-          <div class="doc-actions">
-            <button class="doc-act-btn" onclick="event.stopPropagation();showToast('📥 Downloading…')">↓ Download</button>
-            <button class="doc-act-btn primary" onclick="event.stopPropagation();openDocViewer('Agent_RERA_License.pdf','🪪','RERA License — Priya Sharma','1.2 MB · PDF · Apr 14, 2026')">View</button>
-          </div>
-        </div>
 
-        <div class="doc-row" onclick="openDocViewer('KYC_Aadhar.pdf','📄','KYC — Aadhar Card','840 KB · PDF · Apr 14, 2026')">
-          <div class="doc-icon-box doc">📄</div>
-          <div class="doc-info">
-            <div class="doc-name">KYC_Aadhar_PriyaSharma.pdf</div>
-            <div class="doc-meta">840 KB · Uploaded Apr 14, 2026</div>
-            <div class="doc-verified">✅ Verified</div>
+          <div class="doc-row" onclick="openDocViewer('Buyer ID Proof','🪪','buyer-id.pdf','Uploaded Apr 19 · 0.8 MB · PDF')">
+            <div class="doc-icon-box pdf">🪪</div>
+            <div>
+              <div class="doc-name">Buyer ID Proof</div>
+              <div class="doc-meta">Uploaded Apr 19 · 0.8 MB</div>
+            </div>
+            <span class="doc-status-chip chip-ok">Verified</span>
           </div>
-          <div class="doc-actions">
-            <button class="doc-act-btn" onclick="event.stopPropagation();showToast('📥 Downloading…')">↓ Download</button>
-            <button class="doc-act-btn primary" onclick="event.stopPropagation();openDocViewer('KYC_Aadhar.pdf','📄','KYC Aadhar Card','840 KB · PDF · Apr 14, 2026')">View</button>
-          </div>
-        </div>
 
-        <div class="doc-row" onclick="openDocViewer('Client_Funds_Proof.pdf','💰','Client Proof of Funds','520 KB · PDF · Apr 14, 2026')">
-          <div class="doc-icon-box img">💰</div>
-          <div class="doc-info">
-            <div class="doc-name">Client_Proof_of_Funds.pdf</div>
-            <div class="doc-meta">520 KB · Uploaded Apr 14, 2026</div>
-            <div class="doc-verified">✅ Verified</div>
+          <div class="doc-row" onclick="openDocViewer('Bank Pre-Approval Letter','🏦','bank-letter.pdf','Uploaded Apr 19 · 1.1 MB · PDF')">
+            <div class="doc-icon-box pdf">🏦</div>
+            <div>
+              <div class="doc-name">Bank Pre-Approval Letter</div>
+              <div class="doc-meta">Uploaded Apr 19 · 1.1 MB</div>
+            </div>
+            <span class="doc-status-chip chip-pend">Pending Review</span>
           </div>
-          <div class="doc-actions">
-            <button class="doc-act-btn" onclick="event.stopPropagation();showToast('📥 Downloading…')">↓ Download</button>
-            <button class="doc-act-btn primary" onclick="event.stopPropagation();openDocViewer('Client_Funds_Proof.pdf','💰','Client Proof of Funds','520 KB · PDF · Apr 14, 2026')">View</button>
+
+          <div class="doc-row" onclick="openDocViewer('Property Photos','🖼️','photos.zip','Uploaded Apr 18 · 12.3 MB · ZIP')">
+            <div class="doc-icon-box img">🖼️</div>
+            <div>
+              <div class="doc-name">Property Photos (8)</div>
+              <div class="doc-meta">Uploaded Apr 18 · 12.3 MB</div>
+            </div>
+            <span class="doc-status-chip chip-ok">Verified</span>
           </div>
+
+          <div class="doc-row" onclick="openDocViewer('Encumbrance Certificate','📋','ec.pdf','Requested · Not yet uploaded')">
+            <div class="doc-icon-box doc">📋</div>
+            <div>
+              <div class="doc-name">Encumbrance Certificate</div>
+              <div class="doc-meta">Requested · Not yet uploaded</div>
+            </div>
+            <span class="doc-status-chip chip-req">Required</span>
+          </div>
+
         </div>
       </div>
+
     </div>
-
-    <!-- ── RIGHT PANEL ── -->
-    <div class="right-panel">
-
-      <!-- OWNER ACTION CARD -->
-      <div class="action-card" id="action-card">
-        <div class="action-title" id="action-title">Owner Action Required</div>
-        <div class="action-sub" id="action-sub">Review the agent's request and documents, then approve or reject below.</div>
-        <div class="action-btns">
-          <button class="act-btn approve" id="approve-btn" onclick="openModal('approve')">✅ Approve Request</button>
-          <button class="act-btn reject" id="reject-btn" onclick="openModal('reject')">❌ Reject Request</button>
-          <button class="act-btn msg" onclick="openModal('message')">💬 Message Agent</button>
-        </div>
-      </div>
-
-      <!-- OWNER NOTE -->
-      <div class="note-card">
-        <div class="card-title-sm" style="margin-bottom:12px;">📝 Add Internal Note</div>
-        <textarea class="note-textarea" placeholder="e.g. Documents look good. Will call agent tomorrow to discuss visit timing…" id="owner-note"></textarea>
-        <button class="note-send" onclick="saveNote()">Save Note</button>
-      </div>
-
-      <!-- CHECKLIST -->
-      <div class="checklist-card">
-        <div class="card-title-sm" style="margin-bottom:12px;">✅ Approval Checklist</div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box checked">✓</div>
-          <div class="check-label done">Agent license verified</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box checked">✓</div>
-          <div class="check-label done">KYC documents reviewed</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box checked">✓</div>
-          <div class="check-label done">Proof of funds checked</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box"></div>
-          <div class="check-label">Site visit confirmed</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box"></div>
-          <div class="check-label">Final price agreed</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box"></div>
-          <div class="check-label">Agreement signed</div>
-        </div>
-      </div>
-
-      <!-- ACTIVITY FEED -->
-      <div class="activity-card">
-        <div class="card-title-sm" style="margin-bottom:14px;">🔔 Activity Feed</div>
-        <div class="activity-item" id="activity-feed">
-          <div class="act-avatar" style="background:var(--blue);">PS</div>
-          <div>
-            <div class="act-text"><span>Priya Sharma</span> submitted 3 documents</div>
-            <div class="act-time">Apr 14 · 4:00 PM</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="act-avatar" style="background:var(--navy);">RK</div>
-          <div>
-            <div class="act-text"><span>Rajesh Kumar</span> opened the request</div>
-            <div class="act-time">Apr 15 · 9:12 AM</div>
-          </div>
-        </div>
-        <div class="activity-item">
-          <div class="act-avatar" style="background:var(--green);">🤖</div>
-          <div>
-            <div class="act-text">System verified all 3 documents automatically</div>
-            <div class="act-time">Apr 15 · 9:13 AM</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div class="right-panel"><!-- PART 3 HERE --></div>
   </div>
 </div>
 
-<!-- ── MODAL: APPROVE ── -->
-<div class="modal-overlay" id="modal-approve">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Approve Request</div>
-      <div class="modal-close" onclick="closeModal('approve')">✕</div>
-    </div>
-    <div class="modal-body">
-      <div style="background:rgba(59,170,127,0.08);border:1px solid rgba(59,170,127,0.2);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:var(--navy);">
-        ✅ You are about to <strong>approve</strong> the deal request from <strong>Priya Sharma</strong> for <strong>Skyline Residency 4B</strong>. The agent will be notified immediately.
-      </div>
-      <div class="form-group">
-        <label class="form-label">Approval Note to Agent (Optional)</label>
-        <textarea class="form-textarea" id="approve-note" placeholder="e.g. Documents verified. Please schedule site visit for Apr 20. Reach me at 98XXXXXXXX." style="border-color:var(--green);"></textarea>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Proposed Site Visit Date</label>
-        <input type="date" style="width:100%;padding:11px 14px;border:2px solid var(--border);border-radius:8px;font-size:13.5px;font-family:'DM Sans',sans-serif;color:var(--navy);background:var(--cream);outline:none;" />
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal('approve')">Cancel</button>
-      <button class="btn-approve" onclick="executeDecision('approve')">✅ Confirm Approval</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL: REJECT ── -->
-<div class="modal-overlay" id="modal-reject">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Reject Request</div>
-      <div class="modal-close" onclick="closeModal('reject')">✕</div>
-    </div>
-    <div class="modal-body">
-      <div style="background:rgba(224,82,82,0.08);border:1px solid rgba(224,82,82,0.2);border-radius:10px;padding:14px 16px;margin-bottom:18px;font-size:13.5px;color:var(--navy);">
-        ❌ You are about to <strong>reject</strong> the deal request from <strong>Priya Sharma</strong>. Please provide a reason so the agent can improve their next request.
-      </div>
-      <div class="form-group">
-        <label class="form-label">Reason for Rejection *</label>
-        <textarea class="form-textarea" id="reject-note" placeholder="e.g. Client's budget doesn't match the asking price. Documents are incomplete. Please resubmit with updated KYC." style="border-color:rgba(224,82,82,0.4);"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal('reject')">Cancel</button>
-      <button class="btn-reject" onclick="executeDecision('reject')">❌ Confirm Rejection</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL: MESSAGE ── -->
-<div class="modal-overlay" id="modal-message">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title">Message Agent</div>
-      <div class="modal-close" onclick="closeModal('message')">✕</div>
-    </div>
-    <div class="modal-body">
-      <div style="display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:10px;padding:12px 14px;margin-bottom:18px;">
-        <div style="width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;">PS</div>
-        <div>
-          <div style="font-size:13px;font-weight:600;color:var(--navy);">Priya Sharma</div>
-          <div style="font-size:11px;color:var(--gray);">priya@realty.com · Verified Agent</div>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Your Message</label>
-        <textarea class="form-textarea" placeholder="e.g. I've reviewed your request. Could you provide more details about your client's occupation and loan status?"></textarea>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal('message')">Cancel</button>
-      <button class="btn-approve" style="background:var(--blue);" onclick="closeModal('message');showToast('💬 Message sent to Priya Sharma!')">Send Message</button>
-    </div>
-  </div>
-</div>
-
-<!-- ── MODAL: DOC VIEWER ── -->
-<div class="modal-overlay" id="modal-docview">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" id="dv-title">Document Viewer</div>
-      <div class="modal-close" onclick="closeModal('docview')">✕</div>
-    </div>
-    <div class="modal-body">
-      <div class="doc-viewer">
-        <span id="dv-icon" style="font-size:64px;">📄</span>
-        <div class="doc-viewer-name" id="dv-name">Document Name</div>
-        <div class="doc-viewer-meta" id="dv-meta">File info</div>
-        <div style="font-size:12px;color:var(--gray);margin-top:4px;">Preview not available — Download to view full document</div>
-      </div>
-      <div style="display:flex;gap:10px;">
-        <div style="flex:1;background:var(--cream);border-radius:8px;padding:12px 14px;">
-          <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:4px;">Status</div>
-          <div style="font-size:13px;color:var(--green);font-weight:600;">✅ Verified</div>
-        </div>
-        <div style="flex:1;background:var(--cream);border-radius:8px;padding:12px 14px;">
-          <div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;margin-bottom:4px;">Uploaded By</div>
-          <div style="font-size:13px;color:var(--navy);font-weight:600;">Priya Sharma</div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeModal('docview')">Close</button>
-      <button class="btn-approve" style="background:var(--navy);" onclick="showToast('📥 Downloading document…');closeModal('docview')">↓ Download</button>
-    </div>
-  </div>
-</div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"></div>
 
 <script>
-let currentDecision = null;
-
-function switchMode(mode) {
-  const ownerBtn = document.getElementById('owner-mode-btn');
-  const agentBtn = document.getElementById('agent-mode-btn');
-  if (mode === 'owner') {
-    ownerBtn.classList.add('active-m');
-    agentBtn.classList.remove('active-m');
-    document.getElementById('action-title').textContent = 'Owner Action Required';
-    document.getElementById('action-sub').textContent = 'Review the agent\'s request and documents, then approve or reject below.';
-    document.getElementById('approve-btn').disabled = false;
-    document.getElementById('reject-btn').disabled = false;
-    showToast('🏠 Switched to Owner View');
-  } else {
-    agentBtn.classList.add('active-m');
-    ownerBtn.classList.remove('active-m');
-    document.getElementById('action-title').textContent = 'Your Request Status';
-    document.getElementById('action-sub').textContent = 'Waiting for Rajesh Kumar to review your documents and respond.';
-    document.getElementById('approve-btn').disabled = true;
-    document.getElementById('reject-btn').disabled = true;
-    showToast('🤝 Switched to Agent View');
-  }
-}
-
-function setView(el, mode) {
-  document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  switchMode(mode);
-}
-
-function openModal(id) { document.getElementById('modal-' + id).classList.add('open'); }
-function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
-
-function executeDecision(type) {
-  closeModal(type);
-  currentDecision = type;
-
-  const banner = document.getElementById('status-banner');
-  const badge = document.getElementById('deal-badge');
-  const actionCard = document.getElementById('action-card');
-  const tlDotReview = document.getElementById('tl-dot-review');
-  const tlDecision = document.getElementById('tl-decision');
-  const tlFinal = document.getElementById('tl-final');
-  const tlDotDecision = document.getElementById('tl-dot-decision');
-
-  // Update timeline
-  tlDotReview.className = 'tl-dot done';
-  tlDotReview.textContent = '✓';
-  document.getElementById('tl-title-review').textContent = 'Owner Reviewed Documents';
-  document.getElementById('tl-desc-review').textContent = 'All 3 documents verified. Decision made on April 18, 2026.';
-  document.getElementById('tl-time-review').textContent = 'Apr 15, 2026 — Completed';
-  tlDecision.style.opacity = '1';
-
-  if (type === 'approve') {
-    // Banner
-    banner.className = 'status-banner approved';
-    banner.innerHTML = '✅ &nbsp;<strong>Request Approved</strong> — Rajesh Kumar has approved Priya Sharma\'s request. Site visit to be scheduled.';
-    // Badge
-    badge.className = 'deal-status-badge dsb-approved';
-    badge.textContent = '✅ Approved';
-    // Action card
-    actionCard.style.background = 'linear-gradient(135deg,#1a4a3a,#0d2e25)';
-    document.getElementById('action-title').textContent = '✅ Request Approved';
-    document.getElementById('action-sub').textContent = 'You have approved this deal. The agent has been notified and will schedule a site visit.';
-    document.getElementById('approve-btn').disabled = true;
-    document.getElementById('reject-btn').disabled = true;
-    // Timeline
-    tlDotDecision.className = 'tl-dot approved';
-    tlDotDecision.textContent = '✓';
-    document.getElementById('tl-title-decision').textContent = 'Request Approved by Owner';
-    document.getElementById('tl-desc-decision').textContent = 'Rajesh Kumar approved the deal request. Agent notified via email and SMS.';
-    tlFinal.style.opacity = '0.7';
-    // Activity
-    addActivity('RK','var(--green)','Rajesh Kumar approved the deal request','Just now');
-    showToast('✅ Request approved! Priya Sharma has been notified.');
-  } else {
-    // Banner
-    banner.className = 'status-banner rejected';
-    banner.innerHTML = '❌ &nbsp;<strong>Request Rejected</strong> — Rajesh Kumar has rejected this request. The agent has been notified with the reason.';
-    // Badge
-    badge.className = 'deal-status-badge dsb-rejected';
-    badge.textContent = '❌ Rejected';
-    // Action card
-    actionCard.style.background = 'linear-gradient(135deg,#3a1a1a,#2e0d0d)';
-    document.getElementById('action-title').textContent = '❌ Request Rejected';
-    document.getElementById('action-sub').textContent = 'You have rejected this deal request. The rejection reason has been sent to the agent.';
-    document.getElementById('approve-btn').disabled = true;
-    document.getElementById('reject-btn').disabled = true;
-    // Timeline
-    tlDotDecision.className = 'tl-dot rejected';
-    tlDotDecision.textContent = '✕';
-    document.getElementById('tl-title-decision').textContent = 'Request Rejected by Owner';
-    document.getElementById('tl-desc-decision').textContent = 'Rajesh Kumar rejected the deal request with a reason provided to the agent.';
-    // Activity
-    addActivity('RK','var(--red)','Rajesh Kumar rejected the deal request','Just now');
-    showToast('❌ Request rejected. Agent has been notified.');
-  }
-}
-
-function addActivity(initials, color, text, time) {
-  const feed = document.getElementById('activity-feed').parentNode;
-  const item = document.createElement('div');
-  item.className = 'activity-item';
-  item.style.animation = 'slideUp 0.3s ease';
-  item.innerHTML = `
-    <div class="act-avatar" style="background:${color};">${initials}</div>
-    <div>
-      <div class="act-text"><span>Rajesh Kumar</span> ${text.replace('Rajesh Kumar ','')}</div>
-      <div class="act-time">${time}</div>
-    </div>`;
-  feed.appendChild(item);
-}
-
-function toggleCheck(el) {
-  const box = el.querySelector('.check-box');
-  const label = el.querySelector('.check-label');
-  const checked = box.classList.contains('checked');
-  if (checked) {
-    box.classList.remove('checked');
-    box.textContent = '';
-    label.classList.remove('done');
-  } else {
-    box.classList.add('checked');
-    box.textContent = '✓';
-    label.classList.add('done');
-  }
-}
-
-function saveNote() {
-  const note = document.getElementById('owner-note').value.trim();
-  if (!note) { showToast('⚠️ Please write a note first'); return; }
-  document.getElementById('owner-note').value = '';
-  showToast('📝 Note saved successfully!');
-}
-
-function openDocViewer(file, icon, name, meta) {
-  document.getElementById('dv-title').textContent = file;
-  document.getElementById('dv-icon').textContent = icon;
-  document.getElementById('dv-name').textContent = name;
-  document.getElementById('dv-meta').textContent = meta;
-  openModal('docview');
-}
-
+function openModal(id)  { document.getElementById('modal-'+id).classList.add('open'); }
+function closeModal(id) { document.getElementById('modal-'+id).classList.remove('open'); }
 function showToast(msg) {
   const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
+  t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3500);
 }
-
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
-});
 </script>
 </body>
 </html>
