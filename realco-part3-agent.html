@@ -367,6 +367,222 @@ body {
   .filter-select { margin-left: 0; width: 100%; }
 }
 
+/* ═══════════════════════════════
+   MY REQUESTS TABLE
+═══════════════════════════════ */
+.my-requests {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-sm); margin-bottom: 32px;
+}
+.req-head {
+  display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  padding: 11px 20px; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px; font-weight: 700;
+  color: var(--muted); letter-spacing: .08em; text-transform: uppercase;
+}
+.req-row {
+  display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  padding: 14px 20px; border-bottom: 1px solid var(--border);
+  align-items: center; transition: background var(--t);
+}
+.req-row:last-child { border-bottom: none; }
+.req-row:hover { background: var(--bg); }
+.req-prop-name { font-size: 13px; font-weight: 600; color: var(--text); }
+.req-prop-sub  { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.req-owner     { font-size: 13px; color: var(--subtext); font-weight: 500; }
+.req-date      { font-size: 12px; color: var(--muted); }
+.req-status-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 100px;
+  font-size: 11px; font-weight: 600; width: fit-content;
+}
+.rsp-pending  { background: var(--warning-light); color: #92400E; }
+.rsp-approved { background: var(--success-light); color: var(--success); }
+.rsp-rejected { background: var(--danger-light);  color: var(--danger); }
+
+/* ═══════════════════════════════
+   MODAL BASE
+═══════════════════════════════ */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(15,23,42,.45); backdrop-filter: blur(4px);
+  z-index: 200; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: var(--radius-lg);
+  width: 580px; max-width: 100%; max-height: 88vh; overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  animation: slideUp .25s ease;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.modal-header {
+  padding: 20px 24px 16px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+.modal-title { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.modal-close {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; cursor: pointer; color: var(--muted);
+  background: var(--bg); border: 1px solid var(--border);
+  transition: background var(--t), color var(--t);
+}
+.modal-close:hover { background: var(--danger-light); color: var(--danger); border-color: var(--danger); }
+.modal-body   { padding: 20px 24px; }
+.modal-footer {
+  padding: 14px 24px; border-top: 1px solid var(--border);
+  display: flex; gap: 8px; justify-content: flex-end;
+}
+
+/* ── Property detail ── */
+.prop-detail-hero {
+  height: 160px; border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, #EEF2FF, #C7D2FE);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 60px; margin-bottom: 18px;
+}
+.detail-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin-bottom: 18px;
+}
+.detail-item {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 12px 14px;
+}
+.detail-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; font-weight: 700; }
+.detail-val   { font-size: 14px; color: var(--text); font-weight: 600; margin-top: 3px; }
+
+.owner-card {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 16px;
+}
+.owner-card-avatar {
+  width: 42px; height: 42px; border-radius: 50%;
+  background: var(--primary); display: flex; align-items: center;
+  justify-content: center; font-size: 15px; font-weight: 700; color: #fff;
+}
+.owner-card-name { font-size: 14px; font-weight: 700; color: var(--text); }
+.owner-card-sub  { font-size: 12px; color: var(--subtext); margin-top: 1px; }
+.verified-tag    { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--success); font-weight: 600; margin-top: 3px; }
+
+/* ── Progress steps ── */
+.progress-steps {
+  display: flex; align-items: center; gap: 0; margin-bottom: 24px;
+}
+.step { display: flex; align-items: center; gap: 8px; }
+.step-circle {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  transition: background var(--t), color var(--t);
+}
+.step-circle.done   { background: var(--success); color: #fff; }
+.step-circle.active { background: var(--primary); color: #fff; }
+.step-circle.todo   { background: var(--border); color: var(--muted); }
+.step-label        { font-size: 12px; font-weight: 500; color: var(--muted); white-space: nowrap; }
+.step-label.active { color: var(--text); font-weight: 600; }
+.step-line { flex: 1; height: 2px; background: var(--border); margin: 0 6px; transition: background var(--t); }
+.step-line.done { background: var(--success); }
+
+/* ── Request form ── */
+.prop-summary {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 14px 16px;
+  margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+}
+.prop-summary-badge {
+  margin-left: auto; background: var(--primary-light); color: var(--primary);
+  padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700;
+}
+.form-group { margin-bottom: 14px; }
+.form-label {
+  display: block; font-size: 12px; font-weight: 600;
+  color: var(--text); margin-bottom: 5px;
+}
+.form-input, .form-textarea, .form-select {
+  width: 100%; padding: 10px 13px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-size: 13.5px; font-family: 'Inter', sans-serif;
+  color: var(--text); background: var(--bg); outline: none;
+  transition: border-color var(--t), box-shadow var(--t), background var(--t);
+}
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79,70,229,.1);
+  background: var(--surface);
+}
+.form-textarea { min-height: 80px; resize: vertical; }
+
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius-lg);
+  padding: 22px; text-align: center; cursor: pointer;
+  background: var(--bg); transition: border-color var(--t), background var(--t);
+}
+.upload-zone:hover { border-color: var(--primary); background: var(--primary-light); }
+.upload-icon { font-size: 26px; margin-bottom: 8px; }
+.upload-text { font-size: 13px; color: var(--subtext); }
+.upload-text strong { color: var(--primary); }
+
+.doc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.doc-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--primary-light); border: 1px solid #C7D2FE;
+  border-radius: 8px; padding: 5px 10px;
+  font-size: 12px; font-weight: 500; color: var(--primary);
+}
+.doc-chip-remove {
+  cursor: pointer; color: var(--danger); font-size: 13px;
+  line-height: 1; transition: color var(--t);
+}
+.doc-chip-remove:hover { color: #DC2626; }
+
+/* confirm screen */
+.confirm-screen { text-align: center; padding: 16px 0; }
+.confirm-icon   { font-size: 52px; margin-bottom: 14px; }
+.confirm-title  { font-size: 20px; font-weight: 800; color: var(--text); letter-spacing: -0.02em; margin-bottom: 8px; }
+.confirm-sub    { font-size: 13px; color: var(--subtext); max-width: 340px; margin: 0 auto 20px; line-height: 1.6; }
+.summary-box {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px; text-align: left;
+}
+.summary-row {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 13px; padding: 7px 0;
+  border-bottom: 1px solid var(--border); color: var(--subtext);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-row strong { color: var(--text); font-weight: 600; }
+
+/* modal buttons */
+.btn-cancel {
+  padding: 9px 20px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--surface);
+  font-size: 13px; font-weight: 600; color: var(--subtext);
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: background var(--t), color var(--t);
+}
+.btn-cancel:hover { background: var(--bg); color: var(--text); }
+.btn-submit {
+  padding: 9px 22px; border-radius: var(--radius);
+  background: var(--primary); color: #fff; border: none;
+  font-size: 13px; font-weight: 600;
+  font-family: 'Inter', sans-serif; cursor: pointer;
+  transition: background var(--t), transform var(--t), box-shadow var(--t);
+}
+.btn-submit:hover {
+  background: var(--primary-hover); transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(79,70,229,.28);
+}
+
 @media (max-width: 768px) {
   .sidebar { transform: translateX(-100%); }
   .main { margin-left: 0; }
@@ -616,29 +832,281 @@ body {
 
     </div>
 
-    <!-- PART 3: REQUESTS TABLE + MODALS HERE -->
+    <!-- MY REQUESTS STATUS -->
+    <div class="section-head">
+      <div class="section-title">My Request Status</div>
+      <div class="see-all">View All →</div>
+    </div>
+    <div class="my-requests">
+      <div class="req-head">
+        <div>Property</div><div>Owner</div><div>Sent On</div><div>Status</div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Green Valley Villa</div>
+          <div class="req-prop-sub">For Rent · ₹85K/mo · Whitefield, Bangalore</div>
+        </div>
+        <div class="req-owner">Sunita Rao</div>
+        <div class="req-date">Apr 13, 2026</div>
+        <div><span class="req-status-pill rsp-approved">✅ Approved</span></div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Skyline Residency 4B</div>
+          <div class="req-prop-sub">For Sale · ₹1.2 Cr · Bandra West</div>
+        </div>
+        <div class="req-owner">Rajesh Kumar</div>
+        <div class="req-date">Apr 14, 2026</div>
+        <div><span class="req-status-pill rsp-pending">⏳ Pending Review</span></div>
+      </div>
+      <div class="req-row">
+        <div>
+          <div class="req-prop-name">Prestige Tower 8C</div>
+          <div class="req-prop-sub">For Sale · ₹2.1 Cr · Powai, Mumbai</div>
+        </div>
+        <div class="req-owner">Anil Mehta</div>
+        <div class="req-date">Apr 10, 2026</div>
+        <div><span class="req-status-pill rsp-rejected">❌ Rejected</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Property Detail ══ -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Skyline Residency 4B</div>
+      <div class="modal-close" onclick="closeModal('detail')">✕</div>
+    </div>
+    <div class="modal-body">
+      <div class="prop-detail-hero">🏙️</div>
+      <div class="detail-grid">
+        <div class="detail-item"><div class="detail-label">Type</div><div class="detail-val">Apartment · For Sale</div></div>
+        <div class="detail-item"><div class="detail-label">Price</div><div class="detail-val">₹1.2 Crore</div></div>
+        <div class="detail-item"><div class="detail-label">Location</div><div class="detail-val">Bandra West, Mumbai</div></div>
+        <div class="detail-item"><div class="detail-label">Size</div><div class="detail-val">1,450 sq.ft · 3 BHK</div></div>
+        <div class="detail-item"><div class="detail-label">Floor</div><div class="detail-val">4th Floor / 12 Total</div></div>
+        <div class="detail-item"><div class="detail-label">Possession</div><div class="detail-val">Ready to Move</div></div>
+      </div>
+      <div class="owner-card">
+        <div class="owner-card-avatar">RK</div>
+        <div>
+          <div class="owner-card-name">Rajesh Kumar</div>
+          <div class="owner-card-sub">Property Owner · Mumbai</div>
+          <div class="verified-tag">✅ Verified Owner</div>
+        </div>
+        <button class="request-btn" style="margin-left:auto;padding:9px 18px;" onclick="closeModal('detail');openModal('request')">Send Request →</button>
+      </div>
+      <p style="font-size:13px;color:var(--subtext);line-height:1.7;">
+        Beautifully maintained 3 BHK apartment in the heart of Bandra West. Features modular kitchen, two reserved parking spots, and access to a rooftop terrace. Ideal for families or as an investment in one of Mumbai's most sought-after neighbourhoods.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('detail')">Close</button>
+      <button class="btn-submit" onclick="closeModal('detail');openModal('request')">Send Deal Request →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: Send Request ══ -->
+<div class="modal-overlay" id="modal-request">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Send Deal Request</div>
+      <div class="modal-close" onclick="closeModal('request');resetSteps()">✕</div>
+    </div>
+    <div class="modal-body">
+
+      <!-- Progress Steps -->
+      <div class="progress-steps">
+        <div class="step">
+          <div class="step-circle done" id="sc1">✓</div>
+          <span class="step-label active" id="sl1">Property</span>
+        </div>
+        <div class="step-line done" id="sline1"></div>
+        <div class="step">
+          <div class="step-circle active" id="sc2">2</div>
+          <span class="step-label active" id="sl2">Your Note</span>
+        </div>
+        <div class="step-line" id="sline2"></div>
+        <div class="step">
+          <div class="step-circle todo" id="sc3">3</div>
+          <span class="step-label" id="sl3">Documents</span>
+        </div>
+        <div class="step-line" id="sline3"></div>
+        <div class="step">
+          <div class="step-circle todo" id="sc4">4</div>
+          <span class="step-label" id="sl4">Submit</span>
+        </div>
+      </div>
+
+      <!-- Step 1: Note -->
+      <div id="step-note">
+        <div class="prop-summary">
+          <span style="font-size:24px;">🏙️</span>
+          <div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">Skyline Residency 4B</div>
+            <div style="font-size:12px;color:var(--subtext);">Bandra West, Mumbai · ₹1.2 Cr · For Sale</div>
+          </div>
+          <span class="prop-summary-badge">FOR SALE</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your Message to Owner</label>
+          <textarea class="form-textarea" id="agent-note" placeholder="e.g. My client is highly interested and has funds ready. Can we schedule a site visit this week?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Budget Range</label>
+          <input class="form-input" placeholder="e.g. ₹1.1 Cr – ₹1.3 Cr"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Preferred Site Visit Date</label>
+          <input class="form-input" type="date"/>
+        </div>
+      </div>
+
+      <!-- Step 2: Documents -->
+      <div id="step-docs" style="display:none;">
+        <p style="font-size:13px;color:var(--subtext);margin-bottom:16px;line-height:1.6;">Upload the required documents. The owner will review them before approving your request.</p>
+        <div class="form-group">
+          <label class="form-label">Agent License / RERA Certificate *</label>
+          <div class="upload-zone" onclick="addDoc('Agent_License.pdf')">
+            <div class="upload-icon">🪪</div>
+            <div class="upload-text"><strong>Click to upload</strong> RERA / License · PDF up to 5MB</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">KYC Document (Aadhar / PAN) *</label>
+          <div class="upload-zone" onclick="addDoc('KYC_Aadhar.pdf')">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text"><strong>Click to upload</strong> Aadhar or PAN · PDF or JPG up to 5MB</div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Client Proof of Funds (Optional)</label>
+          <div class="upload-zone" onclick="addDoc('Client_Funds_Proof.pdf')">
+            <div class="upload-icon">💰</div>
+            <div class="upload-text"><strong>Click to upload</strong> Bank statement · PDF up to 10MB</div>
+          </div>
+        </div>
+        <div class="doc-chips" id="doc-chips"></div>
+      </div>
+
+      <!-- Step 3: Confirm -->
+      <div id="step-confirm" style="display:none;">
+        <div class="confirm-screen">
+          <div class="confirm-icon">📬</div>
+          <div class="confirm-title">Request Ready to Send</div>
+          <div class="confirm-sub">Your note and documents will be sent to <strong>Rajesh Kumar</strong>. You'll be notified once the owner reviews your request.</div>
+          <div class="summary-box">
+            <div class="summary-row"><span>Property</span><strong>Skyline Residency 4B</strong></div>
+            <div class="summary-row"><span>Owner</span><strong>Rajesh Kumar</strong></div>
+            <div class="summary-row"><span>Docs Attached</span><strong id="doc-count">0 files</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer" id="modal-req-footer">
+      <button class="btn-cancel" onclick="closeModal('request');resetSteps()">Cancel</button>
+      <button class="btn-submit" id="req-next-btn" onclick="nextStep()">Next: Upload Documents →</button>
+    </div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-function openModal(id) { document.getElementById('modal-' + id).classList.add('open'); }
+let currentStep = 1;
+let uploadedDocs = [];
+
+function openModal(id)  { document.getElementById('modal-' + id).classList.add('open'); }
 function closeModal(id) { document.getElementById('modal-' + id).classList.remove('open'); }
+
 function setFilter(el, type) {
   document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   showToast('🔍 Filtering: ' + el.textContent.trim());
 }
+
 function toggleFav(el) {
   el.textContent = el.textContent === '🤍' ? '❤️' : '🤍';
 }
+
+function nextStep() {
+  if (currentStep === 1) {
+    document.getElementById('step-note').style.display    = 'none';
+    document.getElementById('step-docs').style.display    = 'block';
+    document.getElementById('step-confirm').style.display = 'none';
+    document.getElementById('sc3').className  = 'step-circle active';
+    document.getElementById('sl3').className  = 'step-label active';
+    document.getElementById('sline2').className = 'step-line done';
+    document.getElementById('req-next-btn').textContent = 'Next: Review & Submit →';
+    currentStep = 2;
+  } else if (currentStep === 2) {
+    document.getElementById('step-note').style.display    = 'none';
+    document.getElementById('step-docs').style.display    = 'none';
+    document.getElementById('step-confirm').style.display = 'block';
+    document.getElementById('sc4').className  = 'step-circle active';
+    document.getElementById('sl4').className  = 'step-label active';
+    document.getElementById('sline3').className = 'step-line done';
+    document.getElementById('doc-count').textContent = uploadedDocs.length + ' file(s)';
+    document.getElementById('req-next-btn').textContent = '📬 Submit Request';
+    currentStep = 3;
+  } else if (currentStep === 3) {
+    closeModal('request');
+    resetSteps();
+    showToast('📬 Request sent to Rajesh Kumar! You\'ll be notified upon review.');
+  }
+}
+
+function resetSteps() {
+  currentStep = 1; uploadedDocs = [];
+  document.getElementById('step-note').style.display    = 'block';
+  document.getElementById('step-docs').style.display    = 'none';
+  document.getElementById('step-confirm').style.display = 'none';
+  document.getElementById('sc3').className  = 'step-circle todo';
+  document.getElementById('sc4').className  = 'step-circle todo';
+  document.getElementById('sl3').className  = 'step-label';
+  document.getElementById('sl4').className  = 'step-label';
+  document.getElementById('sline2').className = 'step-line';
+  document.getElementById('sline3').className = 'step-line';
+  document.getElementById('req-next-btn').textContent = 'Next: Upload Documents →';
+  document.getElementById('doc-chips').innerHTML = '';
+}
+
+function addDoc(name) {
+  if (uploadedDocs.includes(name)) { showToast('⚠️ Already added'); return; }
+  uploadedDocs.push(name);
+  const chip = document.createElement('div');
+  chip.className = 'doc-chip'; chip.id = 'chip-' + name;
+  chip.innerHTML = `📄 ${name} <span class="doc-chip-remove" onclick="removeDoc('${name}')">✕</span>`;
+  document.getElementById('doc-chips').appendChild(chip);
+  showToast('📎 ' + name + ' attached');
+}
+
+function removeDoc(name) {
+  uploadedDocs = uploadedDocs.filter(d => d !== name);
+  const chip = document.getElementById('chip-' + name);
+  if (chip) chip.remove();
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3000);
 }
+
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => {
+    if (e.target === el) {
+      const id = el.id.replace('modal-', '');
+      closeModal(id);
+      if (id === 'request') resetSteps();
+    }
+  });
+});
 </script>
 </body>
 </html>
