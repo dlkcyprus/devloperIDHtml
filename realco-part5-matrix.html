@@ -392,10 +392,157 @@ body {
 }
 .req-btn-tag:hover { background:var(--primary); color:#fff; }
 
+/* ═══════════════════════════════
+   PART 3 — MODALS & FORMS
+═══════════════════════════════ */
+.modal-overlay {
+  position:fixed; inset:0;
+  background:rgba(15,23,42,.45); backdrop-filter:blur(4px);
+  z-index:200; display:none; align-items:center; justify-content:center; padding:20px;
+}
+.modal-overlay.open { display:flex; }
+.modal-box {
+  background:var(--surface); border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-lg); width:100%; max-width:600px;
+  max-height:90vh; overflow-y:auto;
+  animation:modalIn .22s ease;
+}
+.modal-box.sm { max-width:460px; }
+.modal-box.lg { max-width:720px; }
+@keyframes modalIn {
+  from { opacity:0; transform:scale(.96) translateY(10px); }
+  to   { opacity:1; transform:scale(1)   translateY(0); }
+}
+.modal-header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px 24px; border-bottom:1px solid var(--border);
+  position:sticky; top:0; background:var(--surface); z-index:1;
+}
+.modal-title { font-size:16px; font-weight:800; color:var(--text); display:flex; align-items:center; gap:8px; }
+.modal-title small { font-size:12px; font-weight:400; color:var(--muted); }
+.modal-close {
+  width:28px; height:28px; border-radius:8px; border:none; cursor:pointer;
+  background:var(--bg); color:var(--subtext); font-size:14px;
+  display:flex; align-items:center; justify-content:center;
+  transition:background var(--t), color var(--t);
+}
+.modal-close:hover { background:var(--border); color:var(--text); }
+.modal-body   { padding:22px 24px; }
+.modal-footer {
+  padding:16px 24px; border-top:1px solid var(--border);
+  display:flex; gap:10px; justify-content:flex-end;
+  position:sticky; bottom:0; background:var(--surface);
+}
+
+/* Form elements */
+.form-section-title {
+  font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--subtext); padding:14px 0 8px; border-top:1px solid var(--border); margin-top:4px;
+}
+.form-section-title:first-child { border-top:none; padding-top:0; }
+.form-row   { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.form-row-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+.form-group { margin-bottom:14px; }
+.form-label {
+  display:block; font-size:11px; font-weight:700;
+  color:var(--subtext); letter-spacing:.06em; text-transform:uppercase; margin-bottom:6px;
+}
+.form-input, .form-select, .form-textarea {
+  width:100%; padding:10px 13px; border:1px solid var(--border); border-radius:var(--radius);
+  font-size:13.5px; font-family:'Inter',sans-serif; color:var(--text);
+  background:var(--bg); outline:none; transition:border-color var(--t), box-shadow var(--t);
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color:var(--primary); box-shadow:0 0 0 3px rgba(79,70,229,.1);
+}
+.form-textarea { min-height:72px; resize:vertical; }
+.form-select   { cursor:pointer; }
+.form-hint { font-size:11.5px; color:var(--muted); margin-top:5px; }
+
+/* Status pill selector */
+.status-select-row { display:flex; gap:8px; margin-bottom:14px; }
+.status-pill-opt {
+  flex:1; padding:9px; border-radius:var(--radius); text-align:center;
+  font-size:12px; font-weight:700; cursor:pointer;
+  border:2px solid var(--border); transition:all var(--t);
+}
+.status-pill-opt.s-available { color:var(--success); }
+.status-pill-opt.s-available.selected { border-color:var(--success); background:var(--success-light); }
+.status-pill-opt.s-hold      { color:var(--warning); }
+.status-pill-opt.s-hold.selected      { border-color:var(--warning); background:var(--warning-light); }
+.status-pill-opt.s-sold      { color:var(--subtext); }
+.status-pill-opt.s-sold.selected      { border-color:#334155; background:#F1F5F9; }
+.status-pill-opt.s-booked    { color:var(--primary); }
+.status-pill-opt.s-booked.selected    { border-color:var(--primary); background:var(--primary-light); }
+
+/* Unit detail modal */
+.unit-detail-hero { display:flex; gap:18px; margin-bottom:20px; }
+.unit-detail-img  {
+  width:210px; height:155px; border-radius:var(--radius); flex-shrink:0;
+  background:linear-gradient(135deg,#312E81,#4F46E5,#0E7490);
+  display:flex; align-items:center; justify-content:center; font-size:52px;
+}
+.unit-price-big { font-size:26px; font-weight:800; color:var(--text); letter-spacing:-.02em; margin-bottom:3px; }
+.unit-price-sqm { font-size:12px; color:var(--muted); margin-bottom:14px; }
+.spec-row {
+  display:flex; justify-content:space-between;
+  padding:6px 0; border-bottom:1px solid var(--border); font-size:13px;
+}
+.spec-row:last-child { border-bottom:none; }
+.spec-key { color:var(--subtext); }
+.spec-val { color:var(--text); font-weight:600; }
+.detail-btns { display:flex; flex-direction:column; gap:8px; min-width:150px; }
+.detail-btn {
+  width:100%; padding:11px; border-radius:var(--radius);
+  font-size:13px; font-weight:700; font-family:'Inter',sans-serif;
+  cursor:pointer; border:none; transition:all var(--t);
+}
+.detail-btn.primary { background:var(--primary); color:#fff; }
+.detail-btn.primary:hover { background:var(--primary-hover); transform:translateY(-1px); }
+.detail-btn.secondary { background:var(--bg); color:var(--text); border:1px solid var(--border); }
+.detail-btn.secondary:hover { background:var(--border); }
+.detail-btn.sent { background:var(--success-light); color:#065F46; border:1px solid #6EE7B7; pointer-events:none; }
+
+/* Price list table */
+.pl-table { width:100%; border-collapse:collapse; font-size:13px; }
+.pl-table thead th {
+  padding:10px 14px; text-align:left; background:var(--bg);
+  font-size:11px; color:var(--muted); text-transform:uppercase;
+  letter-spacing:.06em; font-weight:700;
+}
+.pl-table thead th:last-child { text-align:center; }
+.pl-table tbody tr { border-bottom:1px solid var(--border); }
+.pl-table tbody tr:hover { background:var(--bg); }
+.pl-table tbody td { padding:10px 14px; }
+
+/* Buttons */
+.btn-primary {
+  padding:9px 22px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--primary); color:#fff; transition:background var(--t), transform var(--t);
+}
+.btn-primary:hover { background:var(--primary-hover); transform:translateY(-1px); }
+.btn-ghost {
+  padding:9px 16px; border-radius:var(--radius);
+  border:1px solid var(--border); cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:600;
+  background:transparent; color:var(--subtext);
+  transition:background var(--t), color var(--t);
+}
+.btn-ghost:hover { background:var(--bg); color:var(--text); }
+.btn-accent {
+  padding:9px 22px; border-radius:var(--radius); border:none; cursor:pointer;
+  font-family:'Inter',sans-serif; font-size:13px; font-weight:700;
+  background:var(--accent); color:#fff; transition:filter var(--t), transform var(--t);
+}
+.btn-accent:hover { filter:brightness(1.08); transform:translateY(-1px); }
+
 @media (max-width:768px) {
   .sidebar { transform:translateX(-100%); }
   .main { margin-left:0; }
   .content { padding:16px; }
+  .unit-detail-hero { flex-direction:column; }
+  .unit-detail-img { width:100%; }
 }
 </style>
 </head>
@@ -541,16 +688,629 @@ body {
   </div>
 </div>
 
+<!-- ══ MODAL: ADD / EDIT UNIT ══ -->
+<div class="modal-overlay" id="modal-add-unit" onclick="if(event.target===this)closeModal('add-unit')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">🏠 Add / Edit Unit <small id="edit-unit-label"></small></div>
+      <button class="modal-close" onclick="closeModal('add-unit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-section-title">Floor &amp; Identification</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Select Floor</label>
+          <select class="form-select" id="unit-floor">
+            <option>Ground Floor</option>
+            <option>1st Floor</option>
+            <option>2nd Floor</option>
+            <option>3rd Floor</option>
+            <option>4th Floor</option>
+            <option>5th Floor</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Wing / Block</label>
+          <select class="form-select">
+            <option>North</option><option>South</option><option>North East</option><option>South West</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Property No.</label>
+          <input class="form-input" id="unit-num-input" placeholder="e.g. A-102"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Apartment No.</label>
+          <input class="form-input" placeholder="e.g. 102"/>
+        </div>
+      </div>
+
+      <div class="form-section-title">Pricing</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Price (₹)</label>
+          <input class="form-input" id="unit-price-input" placeholder="e.g. 12000000" type="number"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price per sq.ft (₹)</label>
+          <input class="form-input" placeholder="e.g. 8500" type="number"/>
+        </div>
+      </div>
+
+      <div class="form-section-title">Unit Status</div>
+      <div class="status-select-row">
+        <div class="status-pill-opt s-available selected" onclick="selectStatus(this,'available')">✅ Available</div>
+        <div class="status-pill-opt s-hold"              onclick="selectStatus(this,'hold')">⏳ Hold</div>
+        <div class="status-pill-opt s-sold"              onclick="selectStatus(this,'sold')">✖ Sold</div>
+        <div class="status-pill-opt s-booked"            onclick="selectStatus(this,'booked')">📋 Booked</div>
+      </div>
+
+      <div class="form-section-title">Configuration</div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label class="form-label">Bedrooms</label>
+          <select class="form-select"><option>1 BR</option><option>2 BR</option><option>3 BR</option><option>4 BR</option><option>Studio</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Bathrooms</label>
+          <select class="form-select"><option>1 Bath</option><option>2 Bath</option><option>3 Bath</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Car Parking</label>
+          <select class="form-select"><option>None</option><option>1 Car</option><option>2 Cars</option></select>
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label class="form-label">Internal Area (m²)</label>
+          <input class="form-input" placeholder="e.g. 1200" type="number"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">External Area (m²)</label>
+          <input class="form-input" placeholder="e.g. 400" type="number"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Area (m²)</label>
+          <input class="form-input" placeholder="e.g. 1600" type="number"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Aspect / Facing</label>
+          <select class="form-select"><option>North</option><option>South</option><option>East</option><option>West</option><option>North East</option><option>South West</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type / Config Label</label>
+          <input class="form-input" placeholder="e.g. 2BR1B1C"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Unit Notes</label>
+        <textarea class="form-textarea" placeholder="Any additional notes about this unit…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('add-unit')">Cancel</button>
+      <button class="btn-primary" onclick="saveUnit()">💾 Save Unit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: ADD FLOOR ══ -->
+<div class="modal-overlay" id="modal-add-floor" onclick="if(event.target===this)closeModal('add-floor')">
+  <div class="modal-box sm">
+    <div class="modal-header">
+      <div class="modal-title">🏗️ Add New Floor / Wing</div>
+      <button class="modal-close" onclick="closeModal('add-floor')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Floor / Wing Name</label>
+        <input class="form-input" id="floor-name-input" placeholder="e.g. East Wing, Penthouse Level"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description (Optional)</label>
+        <input class="form-input" placeholder="e.g. Premium units with sea view"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Pre-create Units</label>
+        <select class="form-select" id="floor-units-count">
+          <option value="0">None (add manually)</option>
+          <option value="4">4 Units</option>
+          <option value="8">8 Units</option>
+          <option value="12">12 Units</option>
+        </select>
+        <div class="form-hint">Units will be created as "Available" with ₹0 price.</div>
+      </div>
+      <div style="background:var(--warning-light);border:1px solid #FDE68A;border-radius:var(--radius);padding:10px 13px;font-size:12.5px;color:#92400E;">
+        ⚠️ Changes affect the live listing. Proceed with care.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('add-floor')">Cancel</button>
+      <button class="btn-primary" onclick="addFloor()">+ Add Floor</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: EDIT FLOOR ══ -->
+<div class="modal-overlay" id="modal-edit-floor" onclick="if(event.target===this)closeModal('edit-floor')">
+  <div class="modal-box sm">
+    <div class="modal-header">
+      <div class="modal-title">✏️ Edit Floor Name</div>
+      <button class="modal-close" onclick="closeModal('edit-floor')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Floor Name</label>
+        <input class="form-input" id="edit-floor-input" value="North"/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('edit-floor')">Cancel</button>
+      <button class="btn-primary" onclick="saveFloor()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: UNIT DETAIL (Agent view) ══ -->
+<div class="modal-overlay" id="modal-unit-detail" onclick="if(event.target===this)closeModal('unit-detail')">
+  <div class="modal-box lg">
+    <div class="modal-header">
+      <div class="modal-title" id="ud-title">Unit Detail</div>
+      <button class="modal-close" onclick="closeModal('unit-detail')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="unit-detail-hero">
+        <div class="unit-detail-img">🏢</div>
+        <div style="flex:1">
+          <div class="unit-price-big" id="ud-price">₹1,20,00,000</div>
+          <div class="unit-price-sqm" id="ud-sqm">₹8,500 / sq.ft</div>
+          <div class="spec-row"><span class="spec-key">Config</span><span class="spec-val" id="ud-config">2BR · 2 Bath · 1 Car</span></div>
+          <div class="spec-row"><span class="spec-key">Aspect</span><span class="spec-val" id="ud-aspect">North</span></div>
+          <div class="spec-row"><span class="spec-key">Internal Area</span><span class="spec-val" id="ud-internal">1,200 m²</span></div>
+          <div class="spec-row"><span class="spec-key">External Area</span><span class="spec-val" id="ud-external">400 m²</span></div>
+          <div class="spec-row"><span class="spec-key">Total Area</span><span class="spec-val" id="ud-total">1,600 m²</span></div>
+          <div class="spec-row"><span class="spec-key">Apartment No.</span><span class="spec-val" id="ud-aptno">203</span></div>
+          <div class="spec-row"><span class="spec-key">Status</span><span class="spec-val" id="ud-status" style="color:var(--success);">✅ Available</span></div>
+        </div>
+        <div class="detail-btns">
+          <button class="detail-btn primary" id="ud-request-btn" onclick="requestUnit()">📬 Request Access</button>
+          <button class="detail-btn secondary" id="ud-shortlist-btn" onclick="shortlistFromDetail()">⭐ Shortlist</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: PRICE LIST ══ -->
+<div class="modal-overlay" id="modal-price-list" onclick="if(event.target===this)closeModal('price-list')">
+  <div class="modal-box lg">
+    <div class="modal-header">
+      <div class="modal-title">📊 Price List — Skyline Residency</div>
+      <button class="modal-close" onclick="closeModal('price-list')">✕</button>
+    </div>
+    <div class="modal-body" style="padding:0;">
+      <table class="pl-table">
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Wing</th>
+            <th>Config</th>
+            <th style="text-align:right;">Price</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="price-list-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL: SHOWCASE ══ -->
+<div class="modal-overlay" id="modal-showcase" onclick="if(event.target===this)closeModal('showcase')">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">✨ Project Showcase</div>
+      <button class="modal-close" onclick="closeModal('showcase')">✕</button>
+    </div>
+    <div class="modal-body" style="text-align:center;">
+      <div style="font-size:64px;margin-bottom:16px;">🏙️</div>
+      <div style="font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.02em;margin-bottom:6px;">Skyline Residency — Tower A</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:24px;">Bandra West, Mumbai · Premium Residential Project</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:22px;">
+        <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+          <div style="font-size:24px;font-weight:800;color:var(--text);">96</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px;">Total Units</div>
+        </div>
+        <div style="background:var(--success-light);border:1px solid #6EE7B7;border-radius:var(--radius);padding:16px;">
+          <div style="font-size:24px;font-weight:800;color:var(--success);">58</div>
+          <div style="font-size:12px;color:#065F46;margin-top:3px;">Available</div>
+        </div>
+        <div style="background:var(--primary-light);border:1px solid #C7D2FE;border-radius:var(--radius);padding:16px;">
+          <div style="font-size:24px;font-weight:800;color:var(--primary);">₹85L+</div>
+          <div style="font-size:12px;color:var(--primary);margin-top:3px;">Starting Price</div>
+        </div>
+      </div>
+      <div style="font-size:13.5px;color:var(--subtext);line-height:1.8;text-align:left;background:var(--bg);border-radius:var(--radius);padding:16px;">
+        Premium residential tower in Bandra West, Mumbai. Stunning city and sea views. Features modular kitchens, 24/7 security, rooftop pool, fully-equipped gym, and 2 reserved parking per unit.
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('showcase')">Close</button>
+      <button class="btn-accent" onclick="showToast('🔗 Showcase link copied!');closeModal('showcase')">🔗 Share Link</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
+// ── STATE ──
+let currentMode  = 'owner';
+let currentFloor = 'north';
+let shortlisted  = [];
+let requestedUnits = [];
+let selectedStatus = 'available';
+let editingUnitId  = null;
+
+const floorData = {
+  north: [
+    {id:'A-101',status:'available',price:'₹85 L', beds:'2 BR',floor:'GF'},
+    {id:'A-102',status:'hold',     price:'₹92 L', beds:'2 BR',floor:'GF'},
+    {id:'A-103',status:'available',price:'₹78 L', beds:'1 BR',floor:'GF'},
+    {id:'A-104',status:'available',price:'₹78 L', beds:'1 BR',floor:'GF'},
+    {id:'A-105',status:'available',price:'₹1.1 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-106',status:'booked',   price:'₹1.2 Cr',beds:'3 BR',floor:'1F'},
+    {id:'A-201',status:'sold',     price:'₹1.4 Cr',beds:'3 BR',floor:'2F'},
+    {id:'A-202',status:'available',price:'₹95 L', beds:'2 BR',floor:'2F'},
+    {id:'A-203',status:'available',price:'₹2.0 Cr',beds:'4 BR',floor:'2F'},
+    {id:'A-204',status:'available',price:'₹88 L', beds:'2 BR',floor:'3F'},
+    {id:'A-301',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'3F'},
+    {id:'A-401',status:'available',price:'₹2.1 Cr',beds:'4 BR',floor:'4F'},
+    {id:'A-501',status:'hold',     price:'₹2.5 Cr',beds:'Penthouse',floor:'5F'},
+  ],
+  south: [
+    {id:'B-101',status:'available',price:'₹80 L', beds:'2 BR',floor:'GF'},
+    {id:'B-102',status:'available',price:'₹80 L', beds:'2 BR',floor:'GF'},
+    {id:'B-201',status:'sold',     price:'₹1.1 Cr',beds:'3 BR',floor:'2F'},
+    {id:'B-202',status:'booked',   price:'₹1.0 Cr',beds:'2 BR',floor:'2F'},
+    {id:'B-301',status:'available',price:'₹1.5 Cr',beds:'3 BR',floor:'3F'},
+    {id:'B-401',status:'available',price:'₹1.9 Cr',beds:'4 BR',floor:'4F'},
+  ],
+  northeast: [
+    {id:'C-101',status:'available',price:'₹95 L', beds:'2 BR',floor:'GF'},
+    {id:'C-102',status:'hold',     price:'₹1.0 Cr',beds:'2 BR',floor:'GF'},
+    {id:'C-201',status:'available',price:'₹1.3 Cr',beds:'3 BR',floor:'2F'},
+    {id:'C-301',status:'sold',     price:'₹1.6 Cr',beds:'3 BR',floor:'3F'},
+  ],
+  southwest: [
+    {id:'D-101',status:'available',price:'₹88 L', beds:'2 BR',floor:'GF'},
+    {id:'D-201',status:'available',price:'₹1.2 Cr',beds:'3 BR',floor:'2F'},
+    {id:'D-301',status:'booked',   price:'₹1.7 Cr',beds:'4 BR',floor:'3F'},
+  ]
+};
+
+// ── RENDER UNITS ──
+function renderUnits() {
+  const grid  = document.getElementById('units-grid');
+  const units = floorData[currentFloor] || [];
+  grid.innerHTML = '';
+  const isOwner = currentMode === 'owner';
+
+  units.forEach(u => {
+    const isStarred    = shortlisted.includes(u.id);
+    const isRequested  = requestedUnits.includes(u.id);
+    const statusLabels = {available:'● Available', hold:'⏳ On Hold', sold:'✖ Sold', booked:'📋 Booked'};
+
+    let bottomHTML = '';
+    if (isOwner) {
+      bottomHTML = `<div class="unit-owner-actions">
+        <button class="uoa-btn edit" onclick="event.stopPropagation();editUnit('${u.id}')">✏️</button>
+        <button class="uoa-btn copy" onclick="event.stopPropagation();copyUnit('${u.id}')">⧉</button>
+        <button class="uoa-btn del"  onclick="event.stopPropagation();deleteUnit('${u.id}')">🗑️</button>
+      </div>`;
+    } else {
+      if (isRequested) {
+        bottomHTML = `<div class="req-sent-tag">✅ Request Sent</div>`;
+      } else if (u.status === 'available' || u.status === 'booked') {
+        bottomHTML = `<div class="req-btn-tag" onclick="event.stopPropagation();quickRequest('${u.id}')">📬 Request Access</div>`;
+      }
+    }
+
+    const topRight = isOwner
+      ? `<div class="unit-floor-tag">${u.floor}</div>`
+      : `<div class="unit-star${isStarred?' active':''}" onclick="event.stopPropagation();toggleStar('${u.id}')">${isStarred?'⭐':'☆'}</div>`;
+
+    const card = document.createElement('div');
+    card.className = `unit-card ${u.status}${isStarred?' starred':''}`;
+    card.id = 'unit-' + u.id;
+    card.innerHTML = `
+      <div class="unit-header">
+        <div class="unit-num">${u.id}</div>
+        ${topRight}
+      </div>
+      <div class="unit-status">${statusLabels[u.status]}</div>
+      <div class="unit-price">${u.price}</div>
+      <div class="unit-meta">${u.beds}</div>
+      ${bottomHTML}
+    `;
+    card.addEventListener('click', () => isOwner ? editUnit(u.id) : openUnitDetail(u));
+    grid.appendChild(card);
+  });
+
+  document.getElementById('shortlist-count').textContent = shortlisted.length;
+  updateShortlistPanel();
+}
+
+// ── SHORTLIST ──
+function toggleStar(id) {
+  shortlisted.includes(id)
+    ? (shortlisted = shortlisted.filter(s => s !== id), showToast('☆ Removed from shortlist'))
+    : (shortlisted.push(id), showToast('⭐ Added to shortlist!'));
+  renderUnits();
+}
+function toggleShortlist() {
+  document.getElementById('shortlist-panel').classList.toggle('open');
+}
+function updateShortlistPanel() {
+  const items   = document.getElementById('shortlist-items');
+  const actions = document.getElementById('shortlist-actions');
+  if (shortlisted.length === 0) {
+    items.innerHTML = '<div style="font-size:12px;color:var(--muted);padding:8px 0;">No units shortlisted yet. Click ☆ on any unit.</div>';
+    if (actions) actions.style.display = 'none';
+  } else {
+    items.innerHTML = shortlisted.map(id =>
+      `<div class="sl-chip">⭐ ${id} <span class="sl-chip-remove" onclick="toggleStar('${id}')">✕</span></div>`
+    ).join('');
+    if (actions) actions.style.display = 'flex';
+  }
+}
+function clearShortlist() { shortlisted = []; renderUnits(); }
+function bulkRequest() {
+  shortlisted.forEach(id => { if (!requestedUnits.includes(id)) requestedUnits.push(id); });
+  showToast(`📬 Bulk request sent for ${shortlisted.length} unit(s)!`);
+  shortlisted = [];
+  document.getElementById('shortlist-panel').classList.remove('open');
+  renderUnits();
+}
+
+// ── QUICK REQUEST ──
+function quickRequest(id) {
+  if (!requestedUnits.includes(id)) requestedUnits.push(id);
+  showToast(`📬 Access requested for ${id}!`);
+  renderUnits();
+}
+
+// ── UNIT DETAIL (Agent) ──
+function openUnitDetail(u) {
+  document.getElementById('ud-title').innerHTML = `${u.id} <small>${currentFloor.charAt(0).toUpperCase()+currentFloor.slice(1)} Wing</small>`;
+  document.getElementById('ud-price').textContent    = u.price;
+  document.getElementById('ud-sqm').textContent      = '₹8,500 / sq.ft';
+  document.getElementById('ud-config').textContent   = u.beds + ' · 2 Bath · 1 Car';
+  document.getElementById('ud-aspect').textContent   = 'North';
+  document.getElementById('ud-internal').textContent = '1,200 m²';
+  document.getElementById('ud-external').textContent = '400 m²';
+  document.getElementById('ud-total').textContent    = '1,600 m²';
+  document.getElementById('ud-aptno').textContent    = u.id.split('-')[1];
+  const sMap = {available:'✅ Available', hold:'⏳ On Hold', sold:'✖ Sold', booked:'📋 Booked'};
+  const cMap = {available:'var(--success)', hold:'var(--warning)', sold:'var(--danger)', booked:'var(--primary)'};
+  const sEl  = document.getElementById('ud-status');
+  sEl.textContent  = sMap[u.status];
+  sEl.style.color  = cMap[u.status];
+
+  const isReq  = requestedUnits.includes(u.id);
+  const reqBtn = document.getElementById('ud-request-btn');
+  reqBtn.className   = isReq ? 'detail-btn sent' : 'detail-btn primary';
+  reqBtn.textContent = isReq ? '✅ Request Sent' : '📬 Request Access';
+  document.getElementById('ud-shortlist-btn').textContent = shortlisted.includes(u.id) ? '⭐ Shortlisted' : '☆ Shortlist';
+  openModal('unit-detail');
+}
+function requestUnit() {
+  const id = document.getElementById('ud-title').textContent.split(' ')[0];
+  if (!requestedUnits.includes(id)) requestedUnits.push(id);
+  document.getElementById('ud-request-btn').className   = 'detail-btn sent';
+  document.getElementById('ud-request-btn').textContent = '✅ Request Sent';
+  showToast('📬 Request sent to owner!');
+  renderUnits();
+}
+function shortlistFromDetail() {
+  const id  = document.getElementById('ud-title').textContent.split(' ')[0];
+  toggleStar(id);
+  document.getElementById('ud-shortlist-btn').textContent = shortlisted.includes(id) ? '⭐ Shortlisted' : '☆ Shortlist';
+}
+
+// ── UNIT CRUD (Owner) ──
+function editUnit(id) {
+  editingUnitId = id;
+  document.getElementById('edit-unit-label').textContent = 'Editing: ' + id;
+  const u = floorData[currentFloor].find(x => x.id === id);
+  if (u) {
+    document.getElementById('unit-num-input').value   = u.id;
+    document.getElementById('unit-price-input').value = '';
+    document.querySelectorAll('.status-pill-opt').forEach(p => p.classList.remove('selected'));
+    const el = document.querySelector(`.s-${u.status}`);
+    if (el) el.classList.add('selected');
+    selectedStatus = u.status;
+  }
+  openModal('add-unit');
+}
+function copyUnit(id) {
+  const u = floorData[currentFloor].find(x => x.id === id);
+  if (u) {
+    const newId = id + '-Copy';
+    floorData[currentFloor].push({...u, id: newId});
+    renderUnits();
+    showToast(`⧉ ${id} copied`);
+  }
+}
+function deleteUnit(id) {
+  if (confirm(`Delete unit ${id}? This cannot be undone.`)) {
+    floorData[currentFloor] = floorData[currentFloor].filter(u => u.id !== id);
+    renderUnits();
+    showToast(`🗑️ Unit ${id} deleted`);
+  }
+}
+function saveUnit() {
+  const num   = document.getElementById('unit-num-input').value.trim() || 'A-NEW';
+  const price = document.getElementById('unit-price-input').value;
+  const priceLabel = price ? `₹${(price/100000).toFixed(0)} L` : '₹0';
+  if (editingUnitId) {
+    const u = floorData[currentFloor].find(x => x.id === editingUnitId);
+    if (u) { u.status = selectedStatus; u.id = num; u.price = priceLabel; }
+    showToast('💾 Unit updated: ' + num);
+  } else {
+    floorData[currentFloor].push({id:num, status:selectedStatus, price:priceLabel, beds:'2 BR', floor:'GF'});
+    showToast('✅ Unit added: ' + num);
+  }
+  editingUnitId = null;
+  closeModal('add-unit');
+  renderUnits();
+  buildPriceList();
+}
+function selectStatus(el, status) {
+  document.querySelectorAll('.status-pill-opt').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedStatus = status;
+}
+
+// ── FLOOR MANAGEMENT ──
+function addFloor() {
+  const name = document.getElementById('floor-name-input').value.trim();
+  if (!name) { showToast('⚠️ Please enter a floor name'); return; }
+  const key = name.toLowerCase().replace(/\s+/g,'');
+  if (!floorData[key]) {
+    floorData[key] = [];
+    const count = parseInt(document.getElementById('floor-units-count').value);
+    for (let i = 1; i <= count; i++) {
+      floorData[key].push({id:`${name.charAt(0).toUpperCase()}-${100+i}`, status:'available', price:'₹0', beds:'2 BR', floor:'GF'});
+    }
+    const bar    = document.getElementById('floor-mgmt-bar');
+    const newTab = document.createElement('div');
+    newTab.className   = 'floor-mgmt-tab';
+    newTab.textContent = name;
+    newTab.onclick = function() { setFloor(this, key); };
+    bar.insertBefore(newTab, bar.querySelector('.floor-mgmt-actions'));
+  }
+  closeModal('add-floor');
+  setFloorKey(key);
+  showToast('✅ Floor "' + name + '" added!');
+  document.getElementById('floor-name-input').value = '';
+}
+function saveFloor() {
+  const name = document.getElementById('edit-floor-input').value.trim();
+  showToast('✏️ Floor renamed to "' + name + '"');
+  closeModal('edit-floor');
+}
+function confirmDeleteFloor() {
+  if (confirm(`Delete floor "${currentFloor}" and all its units?`)) {
+    delete floorData[currentFloor];
+    currentFloor = 'north';
+    renderUnits();
+    showToast('🗑️ Floor deleted');
+  }
+}
+function setFloor(el, floorKey) {
+  document.querySelectorAll('.floor-mgmt-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  setFloorKey(floorKey);
+}
+function setFloorKey(key) {
+  currentFloor = key;
+  document.getElementById('edit-floor-input').value = key.charAt(0).toUpperCase() + key.slice(1);
+  renderUnits();
+}
+
+// ── TABS ──
+function setTab(el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  showToast('📂 ' + el.textContent + ' tab');
+}
+
+// ── MODE SWITCH ──
+function switchMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.vt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const pill    = document.getElementById('sidebar-mode-pill');
+  const dot     = document.getElementById('sidebar-mode-dot');
+  const label   = document.getElementById('sidebar-mode-label');
+  const ownerBar= document.getElementById('floor-mgmt-bar');
+  const infoBar = document.getElementById('owner-info-bar');
+  const topBtn  = document.getElementById('topbar-main-btn');
+  const slBadge = document.getElementById('shortlist-badge');
+
+  if (mode === 'owner') {
+    pill.className  = 'mode-pill owner';
+    dot.className   = 'mode-dot owner';
+    label.className = 'mode-label owner';
+    label.textContent = '🏠 Owner Mode';
+    ownerBar.style.display  = 'flex';
+    infoBar.style.display   = 'flex';
+    topBtn.style.display    = 'flex';
+    slBadge.style.display   = 'none';
+    showToast('🏠 Switched to Owner Mode');
+  } else {
+    pill.className  = 'mode-pill agent';
+    dot.className   = 'mode-dot agent';
+    label.className = 'mode-label agent';
+    label.textContent = '🤝 Agent Mode';
+    ownerBar.style.display  = 'none';
+    infoBar.style.display   = 'none';
+    topBtn.style.display    = 'none';
+    slBadge.style.display   = 'flex';
+    showToast('🤝 Switched to Agent Mode');
+  }
+  renderUnits();
+}
+
+// ── PRICE LIST ──
+function buildPriceList() {
+  const tbody  = document.getElementById('price-list-body');
+  if (!tbody) return;
+  const sColors = {available:'var(--success)', hold:'var(--warning)', sold:'var(--muted)', booked:'var(--primary)'};
+  const sLabels = {available:'Available', hold:'On Hold', sold:'Sold', booked:'Booked'};
+  tbody.innerHTML = '';
+  Object.entries(floorData).forEach(([wing, units]) => {
+    units.forEach(u => {
+      tbody.innerHTML += `
+        <tr>
+          <td style="font-weight:700;color:var(--text);">${u.id}</td>
+          <td style="color:var(--subtext);">${wing.charAt(0).toUpperCase()+wing.slice(1)}</td>
+          <td style="color:var(--subtext);">${u.beds}</td>
+          <td style="text-align:right;font-weight:700;color:var(--text);">${u.price}</td>
+          <td style="text-align:center;"><span style="font-size:12px;font-weight:700;color:${sColors[u.status]};">${sLabels[u.status]}</span></td>
+        </tr>`;
+    });
+  });
+}
+
+// ── MODAL ──
+function openModal(id) {
+  if (id === 'price-list') buildPriceList();
+  if (id === 'add-unit' && !editingUnitId) document.getElementById('edit-unit-label').textContent = '';
+  const el = document.getElementById('modal-' + id);
+  if (el) el.classList.add('open');
+}
+function closeModal(id) {
+  const el = document.getElementById('modal-' + id);
+  if (el) el.classList.remove('open');
+}
+
+// ── TOAST ──
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
 }
-function openModal(id)  { const el = document.getElementById('modal-'+id); if(el) el.classList.add('open'); }
-function closeModal(id) { const el = document.getElementById('modal-'+id); if(el) el.classList.remove('open'); }
+
+// ── INIT ──
+switchMode('owner', document.querySelector('.vt-btn.active'));
+document.getElementById('shortlist-badge').style.display = 'none';
 </script>
 </body>
 </html>
