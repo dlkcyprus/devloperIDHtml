@@ -14,21 +14,24 @@
 :root {
   --bg:            #F8FAFC;
   --surface:       #FFFFFF;
-  --primary:       #4F46E5;
+  --primary:       #6366F1;
+  --primary-dark:  #4338CA;
   --primary-hover: #4338CA;
+  --primary-mid:   #818CF8;
   --primary-light: #EEF2FF;
-  --accent:        #06B6D4;
-  --accent-light:  #ECFEFF;
+  --primary-border:#C7D2FE;
+  --accent:        #6366F1;
+  --accent-light:  #EEF2FF;
   --text:          #0F172A;
   --subtext:       #475569;
   --muted:         #94A3B8;
   --border:        #E2E8F0;
-  --success:       #10B981;
-  --success-light: #D1FAE5;
-  --warning:       #F59E0B;
-  --warning-light: #FEF3C7;
-  --danger:        #EF4444;
-  --danger-light:  #FEE2E2;
+  --success:       #16A34A;
+  --success-light: #F0FDF4;
+  --warning:       #B45309;
+  --warning-light: #FEFCE8;
+  --danger:        #DC2626;
+  --danger-light:  #FEF2F2;
   --sidebar-w:     240px;
   --topbar-h:      60px;
   --radius:        12px;
@@ -81,7 +84,7 @@ body {
   border: 1px solid var(--border);
 }
 .mode-btn.owner-m.active-m { background:var(--primary-light); color:var(--primary); border-color:#C7D2FE; }
-.mode-btn.agent-m.active-m { background:var(--accent-light);  color:#0E7490;         border-color:#A5F3FC; }
+.mode-btn.agent-m.active-m { background:var(--accent-light);  color:var(--primary-dark);         border-color:var(--primary-border); }
 .mode-btn:not(.active-m):hover { background:var(--bg); color:var(--subtext); }
 
 .nav-section { padding:12px 10px 4px; }
@@ -189,9 +192,9 @@ body {
   font-size:13.5px; font-weight:600; margin-bottom:16px;
   border:1px solid transparent;
 }
-.status-banner.pending  { background:var(--warning-light); color:#92400E; border-color:#FDE68A; }
-.status-banner.approved { background:var(--success-light); color:#065F46; border-color:#6EE7B7; }
-.status-banner.rejected { background:var(--danger-light);  color:#991B1B; border-color:#FECACA; }
+.status-banner.pending  { background:var(--warning-light); color:var(--warning);  border-color:#FDE68A; }
+.status-banner.approved { background:var(--success-light); color:var(--success);  border-color:#BBF7D0; }
+.status-banner.rejected { background:var(--danger-light);  color:var(--danger);   border-color:#FECACA; }
 .sb-icon { font-size:18px; flex-shrink:0; }
 .sb-text strong { display:block; font-size:13.5px; }
 .sb-text span   { font-size:12px; font-weight:400; opacity:.75; }
@@ -199,13 +202,13 @@ body {
   margin-left:auto; padding:3px 10px; border-radius:99px;
   font-size:11px; font-weight:700; letter-spacing:.05em; text-transform:uppercase;
 }
-.pending  .sb-badge { background:#FEF3C7; color:#92400E; border:1px solid #FDE68A; }
-.approved .sb-badge { background:#D1FAE5; color:#065F46; border:1px solid #6EE7B7; }
-.rejected .sb-badge { background:#FEE2E2; color:#991B1B; border:1px solid #FECACA; }
+.pending  .sb-badge { background:var(--warning-light); color:var(--warning);  border:1px solid #FDE68A; }
+.approved .sb-badge { background:var(--success-light); color:var(--success);  border:1px solid #BBF7D0; }
+.rejected .sb-badge { background:var(--danger-light);  color:var(--danger);   border:1px solid #FECACA; }
 
 /* Deal Hero Card */
 .deal-hero {
-  background:linear-gradient(135deg,#312E81 0%,#4F46E5 60%,#0E7490 100%);
+  background:linear-gradient(160deg,#312E81 0%,var(--primary) 100%);
   border-radius:var(--radius-lg); padding:22px 22px 18px;
   margin-bottom:16px; color:#fff; position:relative; overflow:hidden;
 }
@@ -248,9 +251,9 @@ body {
   padding:3px 10px; border-radius:99px; font-size:11px; font-weight:700;
   letter-spacing:.05em; text-transform:uppercase; margin-top:10px;
 }
-.dsb-pending  { background:rgba(245,158,11,.2);  color:#FEF3C7; border:1px solid rgba(245,158,11,.3); }
-.dsb-approved { background:rgba(16,185,129,.2);  color:#D1FAE5; border:1px solid rgba(16,185,129,.3); }
-.dsb-rejected { background:rgba(239,68,68,.2);   color:#FEE2E2; border:1px solid rgba(239,68,68,.3); }
+.dsb-pending  { background:rgba(255,255,255,.15); color:#E0E7FF; border:1px solid rgba(255,255,255,.25); }
+.dsb-approved { background:rgba(255,255,255,.15); color:#BBF7D0; border:1px solid rgba(255,255,255,.25); }
+.dsb-rejected { background:rgba(255,255,255,.15); color:#FECACA; border:1px solid rgba(255,255,255,.25); }
 
 /* Parties Card */
 .parties-card .party-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--border); }
@@ -273,7 +276,7 @@ body {
   font-size:15px; font-weight:800; margin:6px 0 4px; flex-shrink:0;
 }
 .owner-av { background:var(--primary-light); color:var(--primary); }
-.agent-av { background:var(--accent-light);  color:#0E7490; }
+.agent-av { background:var(--primary-light); color:var(--primary); }
 .party-name   { font-size:14px; font-weight:700; color:var(--text); }
 .party-detail { font-size:12px; color:var(--subtext); }
 .party-contact {
@@ -325,8 +328,8 @@ body {
   width:36px; height:36px; border-radius:8px; flex-shrink:0;
   display:flex; align-items:center; justify-content:center; font-size:16px;
 }
-.doc-icon-box.pdf  { background:#FEE2E2; }
-.doc-icon-box.img  { background:#DBEAFE; }
+.doc-icon-box.pdf  { background:var(--danger-light); }
+.doc-icon-box.img  { background:var(--primary-light); }
 .doc-icon-box.doc  { background:#EDE9FE; }
 .doc-name   { font-size:13px; font-weight:600; color:var(--text); flex:1; }
 .doc-meta   { font-size:11px; color:var(--muted); margin-top:1px; }
@@ -334,9 +337,9 @@ body {
   padding:3px 8px; border-radius:99px; font-size:10.5px; font-weight:700;
   white-space:nowrap;
 }
-.chip-ok   { background:var(--success-light); color:#065F46; }
-.chip-pend { background:var(--warning-light); color:#92400E; }
-.chip-req  { background:var(--danger-light);  color:#991B1B; }
+.chip-ok   { background:var(--success-light); color:var(--success); }
+.chip-pend { background:var(--warning-light); color:var(--warning); }
+.chip-req  { background:var(--danger-light);  color:var(--danger); }
 
 /* ═══════════════════════════════
    PART 3 — RIGHT PANEL
@@ -344,7 +347,7 @@ body {
 
 /* Action Card */
 .action-card {
-  background:linear-gradient(160deg,#0F172A 0%,#1E293B 100%);
+  background:linear-gradient(160deg,#1E1B4B 0%,#312E81 100%);
   border-radius:var(--radius-lg); padding:22px;
   margin-bottom:16px; color:#fff; border:1px solid rgba(255,255,255,.06);
   box-shadow:var(--shadow-lg);
@@ -491,14 +494,14 @@ body {
 .decision-summary {
   border-radius:var(--radius); padding:14px 16px; margin-bottom:16px;
 }
-.ds-approve { background:var(--success-light); border:1px solid #6EE7B7; }
+.ds-approve { background:var(--success-light); border:1px solid #BBF7D0; }
 .ds-reject  { background:var(--danger-light);  border:1px solid #FECACA; }
 .ds-title { font-size:13.5px; font-weight:700; margin-bottom:4px; }
-.ds-approve .ds-title { color:#065F46; }
-.ds-reject  .ds-title { color:#991B1B; }
+.ds-approve .ds-title { color:var(--success); }
+.ds-reject  .ds-title { color:var(--danger); }
 .ds-text  { font-size:12.5px; line-height:1.5; }
-.ds-approve .ds-text { color:#065F46; }
-.ds-reject  .ds-text { color:#991B1B; }
+.ds-approve .ds-text { color:var(--success); }
+.ds-reject  .ds-text { color:var(--danger); }
 
 /* Doc viewer modal */
 .dv-preview {
@@ -955,7 +958,7 @@ body {
         <label class="mf-label">Reason for Rejection <span style="color:var(--danger)">*</span></label>
         <textarea class="mf-textarea" id="reject-note" placeholder="E.g. Offer price is too low. Expecting at least ₹1.22 Cr..."></textarea>
       </div>
-      <div class="mf-info" style="border-color:var(--danger-light); background:var(--danger-light); color:#991B1B;">
+      <div class="mf-info" style="border-color:var(--danger-light); background:var(--danger-light); color:var(--danger);">
         ⚠️ This deal will be permanently closed. The agent may submit a revised offer separately.
       </div>
     </div>
